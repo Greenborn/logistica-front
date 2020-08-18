@@ -1,0 +1,197 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+/*          ESTILOS GENERALES          */
+.title-content-1 {
+  background-color: #626366;
+  color:            #FFF;
+  padding:          1em 1em 1em 2em;
+  margin-bottom:    2em;
+}
+
+.title-content-3, .title-content-2 {
+  padding:          3em !important;
+  margin-bottom:    1em;
+  border-bottom:    2px solid #7f7171;
+  background:       #AE1F2A;
+}
+
+.title-content-3 {
+  color:            #FFF;
+  padding-bottom:   2px!important;
+  padding-top:      2px!important;
+
+  p{
+    margin:      0px;
+  }
+}
+
+.title-3-grid {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+  min-height: 30px;
+}
+
+.title-content-2 {
+  padding-bottom:   0 !important;
+  padding-top:      0 !important;
+  border:           none;
+  background-color: #CCC;
+  color:            #000;
+  margin:           0px;
+  height:           3em;
+
+  .row {
+    height: 100%;
+  }
+
+  .img-logo {
+    height:     100%;
+    max-height: 3em;
+    width:      auto;
+  }
+
+  .t2-table{
+    display:    table;
+    height:     100%;
+  }
+
+  .t2-cell{
+    display:          table-cell;
+    vertical-align:   middle;
+    font-size:        1em;
+  }
+}
+
+.header-md{
+  background: #CCC;
+}
+
+.app-body {
+  background-color: transparent !important;
+}
+
+/*--------------- BOTONES ----------------*/
+.btn-CS{
+  background-color: #626366;
+}
+
+.btn {
+  border-radius: 0px !important;
+  border:        none;
+  color:         #FFF !important;
+}
+
+.to-bottom{
+  position:      absolute;
+  bottom:        0px;
+}
+
+.btn-cont-1{
+  padding:       1em;
+}
+
+
+.toolbar-background{
+  background: #de2027 !important;
+}
+
+.page-bg {
+  background-color: #DDD;
+}
+
+.form-app{
+  background-color: #FFFFFF;
+}
+
+.padding-form{
+  padding-left: 5%; padding-right: 5%;
+}
+
+.btn{ margin-left:3px; margin-right: 3px; }
+
+.row-bottom-line-1{
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1em;
+}
+
+.form-control{
+  font-weight: bold;
+}
+
+.pd-bottom-1{
+  padding-bottom: 1em;
+}
+
+.btn-dark{
+  background-color: #681219;
+}
+
+.num-cot{
+  text-align: right;
+}
+
+.bg-yellow{ background: yellow; }
+.custom-sum { margin-right: 25px; }
+.btn-info { background: #00b1ea !important; }
+
+.table td, .table th {
+    padding: .15rem;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin-bottom: 0px !important;
+}
+
+.mat-form-field-infix {
+    border-top: none;
+    padding: 0;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline{
+  display: none;
+}
+
+input.mat-input-element {
+    margin-top: -0.062em;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-infix{
+  padding: 0;
+}
+
+.text-in-input {
+  font-size:    1rem;
+  font-weight:  bold;
+  position:     relative;
+  margin-top: auto;
+  margin-bottom: auto;
+}
