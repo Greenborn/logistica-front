@@ -28,6 +28,7 @@
     "@ionic/angular": "^5.0.0",
     "@ng-bootstrap/ng-bootstrap": "^5.3.1",
     "@popperjs/core": "^2.3.3",
+    "@types/jquery": "^3.5.1",
     "angular2-text-mask": "^9.0.0",
     "bootstrap": "^4.4.1",
     "core-js": "^2.5.4",

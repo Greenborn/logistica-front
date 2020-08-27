@@ -14,7 +14,15 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { AppComponent }     from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { HomePage }                   from './pages/home/home';
+import { HomePage }       from './pages/home/home';
+import { LoginPage }      from './pages/auth/login/login.page';
+import { EnviosPage }     from './pages/envios/all/envios.page';
+import { SucursalesPage } from './pages/sucursales/all/sucursales.page';
+import { VehiculosPage }  from './pages/vehiculos/all/vehiculos.page';
+import { UsuariosPage }   from './pages/usuarios/all/usuarios.page';
+
+import { SideMenuComponent }     from './component/side-menu/side-menu.component';
+import { ToggleButtonComponent } from './component/side-menu/toggle-button/toggle-button.component';
 
 import { NgbModule }                      from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter }   from './providers/ngb-date-custom-parser-formatter.provider';
@@ -25,7 +33,13 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
 @NgModule({
   declarations: [
     AppComponent,
-    HomePage
+    HomePage,
+    LoginPage,
+    EnviosPage,
+    SucursalesPage,
+    VehiculosPage,
+    UsuariosPage,
+    SideMenuComponent, ToggleButtonComponent
   ],
   entryComponents: [],
   imports: [
