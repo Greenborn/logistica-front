@@ -7,12 +7,17 @@ import { AlertController, LoadingController }   from '@ionic/angular';
 @Injectable({ providedIn: 'root' })
 export class GeneralService {
 
-  public loading = null;
+  private loading   = null;
+  private appTitle = 'Logística Tandil';
 
   constructor(
     public alertController: AlertController,
     public loadingCtrl:     LoadingController
   ) { }
+
+  public getAppTitle(){
+    return this.appTitle;
+  }
 
   async newMensaje(msg){
     let alert = await this.alertController.create({
