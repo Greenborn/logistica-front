@@ -1,6 +1,7 @@
 export class BranchOffice {
    public id;
    public name;
+   public status;
    public incomingShipping:any = [
      {
        "id": 0,
@@ -11,7 +12,8 @@ export class BranchOffice {
        "origin_address": null,
        "destination_address": null,
        "price": 0,
-       "date": ""
+       "date": "",
+       "status":""
      }
    ];
 
@@ -25,7 +27,8 @@ export class BranchOffice {
        "origin_address": null,
        "destination_address": null,
        "price": 0,
-       "date": ""
+       "date": "",
+       "status":""
      }
    ];
 

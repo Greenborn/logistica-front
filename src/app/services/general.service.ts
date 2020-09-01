@@ -14,6 +14,10 @@ export class GeneralService {
     public loadingCtrl:     LoadingController
   ) { }
 
+  getAppTitle(){
+    return 'Logística Tandil';
+  }
+
   async newMensaje(msg){
     let alert = await this.alertController.create({
       header: 'Atención',
