@@ -6,9 +6,8 @@ webapp-clone:
   stage: clone   
   script:     
     - git pull origin dev 
-  workflow:
-    rules:     
-      - if: $CI_COMMIT_BRANCH == 'dev'
+  rules:     
+    - if: $CI_COMMIT_BRANCH == 'dev'
 
 webapp-build:
   stage: build
