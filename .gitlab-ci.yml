@@ -13,5 +13,5 @@ webapp-build:
   stage: build
   script:
     - cd /var/www/logistica.coodesoft.com.ar
-    - ionic build --prod --verbose
+    - sudo ionic build --prod --verbose
   
