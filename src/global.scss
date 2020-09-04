@@ -34,14 +34,14 @@
   margin-bottom:    2em;
 }
 
-.title-content-3, .title-content-2 {
+.title-content-3, .title-content-2, .title-content-4 {
   padding:          3em !important;
   margin-bottom:    1em;
   border-bottom:    2px solid #7f7171;
   background:       #AE1F2A;
 }
 
-.title-content-3 {
+.title-content-3, .title-content-4 {
   color:            #FFF;
   padding-bottom:   2px!important;
   padding-top:      2px!important;
@@ -49,6 +49,11 @@
   p{
     margin:      0px;
   }
+}
+
+.title-content-4{
+  padding-bottom:   0px!important;
+  padding-top:      0px!important;
 }
 
 .title-3-grid {
@@ -238,3 +243,9 @@ app-side-menu > .side-bar-toggled {
 }
 
 /* SIDEBAR FIN [MODIFICAR] Mover estos estilos para el componente */
+
+.form-box {
+  border:         1px solid #000;
+  margin-top:     1rem;
+  margin-bottom:  1rem;
+}
