@@ -6,6 +6,7 @@ import { Subject }    from 'rxjs';
 
 import { ConfigProvider }      from './config/config';
 import { ServicesService }     from './services.service';
+import { AuthService }         from './auth/auth.service';
 
 import { Shipping }     from '../models/shipping';
 import { ShippingType } from '../models/shipping.type';
@@ -16,7 +17,8 @@ export class ShippingsService {
   constructor(
   	public http:     HttpClient,
     public config:   ConfigProvider,
-    public serviceS: ServicesService
+    public serviceS: ServicesService,
+    public authS:    AuthService
   ) {}
 
   public servicesTypes:any;
@@ -78,12 +80,17 @@ export class ShippingsService {
   public ShippingGetAKO = new Subject();
 
   getAll(){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
+
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'], { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingGetAOK.next(data); },
-      err =>  {  this.ShippingGetAKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'],
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.ShippingGetAOK.next(data); },
+        err =>  {  this.ShippingGetAKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -92,12 +99,17 @@ export class ShippingsService {
   public ShippingGetKO = new Subject();
 
   get(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
+
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingGetOK.next(data); },
-      err =>  {  this.ShippingGetKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingGetOK.next(data); },
+        err =>  {  this.ShippingGetKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -106,12 +118,16 @@ export class ShippingsService {
   public ShippingPostKO = new Subject();
 
   post(model:Shipping){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.post(conf['apiBaseUrl'] + conf['shippingsAction'], model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingPostOK.next(data); },
-      err =>  {  this.ShippingPostKO.next(err);  }
-    );
+    this.http.post(conf['apiBaseUrl'] + conf['shippingsAction'], model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingPostOK.next(data); },
+        err =>  {  this.ShippingPostKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -120,12 +136,16 @@ export class ShippingsService {
   public ShippingPutKO = new Subject();
 
   put(model:Shipping){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + model.id, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingPutOK.next(data); },
-      err =>  {  this.ShippingPutKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + model.id, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingPutOK.next(data); },
+        err =>  {  this.ShippingPutKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -134,12 +154,16 @@ export class ShippingsService {
   public ShippingPutEKO = new Subject();
 
   putExpand(model:Shipping, p){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '?expand=' + p, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingPutEOK.next(data); },
-      err =>  {  this.ShippingPutEKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '?expand=' + p, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingPutEOK.next(data); },
+        err =>  {  this.ShippingPutEKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -148,12 +172,16 @@ export class ShippingsService {
   public ShippingDelKO = new Subject();
 
   delete(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.delete(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingDelOK.next(data); },
-      err =>  {  this.ShippingDelKO.next(err);  }
-    );
+    this.http.delete(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingDelOK.next(data); },
+        err =>  {  this.ShippingDelKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -162,12 +190,16 @@ export class ShippingsService {
   public ShippingTypeGetAKO = new Subject();
 
   getTypes(){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingTypesAction'], { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingTypeGetOK.next(data); },
-      err =>  {  this.ShippingTypeGetKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['shippingTypesAction'],
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingTypeGetOK.next(data); },
+        err =>  {  this.ShippingTypeGetKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -176,12 +208,16 @@ export class ShippingsService {
   public ShippingTypeGetKO = new Subject();
 
   getType(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingTypesAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingTypeGetOK.next(data); },
-      err =>  {  this.ShippingTypeGetKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['shippingTypesAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingTypeGetOK.next(data); },
+        err =>  {  this.ShippingTypeGetKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -190,12 +226,16 @@ export class ShippingsService {
   public ShippingTypePostKO = new Subject();
 
   postType(model:ShippingType){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.post(conf['apiBaseUrl'] + conf['shippingsAction'], model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingPostOK.next(data); },
-      err =>  {  this.ShippingPostKO.next(err);  }
-    );
+    this.http.post(conf['apiBaseUrl'] + conf['shippingsAction'], model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingPostOK.next(data); },
+        err =>  {  this.ShippingPostKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -204,12 +244,16 @@ export class ShippingsService {
   public ShippingTypePutKO = new Subject();
 
   putType(model:ShippingType){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + model.id, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingPutOK.next(data); },
-      err =>  {  this.ShippingPutKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + model.id, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingPutOK.next(data); },
+        err =>  {  this.ShippingPutKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -218,11 +262,15 @@ export class ShippingsService {
   public ShippingTypeDelKO = new Subject();
 
   deleteType(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.delete(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.ShippingDelOK.next(data); },
-      err =>  {  this.ShippingDelKO.next(err);  }
-    );
+    this.http.delete(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
+        data => {  this.ShippingDelOK.next(data); },
+        err =>  {  this.ShippingDelKO.next(err);  }
+      );
   }
 }
