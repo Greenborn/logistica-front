@@ -5,7 +5,7 @@ stages:
 webapp-clone:   
   stage: clone   
   script:     
-    - git pull origin dev 
+    - git pull
   rules:     
     - if: $CI_COMMIT_BRANCH == 'dev'
 
