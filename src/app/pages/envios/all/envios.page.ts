@@ -36,4 +36,12 @@ export class EnviosPage implements OnInit {
     this.loadParamsOK.unsubscribe();
   }
 
+  addItem(){
+
+  }
+
+  next(){
+    
+  }
+
 }
