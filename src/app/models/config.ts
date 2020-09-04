@@ -3,6 +3,10 @@ export class Config {
 
   public apiBaseUrl:string;
   public distancesAction:string;
-  public shippingsAction:string;
   public branchOfficesAction:string;
+
+  public shippingsAction:string;
+  public shippingTypesAction:string;
+
+  public servicesAction:string;
 }
