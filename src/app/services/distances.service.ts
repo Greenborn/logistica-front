@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
 
 import { ConfigProvider }      from './config/config';
+import { AuthService }         from './auth/auth.service';
 
 import { Distance } from '../models/distance';
 
@@ -11,7 +12,8 @@ export class DistancesService {
 
   constructor(
   	public http:   HttpClient,
-    public config: ConfigProvider
+    public config: ConfigProvider,
+    public authS:  AuthService
   ) {}
 
   ///////////////////////////////////////////
@@ -22,24 +24,26 @@ export class DistancesService {
   getAll(){
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['distancesAction'], { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.DistancesGetAOK.next(data); },
-      err =>  {  this.DistancesGetAKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['distancesAction'],
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.DistancesGetAOK.next(data); },
+        err =>  {  this.DistancesGetAKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
-  /// GET 
+  /// GET
   public DistancesGetOK = new Subject();
   public DistancesGetKO = new Subject();
 
   get(id){
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.DistancesGetOK.next(data); },
-      err =>  {  this.DistancesGetKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.DistancesGetOK.next(data); },
+        err =>  {  this.DistancesGetKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -50,10 +54,11 @@ export class DistancesService {
   post(model:Distance){
     let conf = this.config.getConfigData();
 
-    this.http.post(conf['apiBaseUrl'] + conf['distancesAction'], model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.DistancesPostOK.next(data); },
-      err =>  {  this.DistancesPostKO.next(err);  }
-    );
+    this.http.post(conf['apiBaseUrl'] + conf['distancesAction'], model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.DistancesPostOK.next(data); },
+        err =>  {  this.DistancesPostKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -64,10 +69,11 @@ export class DistancesService {
   put(model:Distance){
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + model.id, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.DistancesPutOK.next(data); },
-      err =>  {  this.DistancesPutKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + model.id, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.DistancesPutOK.next(data); },
+        err =>  {  this.DistancesPutKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -78,10 +84,11 @@ export class DistancesService {
   delete(id){
     let conf = this.config.getConfigData();
 
-    this.http.delete(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.DistancesDelOK.next(data); },
-      err =>  {  this.DistancesDelKO.next(err);  }
-    );
+    this.http.delete(conf['apiBaseUrl'] + conf['distancesAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.DistancesDelOK.next(data); },
+        err =>  {  this.DistancesDelKO.next(err);  }
+      );
   }
 
 

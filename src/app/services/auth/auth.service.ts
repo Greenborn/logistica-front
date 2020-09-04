@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Login }  from '../../models/login';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +13,7 @@ export class AuthService {
   ) { }
 
   private LogedIn:boolean = false;
+  private Token:string    = '$2y$13$2/EF2ACv9kptY8XGXOC0QuDc2Do.UoCBikl9nxDHiaTlEj7d.1Sr.%'; //[Modificar] Solo usado en pruebas
 
   login(){
     this.LogedIn = true;
@@ -23,5 +26,13 @@ export class AuthService {
       this.router.navigate(['/']);
     }
 
+  }
+
+  logedIn(){
+    return this.LogedIn;
+  }
+
+  getToken(){
+    return this.Token;
   }
 }

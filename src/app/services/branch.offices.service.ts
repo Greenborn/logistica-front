@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
 
 import { ConfigProvider }      from './config/config';
+import { AuthService }         from './auth/auth.service';
 
 import { BranchOffice } from '../models/branch.office';
 
@@ -11,7 +12,8 @@ export class BranchOfficesService {
 
   constructor(
   	public http:   HttpClient,
-    public config: ConfigProvider
+    public config: ConfigProvider,
+    public authS:  AuthService
   ) {}
 
   ///////////////////////////////////////////
@@ -20,12 +22,16 @@ export class BranchOfficesService {
   public BranchOfficeGetAKO = new Subject();
 
   getAll(){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['branchOfficesAction'], { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficeGetAOK.next(data); },
-      err =>  {  this.BranchOfficeGetAKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['branchOfficesAction'],
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficeGetAOK.next(data); },
+        err =>  {  this.BranchOfficeGetAKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -34,12 +40,16 @@ export class BranchOfficesService {
   public BranchOfficeGetKO = new Subject();
 
   get(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficeGetOK.next(data); },
-      err =>  {  this.BranchOfficeGetKO.next(err);  }
-    );
+    this.http.get(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficeGetOK.next(data); },
+        err =>  {  this.BranchOfficeGetKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -48,12 +58,16 @@ export class BranchOfficesService {
   public BranchOfficePostKO = new Subject();
 
   post(model:BranchOffice){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.post(conf['apiBaseUrl'] + conf['branchOfficesAction'], model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficePostOK.next(data); },
-      err =>  {  this.BranchOfficePostKO.next(err);  }
-    );
+    this.http.post(conf['apiBaseUrl'] + conf['branchOfficesAction'], model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficePostOK.next(data); },
+        err =>  {  this.BranchOfficePostKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -62,12 +76,16 @@ export class BranchOfficesService {
   public BranchOfficePutKO = new Subject();
 
   put(model:BranchOffice){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + model.id, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficePutOK.next(data); },
-      err =>  {  this.BranchOfficePutKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + model.id, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficePutOK.next(data); },
+        err =>  {  this.BranchOfficePutKO.next(err);  }
+      );
   }
 
   ///////////////////////////////////////////
@@ -76,12 +94,16 @@ export class BranchOfficesService {
   public BranchOfficePutEKO = new Subject();
 
   putExpand(model:BranchOffice, p){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.put(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '?expand=' + p, model, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficePutEOK.next(data); },
-      err =>  {  this.BranchOfficePutEKO.next(err);  }
-    );
+    this.http.put(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '?expand=' + p, model,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficePutEOK.next(data); },
+        err =>  {  this.BranchOfficePutEKO.next(err);  }
+      );
   }
 
   //////////////////////////////////////////
@@ -90,12 +112,16 @@ export class BranchOfficesService {
   public BranchOfficeDelKO = new Subject();
 
   delete(id){
+    if ( !this.authS.logedIn ){
+        return false;
+    }
     let conf = this.config.getConfigData();
 
-    this.http.delete(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + id, { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
-      data => {  this.BranchOfficeDelOK.next(data); },
-      err =>  {  this.BranchOfficeDelKO.next(err);  }
-    );
+    this.http.delete(conf['apiBaseUrl'] + conf['branchOfficesAction'] + '/' + id,
+      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
+        data => {  this.BranchOfficeDelOK.next(data); },
+        err =>  {  this.BranchOfficeDelKO.next(err);  }
+      );
   }
 
 
