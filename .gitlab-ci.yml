@@ -6,7 +6,7 @@ webapp-clone:
   stage: clone   
   script:     
     - cd /var/www/logistica.coodesoft.com.ar
-    - git pull
+    - sudo git pull
   rules:     
     - if: $CI_COMMIT_BRANCH == 'dev'
 
