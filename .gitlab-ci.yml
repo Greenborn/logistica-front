@@ -15,8 +15,8 @@ webapp-build:
   script:
     - cd /var/www/logistica.coodesoft.com.ar
     - sudo ionic build --prod --verbose
-  retry
-    - max: 2
-    - when:
-        - script_failure  
+  retry:
+    max: 2
+    when:
+      - script_failure  
   
