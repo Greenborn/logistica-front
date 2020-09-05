@@ -4,5 +4,6 @@
   "shippingsAction":"shippings",
   "branchOfficesAction":"branch-offices",
   "shippingTypesAction":"shipping-types",
-  "servicesAction":"service-types"
+  "servicesAction":"service-types",
+  "loginAction":"login"
 }
