@@ -1,0 +1,219 @@
+<ion-header>
+  <div class="row">
+      <div class="col title-content-2">
+        <div class="row">
+          <div class="col-auto"> <app-toggle-button></app-toggle-button> </div>
+          <div class="col"><div class="t2-table"><div class="t2-cell">{{gral.getAppTitle()}} - Envios</div></div></div>
+          <div class="col-5 col-sm-3 col-md-3 col-lg-3"><img class="img-logo" src="" /></div>
+        </div>
+      </div>
+  </div>
+</ion-header>
+
+<ion-content padding>
+
+  <div class="d-flex" id="wrapper">
+      <!-- Sidebar -->
+      <app-side-menu></app-side-menu>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+
+        <div class="container">
+          <div class="row" *ngIf="mainS.creationParamsLoaded">
+
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="col form-box">
+                <div class="row">
+                  <div class="col text-center  title-content-3">
+                    <h3>Origen</h3>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+
+                    <form>
+
+                      <div class="form-group">
+                        <label for="name">Nombre y Apellido</label>
+                        <input type="text" class="form-control" id="name"
+                                [(ngModel)]="shipping.origin_full_name" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="contact">Teléfono / Email</label>
+                        <input type="text" class="form-control" id="contact"
+                                [(ngModel)]="shipping.origin_contact" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="col form-box">
+                <div class="row">
+                  <div class="col text-center  title-content-3">
+                    <h3>Destino</h3>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+
+                    <form>
+
+                      <div class="form-group">
+                        <label for="name-dest">Nombre y Apellido</label>
+                        <input type="text" class="form-control" id="name-dest"
+                                [(ngModel)]="shipping.destination_full_name" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="tel-dest">Teléfono</label>
+                        <input type="text" class="form-control" id="tel-dest"
+                                [(ngModel)]="shipping.destination_contact" [ngModelOptions]="{standalone: true}"/>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="tipo-envio">Destino</label>
+                          <select class="form-control" id="tipo-envio"
+                                  [(ngModel)]="shipping.destination_branch_office" [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let cf of mainS.branchOfficeList.items" [value]="cf.id">{{cf.name}}</option>
+                          </select>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+              <div class="col form-box">
+                <div class="row">
+                  <div class="col text-center  title-content-3">
+                    <h3>Datos Adicionales</h3>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+
+                    <form>
+
+                      <div class="form-group">
+                          <label for="tipo-envio">Distancia</label>
+                          <select class="form-control" id="tipo-envio"
+                                  [(ngModel)]="shipping.distance_id" [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let cf of mainS.distancesList.items" [value]="cf.id">{{cf.description}}</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="tipo-envio">Tipo de Envio</label>
+                          <select class="form-control" id="tipo-envio"
+                                  [(ngModel)]="shipping.shipping_type_id" [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let cf of mainS.shippingsTypes.items" [value]="cf.id">{{cf.description}}</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="tipo-envio">Tipo de Servicio</label>
+                          <select class="form-control" id="tipo-servicio"
+                                  [(ngModel)]="shipping.service_type_id" [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let cf of mainS.servicesTypes.items" [value]="cf.id">{{cf.description}}</option>
+                          </select>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-12">
+              <div class="col form-box">
+                <div class="row">
+                  <div class="col text-center  title-content-3">
+                    <h3>Detalle</h3>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12">
+
+                    <form>
+                      <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <input type="text" placeholder="Descripción" class="form-control" id="i-name-dest"
+                                   [(ngModel)]="shippngItem.description" [ngModelOptions]="{standalone: true}" />
+                        </div>
+
+                        <div class="col-auto">
+                          <button type="submit" class="btn btn-primary  mb-2" (click)="addItem()">Agregar Item</button>
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col text-center title-content-4">
+                    Items
+                  </div>
+                </div>
+
+                <div class="row" *ngFor="let cf of shipping.items; let i = index">
+                  <div class="col">
+                    <p>{{cf.description}}</p>
+                  </div>
+
+                  <div class="col-auto">
+                    <ion-icon name="trash-outline" (click)="delItem(i)"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row">
+                <div class="col"></div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary" (click)="next()">Guardar</button>
+                </div>
+                <div class="col"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row" *ngIf="!mainS.creationParamsLoaded">
+            <!--- INICIO COMPONENTE PARAMETROS ENVIO NO CARGADOS --->
+            <div class="col-12 form-box">
+
+              <div class="row">
+                <div class="col text-center  title-content-3">
+                  <h3>Esperando información sobre los Tipos de Envíos y Servicios</h3>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!--- FIN COMPONENTE PARAMETROS ENVIO NO CARGADOS --->
+        </div>
+
+      </div>
+      <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</ion-content>

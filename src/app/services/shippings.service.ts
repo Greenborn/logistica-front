@@ -4,44 +4,86 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
 
-import { ConfigProvider }      from './config/config';
-import { ServicesService }     from './services.service';
-import { AuthService }         from './auth/auth.service';
+import { ConfigProvider }       from './config/config';
+import { ServicesService }      from './services.service';
+import { DistancesService }     from './distances.service';
+import { AuthService }          from './auth/auth.service';
+import { BranchOfficesService } from './branch.offices.service';
 
 import { Shipping }     from '../models/shipping';
 import { ShippingType } from '../models/shipping.type';
+import { ShippingItem } from '../models/shipping.item';
 
 @Injectable({ providedIn: 'root' })
 export class ShippingsService {
 
   constructor(
-  	public http:     HttpClient,
-    public config:   ConfigProvider,
-    public serviceS: ServicesService,
-    public authS:    AuthService
+  	public http:          HttpClient,
+    public config:        ConfigProvider,
+    public serviceS:      ServicesService,
+    public authS:         AuthService,
+    public BranchOfficeS: BranchOfficesService,
+    public distanceS:     DistancesService
   ) {}
 
   public servicesTypes:any;
   public shippingsTypes:any;
-
+  public distancesList:any;
+  public branchOfficeList:any;
+  public inCreateShipping:Shipping;
 
   public loadParamsOK = new Subject();
   public loadParamsKO = new Subject();
   public creationParamsLoaded:boolean = false;
   private services_l_loaded:boolean   = false;
   private shippings_l_loaded:boolean  = false;
+  private distances_l_loaded:boolean  = false;
+  private branch_of_l_loaded:boolean  = false;
   public loadCreateNewParams(){
     let serviceSubsOk;
     let serviceSubsKo;
     let shippingsSubsOk;
     let shippingsSubsKo;
+    let distancesSubOk;
+    let distancesSubKo;
+    let branchOfficesOk;
+    let branchOfficesKo;
+
+    distancesSubOk = this.distanceS.DistancesGetAOK.subscribe({  next: (r: any[]) => {
+      this.distancesList      = r;
+      this.distances_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    distancesSubKo = this.distanceS.DistancesGetAKO.subscribe({  next: (r: any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.distances_l_loaded = false;
+    } });
+
+    ///////////////////////
+
+    branchOfficesOk = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: (r: any[]) => {
+      this.branchOfficeList   = r;
+      this.branch_of_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    branchOfficesKo = this.BranchOfficeS.BranchOfficeGetAKO.subscribe({  next: (r: any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.branch_of_l_loaded = false;
+    } });
+
+    /////////////////////
 
     serviceSubsOk = this.serviceS.ServiceGetAOK.subscribe({  next: (r: any[]) => {
       this.servicesTypes     = r;
       this.services_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
-      console.log(r);
 
     } });
 
@@ -50,12 +92,13 @@ export class ShippingsService {
       this.services_l_loaded = false;
     } });
 
+    //////////////////////
+
     shippingsSubsOk = this.ShippingTypeGetAOK.subscribe({  next: (r: any[]) => {
       this.shippingsTypes     = r;
       this.shippings_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
-      console.log(r);
     } });
 
     shippingsSubsKo = this.ShippingTypeGetAKO.subscribe({  next: (r: any[]) => {
@@ -64,11 +107,13 @@ export class ShippingsService {
     } });
 
     this.serviceS.getAll();
+    this.BranchOfficeS.getAll();
+    this.distanceS.getAll();
     this.getTypes();
   }
 
   private proveNotifyAParamsLoaded(){
-    if ( this.services_l_loaded && this.shippings_l_loaded ){
+    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded ){
       this.creationParamsLoaded = true;
       this.loadParamsOK.next( true );
     }
@@ -79,14 +124,14 @@ export class ShippingsService {
   public ShippingGetAOK = new Subject();
   public ShippingGetAKO = new Subject();
 
-  getAll(){
+  getAll( expand:string = '' ){
     if ( !this.authS.logedIn ){
         return false;
     }
 
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'],
+    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + expand,
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
         data => {  this.ShippingGetAOK.next(data); },
         err =>  {  this.ShippingGetAKO.next(err);  }
@@ -117,6 +162,14 @@ export class ShippingsService {
   public ShippingPostOK = new Subject();
   public ShippingPostKO = new Subject();
 
+  public validationErrors;
+
+  validateModel( model:Shipping ){
+    //agregar vlaidaciones
+
+    return true;
+  }
+
   post(model:Shipping){
     if ( !this.authS.logedIn ){
         return false;
@@ -145,24 +198,6 @@ export class ShippingsService {
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
         data => {  this.ShippingPutOK.next(data); },
         err =>  {  this.ShippingPutKO.next(err);  }
-      );
-  }
-
-  ///////////////////////////////////////////
-  /// PUT EXPAND
-  public ShippingPutEOK = new Subject();
-  public ShippingPutEKO = new Subject();
-
-  putExpand(model:Shipping, p){
-    if ( !this.authS.logedIn ){
-        return false;
-    }
-    let conf = this.config.getConfigData();
-
-    this.http.put(conf['apiBaseUrl'] + conf['shippingsAction'] + '?expand=' + p, model,
-      { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
-        data => {  this.ShippingPutEOK.next(data); },
-        err =>  {  this.ShippingPutEKO.next(err);  }
       );
   }
 
@@ -197,8 +232,8 @@ export class ShippingsService {
 
     this.http.get(conf['apiBaseUrl'] + conf['shippingTypesAction'],
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
-        data => {  this.ShippingTypeGetOK.next(data); },
-        err =>  {  this.ShippingTypeGetKO.next(err);  }
+        data => {  this.ShippingTypeGetAOK.next(data); },
+        err =>  {  this.ShippingTypeGetAKO.next(err);  }
       );
   }
 

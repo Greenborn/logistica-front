@@ -6,6 +6,13 @@ export class Shipping {
     public destination_contact;
     public origin_address;
     public destination_address;
+    public items:any = [];
+
+    public distance_id;
+    public service_type_id;
+    public shipping_type_id;
+    public destination_branch_office;
+
     public price;
     public date;
     public status;

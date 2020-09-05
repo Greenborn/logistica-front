@@ -16,7 +16,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HomePage }       from './pages/home/home';
 import { LoginPage }      from './pages/auth/login/login.page';
-import { EnviosPage }     from './pages/envios/all/envios.page';
+import { AllEnviosPage }  from './pages/envios/all/all.envios.page';
+import { OneEnviosPage }  from './pages/envios/one/one.envios.page';
 import { SucursalesPage } from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage }  from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }   from './pages/usuarios/all/usuarios.page';
@@ -35,7 +36,7 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
     AppComponent,
     HomePage,
     LoginPage,
-    EnviosPage,
+    AllEnviosPage, OneEnviosPage,
     SucursalesPage,
     VehiculosPage,
     UsuariosPage,
