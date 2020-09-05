@@ -10,7 +10,7 @@ export class Shipping {
 
     public distance_id;
     public service_type_id;
-    public shipping_type_id;
+    public shipping_type_id:number = 1;
     public destination_branch_office;
 
     public price;
