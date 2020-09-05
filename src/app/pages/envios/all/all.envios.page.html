@@ -48,24 +48,30 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Fecha</th>
-                      <th scope="col">Origen (Dirección)</th>
-                      <th scope="col">Origen (Contacto)</th>
-                      <th scope="col">Destino (Dirección)</th>
-                      <th scope="col">Destino (Contacto)</th>
+                      <th scope="col">Sucursal de Origen</th>
+                      <th scope="col">Sucursal de Destino</th>
+                      <th scope="col">Nombre Origen</th>
+                      <th scope="col">Nombre Destino</th>
                       <th scope="col">Precio</th>
                       <th scope="col">Estado</th>
+                      <th scope="col">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let cf of shippings; let i = index">
                       <th scope="row">{{cf.id}}</th>
-                      <td>{{cf.date}}</td>
-                      <td>{{cf.origin_address}}</td>
-                      <td>{{cf.origin_contact}}</td>
-                      <td>{{cf.destination_address}}</td>
-                      <td>{{cf.destination_contact}}</td>
-                      <td>{{cf.price}}</td>
-                      <td>{{cf.status}}</td>
+                      <td>{{ format.getSDateFromTimeStamp( cf.date ) }}</td>
+                      <td>{{cf.originBranchOffice.name}}</td>
+                      <td>{{cf.destinationBranchOffice.name}}</td>
+                      <td>{{cf.origin_full_name}}</td>
+                      <td>{{cf.destination_full_name}}</td>
+                      <td>{{format.getLocaleMoneyF( cf.price ) }}</td>
+                      <td>{{cf.status.label}}</td>
+
+                      <td>
+                        <button type="button" class="btn btn-info">    <ion-icon name="create-outline"></ion-icon> </button>
+                        <button type="button" class="btn btn-warning"> <ion-icon name="trash-outline"></ion-icon> </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
