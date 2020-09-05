@@ -167,6 +167,11 @@ export class ShippingsService {
   validateModel( model:Shipping ){
     //agregar vlaidaciones
 
+    if ( model.items.length <= 0 ){
+      this.validationErrors = "Es necesario cargar al menos un item.";
+      return false;
+    }
+
     return true;
   }
 

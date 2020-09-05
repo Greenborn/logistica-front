@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute }    from '@angular/router';
 
 import { GeneralService }   from '../../../services/general.service';
 import { AuthService }      from '../../../services/auth/auth.service';
@@ -25,7 +26,8 @@ export class OneEnviosPage implements OnInit {
   constructor(
     public  gral:   GeneralService,
     private auth:   AuthService,
-    public  mainS:  ShippingsService
+    public  mainS:  ShippingsService,
+    public  router: Router,
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class OneEnviosPage implements OnInit {
 
     this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: (r: any[]) => {
       this.gral.dismissLoading();
+      this.router.navigate(['/envios']);
     } });
 
     this.ShippingPostKO = this.mainS.ShippingPostKO.subscribe({  next: (r: any[]) => {
