@@ -38,6 +38,11 @@ export class FormateoService {
 
   /////////////////////////
   //// FECHAS          ////
+  getSDateFromTimeStamp( t:number ){
+    let f = new Date( t * 1000 );
+    return this.getStringDate( f );
+  }
+
   getFormatedDate(f = '', format='YYYY-MM-DD'){
       if (f != ''){
         let d : any = this.getArrayFDate(f);

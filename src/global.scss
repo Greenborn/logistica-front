@@ -38,7 +38,7 @@
   padding:          3em !important;
   margin-bottom:    1em;
   border-bottom:    2px solid #7f7171;
-  background:       #AE1F2A;
+  background:       #52a5b4;
 }
 
 .title-content-3, .title-content-4 {
@@ -66,7 +66,7 @@
   padding-bottom:   0 !important;
   padding-top:      0 !important;
   border:           none;
-  background-color: #CCC;
+  background-color: #52a5b4;
   color:            #000;
   margin:           0px;
   height:           3em;
@@ -89,12 +89,13 @@
   .t2-cell{
     display:          table-cell;
     vertical-align:   middle;
-    font-size:        1em;
+    font-size:        1.25em;
+    color:            #FFF;
   }
 }
 
 .header-md{
-  background: #CCC;
+  background: #52a5b4;
 }
 
 .app-body {
@@ -248,4 +249,17 @@ app-side-menu > .side-bar-toggled {
   border:         1px solid #000;
   margin-top:     1rem;
   margin-bottom:  1rem;
+}
+
+.vh-100{
+  height: calc(100vh - 48px);
+}
+
+.vh-75{
+  height: calc(75vh - 48px);
+}
+
+.margin-center-h{
+  margin-left: auto;
+  margin-right: auto;
 }

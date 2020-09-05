@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router }    from '@angular/router';
 
 import { GeneralService }   from '../../../services/general.service';
+import { FormateoService }  from '../../../services/formateo.service';
 import { AuthService }      from '../../../services/auth/auth.service';
 import { ShippingsService } from '../../../services/shippings.service';
 
@@ -22,6 +23,7 @@ export class AllEnviosPage implements OnInit {
     public  gral:   GeneralService,
     private auth:   AuthService,
     public  mainS:  ShippingsService,
+    public  format: FormateoService,
     private router: Router
   ) { }
 
