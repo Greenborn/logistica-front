@@ -16,6 +16,11 @@ import { Shipping } from '../../../models/shipping';
 export class AllEnviosPage implements OnInit {
 
   public shippings:any;
+  public pageLinks:any = [];
+  public actualPage:number = 1;
+  public totalRegs:number;
+  public pageCount:number;
+
   private ShippingGetAOK;
   private ShippingGetAKO;
 
@@ -32,6 +37,12 @@ export class AllEnviosPage implements OnInit {
 
     this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: (r: any) => {
       this.shippings = r.items;
+      this.totalRegs = r._meta.totalCount;
+      this.pageCount = r._meta.pageCount;
+
+      for (let c=1; c <= (r._meta as any).pageCount; c ++){
+          this.pageLinks.push( { 'page':c } );
+      }
       this.gral.dismissLoading();
     } });
 
@@ -39,8 +50,7 @@ export class AllEnviosPage implements OnInit {
 
     } });
 
-    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
-    this.gral.presentLoading();
+    this.loadPage( this.actualPage );
   }
 
   ngOnDestroy(){
@@ -50,6 +60,21 @@ export class AllEnviosPage implements OnInit {
 
   filters(){
 
+  }
+
+  loadPage( p ){
+    if ( p < 1 ){
+      p = 1;
+    }
+
+    if ( p > this.pageCount ){
+      p = this.pageCount;
+    }
+
+    this.actualPage ++;
+
+    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+    this.gral.presentLoading();
   }
 
   create(){

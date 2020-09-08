@@ -33,6 +33,7 @@ export class HomePage {
 
 
   setMenuLinks(){
+    this.menuService.clearOptions();
     this.menuService.addOption({ 'label':'Envios',      'link':'/envios',      'icon':'', 'class':'', 'permisions':[] });
     //this.menuService.addOption({ 'label':'Usuarios',    'link':'/usuarios',      'icon':'', 'class':'', 'permisions':[] });
     //this.menuService.addOption({ 'label':'Sucursales',  'link':'/sucursales',      'icon':'', 'class':'', 'permisions':[] });

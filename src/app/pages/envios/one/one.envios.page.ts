@@ -20,8 +20,10 @@ export class OneEnviosPage implements OnInit {
   private ShippingPostOK;
   private ShippingPostKO;
 
-  public shippngItem = new ShippingItem();
-  public shipping    = new Shipping();
+  public shippngItem              = new ShippingItem();
+  public shipping                 = new Shipping();
+  public payInDestination:boolean = false;
+  public payInOrigin:boolean      = true;
 
   constructor(
     public  gral:   GeneralService,
@@ -65,6 +67,14 @@ export class OneEnviosPage implements OnInit {
 
   delItem(i){
     this.shipping.items.splice(i, 1);
+  }
+
+  payNDestination(){
+    this.payInOrigin = !this.payInDestination;
+  }
+
+  payNOrigin(){
+    this.payInDestination = !this.payInOrigin;
   }
 
   next(){

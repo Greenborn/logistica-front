@@ -37,7 +37,7 @@
 .title-content-3, .title-content-2, .title-content-4 {
   padding:          3em !important;
   margin-bottom:    1em;
-  border-bottom:    2px solid #7f7171;
+  border-bottom:    2px solid #DDD;
   background:       #52a5b4;
 }
 
@@ -243,10 +243,14 @@ app-side-menu > .side-bar-toggled {
   margin-left: -15rem !important;
 }
 
+.btn-light{
+  color:      #000 !important;
+}
+
 /* SIDEBAR FIN [MODIFICAR] Mover estos estilos para el componente */
 
 .form-box {
-  border:         1px solid #000;
+  border:         1px solid #AAA;
   margin-top:     1rem;
   margin-bottom:  1rem;
 }
@@ -260,6 +264,6 @@ app-side-menu > .side-bar-toggled {
 }
 
 .margin-center-h{
-  margin-left: auto;
+  margin-left:  auto;
   margin-right: auto;
 }
