@@ -16,6 +16,11 @@ import { Shipping } from '../../../models/shipping';
 export class AllEnviosPage implements OnInit {
 
   public shippings:any;
+  public pageLinks:any = [];
+  public actualPage:number = 1;
+  public totalRegs:number;
+  public pageCount:number;
+
   private ShippingGetAOK;
   private ShippingGetAKO;
 
@@ -30,17 +35,22 @@ export class AllEnviosPage implements OnInit {
   ngOnInit() {
     this.auth.toLoginIfNL();
 
-    this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: (r: any) => {
-      this.shippings = r.items;
+    this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: ( response : any ) => {
+      this.shippings = response.items;
+      this.totalRegs = response._meta.totalCount;
+      this.pageCount = response._meta.pageCount;
+
+      for (let c=1; c <= (response._meta as any).pageCount; c ++){
+          this.pageLinks.push( { 'page':c } );
+      }
       this.gral.dismissLoading();
     } });
 
-    this.ShippingGetAKO = this.mainS.ShippingGetAKO.subscribe({  next: (r: any) => {
+    this.ShippingGetAKO = this.mainS.ShippingGetAKO.subscribe({  next: ( response : any) => {
 
     } });
 
-    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
-    this.gral.presentLoading();
+    this.loadPage( this.actualPage );
   }
 
   ngOnDestroy(){
@@ -50,6 +60,21 @@ export class AllEnviosPage implements OnInit {
 
   filters(){
 
+  }
+
+  loadPage( page ){
+    if ( page < 1 ){
+      page = 1;
+    }
+
+    if ( page > this.pageCount ){
+      page = this.pageCount;
+    }
+
+    this.actualPage ++;
+
+    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+    this.gral.presentLoading();
   }
 
   create(){

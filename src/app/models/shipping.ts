@@ -14,6 +14,8 @@ export class Shipping {
     public destination_branch_office;
 
     public price;
+    public payment_at_origin:any = true;
+
     public date;
     public status;
 }

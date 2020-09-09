@@ -33,6 +33,10 @@ export class SideMenuService {
     this.links.push(option);
   }
 
+  public clearOptions(){
+    this.links = [];
+  }
+
   public getOptions(){
     return this.links;
   }

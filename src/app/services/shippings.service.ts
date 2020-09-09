@@ -5,10 +5,7 @@ import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
 
 import { ConfigProvider }       from './config/config';
-import { ServicesService }      from './services.service';
-import { DistancesService }     from './distances.service';
 import { AuthService }          from './auth/auth.service';
-import { BranchOfficesService } from './branch.offices.service';
 
 import { Shipping }     from '../models/shipping';
 import { ShippingType } from '../models/shipping.type';
@@ -20,104 +17,8 @@ export class ShippingsService {
   constructor(
   	public http:          HttpClient,
     public config:        ConfigProvider,
-    public serviceS:      ServicesService,
-    public authS:         AuthService,
-    public BranchOfficeS: BranchOfficesService,
-    public distanceS:     DistancesService
+    public authS:         AuthService
   ) {}
-
-  public servicesTypes:any;
-  public shippingsTypes:any;
-  public distancesList:any;
-  public branchOfficeList:any;
-  public inCreateShipping:Shipping;
-
-  public loadParamsOK = new Subject();
-  public loadParamsKO = new Subject();
-  public creationParamsLoaded:boolean = false;
-  private services_l_loaded:boolean   = false;
-  private shippings_l_loaded:boolean  = false;
-  private distances_l_loaded:boolean  = false;
-  private branch_of_l_loaded:boolean  = false;
-  public loadCreateNewParams(){
-    let serviceSubsOk;
-    let serviceSubsKo;
-    let shippingsSubsOk;
-    let shippingsSubsKo;
-    let distancesSubOk;
-    let distancesSubKo;
-    let branchOfficesOk;
-    let branchOfficesKo;
-
-    distancesSubOk = this.distanceS.DistancesGetAOK.subscribe({  next: (r: any[]) => {
-      this.distancesList      = r;
-      this.distances_l_loaded = true;
-
-      this.proveNotifyAParamsLoaded();
-
-    } });
-
-    distancesSubKo = this.distanceS.DistancesGetAKO.subscribe({  next: (r: any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.distances_l_loaded = false;
-    } });
-
-    ///////////////////////
-
-    branchOfficesOk = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: (r: any[]) => {
-      this.branchOfficeList   = r;
-      this.branch_of_l_loaded = true;
-
-      this.proveNotifyAParamsLoaded();
-
-    } });
-
-    branchOfficesKo = this.BranchOfficeS.BranchOfficeGetAKO.subscribe({  next: (r: any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.branch_of_l_loaded = false;
-    } });
-
-    /////////////////////
-
-    serviceSubsOk = this.serviceS.ServiceGetAOK.subscribe({  next: (r: any[]) => {
-      this.servicesTypes     = r;
-      this.services_l_loaded = true;
-
-      this.proveNotifyAParamsLoaded();
-
-    } });
-
-    serviceSubsKo = this.serviceS.ServiceGetAKO.subscribe({  next: (r: any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.services_l_loaded = false;
-    } });
-
-    //////////////////////
-
-    shippingsSubsOk = this.ShippingTypeGetAOK.subscribe({  next: (r: any[]) => {
-      this.shippingsTypes     = r;
-      this.shippings_l_loaded = true;
-
-      this.proveNotifyAParamsLoaded();
-    } });
-
-    shippingsSubsKo = this.ShippingTypeGetAKO.subscribe({  next: (r: any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.shippings_l_loaded = false;
-    } });
-
-    this.serviceS.getAll();
-    this.BranchOfficeS.getAll();
-    this.distanceS.getAll();
-    this.getTypes();
-  }
-
-  private proveNotifyAParamsLoaded(){
-    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded ){
-      this.creationParamsLoaded = true;
-      this.loadParamsOK.next( true );
-    }
-  }
 
   ///////////////////////////////////////////
   /// GET ALL
@@ -163,8 +64,15 @@ export class ShippingsService {
   public ShippingPostKO = new Subject();
 
   public validationErrors;
+  public responseLastPost:any;
 
   validateModel( model:Shipping ){
+    if ( model.payment_at_origin ){
+      model.payment_at_origin = 1;
+    } else {
+      model.payment_at_origin = 0;
+    }
+
     //agregar vlaidaciones
 
     if ( model.items.length <= 0 ){
@@ -183,7 +91,10 @@ export class ShippingsService {
 
     this.http.post(conf['apiBaseUrl'] + conf['shippingsAction'], model,
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
-        data => {  this.ShippingPostOK.next(data); },
+        data => {
+          this.responseLastPost = data;
+          this.ShippingPostOK.next(data);
+        },
         err =>  {  this.ShippingPostKO.next(err);  }
       );
   }
