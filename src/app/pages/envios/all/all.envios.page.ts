@@ -35,18 +35,18 @@ export class AllEnviosPage implements OnInit {
   ngOnInit() {
     this.auth.toLoginIfNL();
 
-    this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: (r: any) => {
-      this.shippings = r.items;
-      this.totalRegs = r._meta.totalCount;
-      this.pageCount = r._meta.pageCount;
+    this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: ( response : any ) => {
+      this.shippings = response.items;
+      this.totalRegs = response._meta.totalCount;
+      this.pageCount = response._meta.pageCount;
 
-      for (let c=1; c <= (r._meta as any).pageCount; c ++){
+      for (let c=1; c <= (response._meta as any).pageCount; c ++){
           this.pageLinks.push( { 'page':c } );
       }
       this.gral.dismissLoading();
     } });
 
-    this.ShippingGetAKO = this.mainS.ShippingGetAKO.subscribe({  next: (r: any) => {
+    this.ShippingGetAKO = this.mainS.ShippingGetAKO.subscribe({  next: ( response : any) => {
 
     } });
 
@@ -62,13 +62,13 @@ export class AllEnviosPage implements OnInit {
 
   }
 
-  loadPage( p ){
-    if ( p < 1 ){
-      p = 1;
+  loadPage( page ){
+    if ( page < 1 ){
+      page = 1;
     }
 
-    if ( p > this.pageCount ){
-      p = this.pageCount;
+    if ( page > this.pageCount ){
+      page = this.pageCount;
     }
 
     this.actualPage ++;

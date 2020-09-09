@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute }    from '@angular/router';
 
-import { GeneralService }   from '../../../services/general.service';
-import { AuthService }      from '../../../services/auth/auth.service';
-import { ShippingsService } from '../../../services/shippings.service';
+import { GeneralService }       from '../../../services/general.service';
+import { AuthService }          from '../../../services/auth/auth.service';
+import { ShippingsService }     from '../../../services/shippings.service';
+import { BranchOfficesService } from '../../../services/branch.offices.service';
+import { ServicesService }      from '../../../services/services.service';
+import { DistancesService }     from '../../../services/distances.service';
 
 import { ShippingItem } from '../../../models/shipping.item';
 import { Shipping     } from '../../../models/shipping';
@@ -15,47 +18,139 @@ import { Shipping     } from '../../../models/shipping';
 })
 export class OneEnviosPage implements OnInit {
 
-  private loadParamsOK;
-  private loadParamsKO;
+  private DistancesGetAOK;
+  private DistancesGetAKO;
+  private BranchOfficeGetAOK;
+  private BranchOfficeGetAKO;
+  private ServiceGetAOK;
+  private ServiceGetAKO;
+  private ShippingTypeGetAOK;
+  private ShippingTypeGetAKO;
   private ShippingPostOK;
   private ShippingPostKO;
+
+  private services_l_loaded:boolean   = false;
+  private shippings_l_loaded:boolean  = false;
+  private distances_l_loaded:boolean  = false;
+  private branch_of_l_loaded:boolean  = false;
 
   public shippngItem              = new ShippingItem();
   public shipping                 = new Shipping();
   public payInDestination:boolean = false;
   public payInOrigin:boolean      = true;
 
+  public creationParamsLoaded:boolean = false;
+  public servicesTypes:any;
+  public shippingsTypes:any;
+  public distancesList:any;
+  public branchOfficeList:any;
+
   constructor(
-    public  gral:   GeneralService,
-    private auth:   AuthService,
-    public  mainS:  ShippingsService,
-    public  router: Router,
+    public  gral:          GeneralService,
+    private auth:          AuthService,
+    public  mainS:         ShippingsService,
+    public  BranchOfficeS: BranchOfficesService,
+    public  distanceS:     DistancesService,
+    public  serviceS:      ServicesService,
+    public  router:        Router,
   ) { }
 
   ngOnInit() {
     this.auth.toLoginIfNL();
 
     this.gral.presentLoading();
-    this.mainS.loadCreateNewParams();
 
-    this.loadParamsKO = this.mainS.loadParamsOK.subscribe({  next: (r: any[]) => {
-      this.gral.dismissLoading();
+    this.DistancesGetAOK = this.distanceS.DistancesGetAOK.subscribe({  next: ( response : any[]) => {
+      this.distancesList      = response;
+      this.distances_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
     } });
 
-    this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: (r: any[]) => {
-      this.gral.dismissLoading();
-      this.router.navigate(['/envios']);
+    this.DistancesGetAKO = this.distanceS.DistancesGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.distances_l_loaded = false;
     } });
 
-    this.ShippingPostKO = this.mainS.ShippingPostKO.subscribe({  next: (r: any[]) => {
+    ///////////////////////
+
+    this.BranchOfficeGetAOK = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: ( response : any[]) => {
+      this.branchOfficeList   = response;
+      this.branch_of_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    this.BranchOfficeGetAKO = this.BranchOfficeS.BranchOfficeGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.branch_of_l_loaded = false;
+    } });
+
+    /////////////////////
+
+    this.ServiceGetAOK = this.serviceS.ServiceGetAOK.subscribe({  next: ( response : any[]) => {
+      this.servicesTypes     = response;
+      this.services_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    this.ServiceGetAKO = this.serviceS.ServiceGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.services_l_loaded = false;
+    } });
+
+    //////////////////////
+
+    this.ShippingTypeGetAOK = this.mainS.ShippingTypeGetAOK.subscribe({  next: ( response : any[]) => {
+      this.shippingsTypes     = response;
+      this.shippings_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+    } });
+
+    this.ShippingTypeGetAKO = this.mainS.ShippingTypeGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.shippings_l_loaded = false;
+    } });
+
+    //////////////////
+
+    this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: ( response : any[]) => {
+      this.gral.dismissLoading();
+      this.router.navigate(['/exito']);
+    } });
+
+    this.ShippingPostKO = this.mainS.ShippingPostKO.subscribe({  next: ( response : any[]) => {
       this.gral.newMensaje( 'Ha ocurrido un error, reintente nuevamente.' );
       this.gral.dismissLoading();
     } });
+
+    this.serviceS.getAll();
+    this.BranchOfficeS.getAll();
+    this.distanceS.getAll();
+    this.mainS.getTypes();
+  }
+
+  private proveNotifyAParamsLoaded(){
+    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded ){
+      this.creationParamsLoaded = true;
+      this.gral.dismissLoading();
+    }
   }
 
   ngOnDestroy(){
-    this.loadParamsKO.unsubscribe();
-    this.loadParamsOK.unsubscribe();
+    this.DistancesGetAOK.unsubscribe();
+    this.DistancesGetAKO.unsubscribe();
+    this.BranchOfficeGetAOK.unsubscribe();
+    this.BranchOfficeGetAKO.unsubscribe();
+    this.ServiceGetAOK.unsubscribe();
+    this.ServiceGetAKO.unsubscribe();
+    this.ShippingTypeGetAOK.unsubscribe();
+    this.ShippingTypeGetAKO.unsubscribe();
     this.ShippingPostOK.unsubscribe();
     this.ShippingPostKO.unsubscribe();
   }

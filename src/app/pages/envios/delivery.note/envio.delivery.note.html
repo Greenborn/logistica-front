@@ -1,0 +1,56 @@
+<ion-header>
+  <app-header [title]="'Envíos - Remitos'"></app-header>
+</ion-header>
+
+<ion-content padding>
+
+  <div class="d-flex" id="wrapper">
+      <!-- Sidebar -->
+      <app-side-menu></app-side-menu>
+      <!-- /#sidebar-wrapper -->
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+
+        <div class="container-fluid">
+          <div class="row">
+
+              <div class="col">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <span>Original</span>
+                      <a class="btn btn-info" href="{{deliveryNotes.original}}" target="_blank">Ver</a>
+                    </li>
+
+                    <li class="list-group-item">
+                      <span>Duplicado</span>
+                      <a class="btn btn-info" href="{{deliveryNotes.remito_duplicado}}" target="_blank">Ver</a>
+                    </li>
+
+                    <li class="list-group-item">
+                      <span>Triplicado</span>
+                      <a class="btn btn-info" href="{{deliveryNotes.remito_triplicado}}" target="_blank">Ver</a>
+                    </li>
+
+                    <li class="list-group-item">
+                      <span>Cuadruplicado</span>
+                      <a class="btn btn-info" href="{{deliveryNotes.remito_cuadruplicado}}" target="_blank">Ver</a>
+                    </li>
+                  </ul>
+              </div>
+
+          </div>
+
+          <div class="row">
+              <div class="col">
+                  <a class="btn btn-info" (click)="next()" target="_blank">Nuevo Envío</a>
+              </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /#page-content-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+</ion-content>
