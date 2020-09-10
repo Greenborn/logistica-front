@@ -40,6 +40,7 @@ export class AllEnviosPage implements OnInit {
       this.totalRegs = response._meta.totalCount;
       this.pageCount = response._meta.pageCount;
 
+      this.pageLinks = [];
       for (let c=1; c <= (response._meta as any).pageCount; c ++){
           this.pageLinks.push( { 'page':c } );
       }
@@ -71,9 +72,9 @@ export class AllEnviosPage implements OnInit {
       page = this.pageCount;
     }
 
-    this.actualPage ++;
+    this.actualPage = page;
 
-    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice?page=' + this.actualPage);
     this.gral.presentLoading();
   }
 
