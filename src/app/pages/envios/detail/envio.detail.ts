@@ -7,10 +7,10 @@ import { AuthService }                  from '../../../services/auth/auth.servic
 import { ShippingsService }             from '../../../services/shippings.service';
 
 @Component({
-  selector:    'page-envio-delivery-note',
-  templateUrl: 'envio.delivery.note.html'
+  selector:    'page-envio-detail',
+  templateUrl: 'envio.detail.html'
 })
-export class EnvioDeliveryNote {
+export class EnvioDetail {
 
   public deliveryNotes:any;
 
@@ -24,19 +24,9 @@ export class EnvioDeliveryNote {
 
   ngOnInit() {
     this.auth.toLoginIfNL();
-
-    this.deliveryNotes = this.mainS.responseLastPost._links.remito;
-  }
-
-  next(){
-    this.router.navigate(['/envios']);
   }
 
   ngOnDestroy(){
-
-  }
-
-  download( index ){
 
   }
 
