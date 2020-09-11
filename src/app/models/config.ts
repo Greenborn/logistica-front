@@ -9,6 +9,7 @@ export class Config {
   public shippingTypesAction:string;
 
   public servicesAction:string;
+  public servicesIdentificationType:string;
 
   public loginAction:string;
 }

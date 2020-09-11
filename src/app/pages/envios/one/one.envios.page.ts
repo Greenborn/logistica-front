@@ -7,6 +7,7 @@ import { ShippingsService }     from '../../../services/shippings.service';
 import { BranchOfficesService } from '../../../services/branch.offices.service';
 import { ServicesService }      from '../../../services/services.service';
 import { DistancesService }     from '../../../services/distances.service';
+import { IdentificationService }from '../../../services/identification.service';
 
 import { ShippingItem } from '../../../models/shipping.item';
 import { Shipping     } from '../../../models/shipping';
@@ -28,11 +29,14 @@ export class OneEnviosPage implements OnInit {
   private ShippingTypeGetAKO;
   private ShippingPostOK;
   private ShippingPostKO;
+  private IdentificationTypeGetAOK;
+  private IdentificationTypeGetAKO;
 
   private services_l_loaded:boolean   = false;
   private shippings_l_loaded:boolean  = false;
   private distances_l_loaded:boolean  = false;
   private branch_of_l_loaded:boolean  = false;
+  private identifyT_l_loaded:boolean  = false;
 
   public shippngItem              = new ShippingItem();
   public shipping                 = new Shipping();
@@ -43,6 +47,7 @@ export class OneEnviosPage implements OnInit {
   public servicesTypes:any;
   public shippingsTypes:any;
   public distancesList:any;
+  public identifyTList:any;
   public branchOfficeList:any;
 
   constructor(
@@ -52,6 +57,7 @@ export class OneEnviosPage implements OnInit {
     public  BranchOfficeS: BranchOfficesService,
     public  distanceS:     DistancesService,
     public  serviceS:      ServicesService,
+    public  identifyTS:    IdentificationService,
     public  router:        Router,
   ) { }
 
@@ -59,6 +65,21 @@ export class OneEnviosPage implements OnInit {
     this.auth.toLoginIfNL();
 
     this.gral.presentLoading();
+
+    this.IdentificationTypeGetAOK = this.identifyTS.IdentificationTypeGetAOK.subscribe({  next: ( response : any[]) => {
+      this.identifyTList      = response;
+      this.identifyT_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    this.IdentificationTypeGetAKO = this.identifyTS.IdentificationTypeGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.identifyT_l_loaded = false;
+    } });
+
+    ///////////////////////
 
     this.DistancesGetAOK = this.distanceS.DistancesGetAOK.subscribe({  next: ( response : any[]) => {
       this.distancesList      = response;
@@ -76,7 +97,7 @@ export class OneEnviosPage implements OnInit {
     ///////////////////////
 
     this.BranchOfficeGetAOK = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: ( response : any[]) => {
-      this.branchOfficeList   = response;
+      this.branchOfficeList   = this.BranchOfficeS.filterEActualOffice( response );
       this.branch_of_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
@@ -132,11 +153,12 @@ export class OneEnviosPage implements OnInit {
     this.serviceS.getAll();
     this.BranchOfficeS.getAll();
     this.distanceS.getAll();
+    this.identifyTS.getAll();
     this.mainS.getTypes();
   }
 
   private proveNotifyAParamsLoaded(){
-    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded ){
+    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded && this.identifyT_l_loaded ){
       this.creationParamsLoaded = true;
       this.gral.dismissLoading();
     }
@@ -153,6 +175,8 @@ export class OneEnviosPage implements OnInit {
     this.ShippingTypeGetAKO.unsubscribe();
     this.ShippingPostOK.unsubscribe();
     this.ShippingPostKO.unsubscribe();
+    this.IdentificationTypeGetAOK.unsubscribe();
+    this.IdentificationTypeGetAKO.unsubscribe();
   }
 
   addItem(){

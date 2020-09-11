@@ -23,6 +23,7 @@ export class AuthService {
 
   private LogedIn:boolean = false;
   private Token:string    = '$2y$13$2/EF2ACv9kptY8XGXOC0QuDc2Do.UoCBikl9nxDHiaTlEj7d.1Sr.%'; //[Modificar] Solo usado en pruebas
+  private branchOffice:any;
 
   login( model ){
     this.gral.presentLoading();
@@ -33,7 +34,8 @@ export class AuthService {
           this.gral.dismissLoading();
           this.LogedIn = (data as any).status;
           if ( this.LogedIn ){
-            this.Token   = (data as any).token;
+            this.Token        = (data as any).token;
+            this.branchOffice = (data as any).branchOffice;
             this.router.navigate(['/home']);
           } else {
             this.gral.newMensaje( 'Usuario o contraseña incorrecta.' );
@@ -62,5 +64,9 @@ export class AuthService {
 
   getToken(){
     return this.Token;
+  }
+
+  getBranchOffice(){
+    return this.branchOffice;
   }
 }
