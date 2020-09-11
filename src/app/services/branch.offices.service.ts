@@ -16,6 +16,22 @@ export class BranchOfficesService {
     public authS:  AuthService
   ) {}
 
+  /////////////////////////////////////////////////
+  /// RETORNA LISTADO EXCLUYENDO LA OFICINA ACTUAL
+  filterEActualOffice( data:any ){
+    let list:any         = [];
+    let actualOffice:any = this.authS.getBranchOffice();
+
+    for( let c=0; c < data.items.length; c++ ){
+      if ( data.items[ c ].id !== actualOffice.id ){
+        list.push( data.items[ c ] );
+      }
+    }
+
+    data.items = list;
+    return data;
+  }
+
   ///////////////////////////////////////////
   /// GET ALL
   public BranchOfficeGetAOK = new Subject();

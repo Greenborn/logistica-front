@@ -6,6 +6,8 @@ export class Shipping {
     public destination_contact;
     public origin_address;
     public destination_address;
+    public sender_identification:any = { "type": 1, "value" : "" };
+    public receiver_identification:any = { "type": 1, "value" : "" };
     public items:any = [];
 
     public distance_id;
