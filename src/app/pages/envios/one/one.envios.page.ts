@@ -141,7 +141,7 @@ export class OneEnviosPage implements OnInit {
     //////////////////
 
     this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: ( response : any[]) => {
-      this.gral.dismissLoading();
+      this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
       this.router.navigate(['/exito']);
     } });
 
