@@ -74,7 +74,7 @@ export class AllEnviosPage implements OnInit {
 
     this.actualPage = page;
 
-    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice?page=' + this.actualPage);
+    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice&page=' + this.actualPage);
     this.gral.presentLoading();
   }
 
