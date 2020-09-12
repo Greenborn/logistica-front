@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router }            from '@angular/router';
 
 import { GeneralService }  from '../../../services/general.service';
 import { AuthService }     from '../../../services/auth/auth.service';
@@ -19,18 +20,13 @@ export class LoginPage implements OnInit {
     public  gral:   GeneralService,
     private auth:   AuthService,
     public  config: ConfigProvider,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.initializeConfig();
-  }
-
-  public initializeConfig(): void {
-    this.config.loadConfig();
-    this.config.configLoaded.subscribe({  next: (v) => {
-      // aca se carga el resto, ya teniendo la configuración cargada
-
-    } });
+    if ( this.auth.logedIn() ){
+      this.router.navigate(['/home']);
+    }
   }
 
   next(){

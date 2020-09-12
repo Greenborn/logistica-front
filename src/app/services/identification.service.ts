@@ -20,7 +20,7 @@ export class IdentificationService {
   public IdentificationTypeGetAKO = new Subject();
 
   getAll(){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();

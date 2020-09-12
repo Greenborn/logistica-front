@@ -26,12 +26,12 @@ export class ShippingsService {
   public ShippingGetAKO = new Subject();
 
   getAll( expand:string = '' ){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
 
     let conf = this.config.getConfigData();
-
+    
     this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + expand,
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
         data => {  this.ShippingGetAOK.next(data); },
@@ -45,7 +45,7 @@ export class ShippingsService {
   public ShippingGetKO = new Subject();
 
   get(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
 
@@ -84,7 +84,7 @@ export class ShippingsService {
   }
 
   post(model:Shipping){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -105,7 +105,7 @@ export class ShippingsService {
   public ShippingPutKO = new Subject();
 
   put(model:Shipping){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -123,7 +123,7 @@ export class ShippingsService {
   public ShippingDelKO = new Subject();
 
   delete(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -141,7 +141,7 @@ export class ShippingsService {
   public ShippingTypeGetAKO = new Subject();
 
   getTypes(){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -159,7 +159,7 @@ export class ShippingsService {
   public ShippingTypeGetKO = new Subject();
 
   getType(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -177,7 +177,7 @@ export class ShippingsService {
   public ShippingTypePostKO = new Subject();
 
   postType(model:ShippingType){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -195,7 +195,7 @@ export class ShippingsService {
   public ShippingTypePutKO = new Subject();
 
   putType(model:ShippingType){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -213,7 +213,7 @@ export class ShippingsService {
   public ShippingTypeDelKO = new Subject();
 
   deleteType(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();

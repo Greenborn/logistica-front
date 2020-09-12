@@ -30,6 +30,9 @@ export class SideMenuService {
   }
 
   public addOption( option:any ){
+    if ( option.onClick == null || option.onClick == undefined ){
+      option.onClick = ()=>{};
+    }
     this.links.push(option);
   }
 
