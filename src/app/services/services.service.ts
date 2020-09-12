@@ -22,7 +22,7 @@ export class ServicesService {
   public ServiceGetAKO = new Subject();
 
   getAll(){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();
@@ -41,7 +41,7 @@ export class ServicesService {
   public ServiceGetKO = new Subject();
 
   get(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();
@@ -60,7 +60,7 @@ export class ServicesService {
   public ServicePostKO = new Subject();
 
   post(model:Service){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();
@@ -79,7 +79,7 @@ export class ServicesService {
   public ServicePutKO = new Subject();
 
   put(model:Service){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();
@@ -98,7 +98,7 @@ export class ServicesService {
   public ServiceDelKO = new Subject();
 
   delete(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf   = this.config.getConfigData();

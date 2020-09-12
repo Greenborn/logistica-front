@@ -38,7 +38,7 @@ export class BranchOfficesService {
   public BranchOfficeGetAKO = new Subject();
 
   getAll(){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -56,7 +56,7 @@ export class BranchOfficesService {
   public BranchOfficeGetKO = new Subject();
 
   get(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -74,7 +74,7 @@ export class BranchOfficesService {
   public BranchOfficePostKO = new Subject();
 
   post(model:BranchOffice){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -92,7 +92,7 @@ export class BranchOfficesService {
   public BranchOfficePutKO = new Subject();
 
   put(model:BranchOffice){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -110,7 +110,7 @@ export class BranchOfficesService {
   public BranchOfficePutEKO = new Subject();
 
   putExpand(model:BranchOffice, p){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -128,7 +128,7 @@ export class BranchOfficesService {
   public BranchOfficeDelKO = new Subject();
 
   delete(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();

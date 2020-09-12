@@ -18,22 +18,23 @@ export class ConfigProvider {
   ) {}
 
   public getConfigData(){
-  	return this.config;
-  }
-
-  public loadConfig(){
-    if (this.config.hasOwnProperty('loaded')){
-      if (this.config.loaded) { return true; }
+    if ( this.config.loaded ){
+      return this.config;
     }
 
-  	this.getConfig().subscribe(data => {
-      this.config = <Config> data;
+    if ( localStorage.getItem( 'config' ) != null ){
+      this.config = JSON.parse( localStorage.getItem( 'config' ) );
+      return this.config;
+    }
+
+    this.getConfig().subscribe(data => {
+      this.config        = <Config> data;
       this.config.loaded = true;
-      this.configLoaded.next(true);
-    }
-    , err =>{
+      localStorage.setItem( 'config', JSON.stringify( this.config ) );
+      return this.config;
+    }, err =>{
       console.log('Error al obtener la configuración!');
-      this.loadConfig();
+      return null;
     });
   }
 

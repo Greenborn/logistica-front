@@ -5,8 +5,9 @@ import { Subject }    from 'rxjs';
 
 import { Login }  from '../../models/login';
 
-import { ConfigProvider } from '../config/config';
-import { GeneralService } from '../general.service';
+import { ConfigProvider }  from '../config/config';
+import { GeneralService }  from '../general.service';
+import { SideMenuService } from '../../component/side-menu/side-menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,10 @@ export class AuthService {
     public  router: Router,
     public  http:   HttpClient,
     public  config: ConfigProvider,
+    public  menuService: SideMenuService,
     public  gral:   GeneralService
   ) {
   }
-
-  private LogedIn:boolean = false;
-  private Token:string    = '$2y$13$2/EF2ACv9kptY8XGXOC0QuDc2Do.UoCBikl9nxDHiaTlEj7d.1Sr.%'; //[Modificar] Solo usado en pruebas
-  private branchOffice:any;
 
   login( model ){
     this.gral.presentLoading();
@@ -32,10 +30,12 @@ export class AuthService {
       { headers: new HttpHeaders({ 'Content-Type':  'application/json' }) }).subscribe(
         data => {
           this.gral.dismissLoading();
-          this.LogedIn = (data as any).status;
-          if ( this.LogedIn ){
-            this.Token        = (data as any).token;
-            this.branchOffice = (data as any).branchOffice;
+
+          if ( (data as any).status ){
+            localStorage.setItem( 'token',        JSON.stringify( (data as any).token ) );
+            localStorage.setItem( 'branchOffice', JSON.stringify( (data as any).branchOffice ) );
+            localStorage.setItem( 'logedIn',      JSON.stringify( (data as any).status ) );
+
             this.router.navigate(['/home']);
           } else {
             this.gral.newMensaje( 'Usuario o contraseña incorrecta.' );
@@ -43,30 +43,53 @@ export class AuthService {
         },
         err =>  {
           this.gral.dismissLoading();
-          this.LogedIn = false;
-          this.Token   = '';
+          localStorage.setItem( 'logedIn',  JSON.stringify( false ) );
+          localStorage.setItem( 'token',    JSON.stringify( '' ) );
           this.gral.newMensaje( 'Ha ocurrido un error, por favor reintente más tarde.' );
         }
       );
   }
 
+  private menuLinksSeted:boolean = false;
   toLoginIfNL(){
-
-    if ( !this.LogedIn ){
-      this.router.navigate(['/']);
+    
+    if ( !this.menuLinksSeted ) {
+      this.menuLinksSeted = true;
+      this.setMenuLinks();
     }
 
+    if ( !this.logedIn() ){
+      this.router.navigate(['/']);
+    }
+  }
+
+  toLogOut(){
+    localStorage.setItem( 'logedIn',  JSON.stringify( false ) );
+    localStorage.setItem( 'token',    JSON.stringify( '' ) );
+    this.router.navigate(['/']);
   }
 
   logedIn(){
-    return this.LogedIn;
+    return JSON.parse( localStorage.getItem( 'logedIn' ) );
   }
 
   getToken(){
-    return this.Token;
+    return JSON.parse( localStorage.getItem( 'token' ) );
   }
 
   getBranchOffice(){
-    return this.branchOffice;
+    return JSON.parse( localStorage.getItem( 'branchOffice' ) );
+  }
+
+  setMenuLinks(){
+    this.menuService.clearOptions();
+    this.menuService.addOption({ 'label':'Envios',      'link':'/envios',      'icon':'', 'class':'', 'permisions':[] });
+    //this.menuService.addOption({ 'label':'Usuarios',    'link':'/usuarios',      'icon':'', 'class':'', 'permisions':[] });
+    //this.menuService.addOption({ 'label':'Sucursales',  'link':'/sucursales',      'icon':'', 'class':'', 'permisions':[] });
+    this.menuService.addOption({
+      'onClick': () => { this.toLogOut(); },
+      'label':'Salir', 'link':'', 'icon':'', 'class':'', 'permisions':[]
+    });
+    //this.menuService.addOption({ 'label':'Vehiculos',   'link':'/vehiculos',      'icon':'', 'class':'', 'permisions':[] });
   }
 }
