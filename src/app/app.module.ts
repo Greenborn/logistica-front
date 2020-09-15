@@ -16,7 +16,6 @@ import { HomePage }          from './pages/home/home';
 import { LoginPage }         from './pages/auth/login/login.page';
 import { AllEnviosPage }     from './pages/envios/all/all.envios.page';
 import { OneEnviosPage }     from './pages/envios/one/one.envios.page';
-import { EnvioDetail }       from './pages/envios/detail/envio.detail';
 import { SucursalesPage }    from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage }     from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }      from './pages/usuarios/all/usuarios.page';
@@ -38,7 +37,7 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
     AppComponent,
     HomePage,
     LoginPage,
-    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, EnvioDetail,
+    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, 
     SucursalesPage,
     VehiculosPage,
     UsuariosPage,
