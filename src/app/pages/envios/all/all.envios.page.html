@@ -62,8 +62,8 @@
                       <td *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center">{{ cf[ filterFieldOptions[ field ].code ] }}</td>
 
                       <td class="text-center">
-                        <button type="button" class="btn btn-info">    <ion-icon name="create-outline"></ion-icon> </button>
-                        <button type="button" class="btn btn-warning"> <ion-icon name="trash-outline"></ion-icon> </button>
+                        <button type="button" class="btn btn-info">    <ion-icon name="pencil-outline" (click)="edit( cf.id )"></ion-icon> </button>
+                        <button type="button" class="btn btn-warning"> <ion-icon name="trash-outline"  ></ion-icon> </button>
                       </td>
                     </tr>
                   </tbody>

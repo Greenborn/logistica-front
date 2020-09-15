@@ -85,6 +85,10 @@ export class AllEnviosPage implements OnInit {
     this.loadPage( this.actualPage );
   }
 
+  edit( id:number ){
+    this.mainS.goToEdit( id );
+  }
+
   ngOnDestroy(){
     this.ShippingGetAOK.unsubscribe();
     this.ShippingGetAKO.unsubscribe();
@@ -131,7 +135,7 @@ export class AllEnviosPage implements OnInit {
   }
 
   create(){
-    this.router.navigate(['/envios/nuevo']);
+    this.mainS.goToCreate();
   }
 
 }

@@ -9,8 +9,9 @@ import { ServicesService }      from '../../../services/services.service';
 import { DistancesService }     from '../../../services/distances.service';
 import { IdentificationService }from '../../../services/identification.service';
 
-import { ShippingItem } from '../../../models/shipping.item';
-import { Shipping     } from '../../../models/shipping';
+import { ShippingItem }     from '../../../models/shipping.item';
+import { Shipping     }     from '../../../models/shipping';
+import { ShippingResponse } from '../../../models/shipping.response';
 
 @Component({
   selector: 'app-envios-one',
@@ -31,6 +32,8 @@ export class OneEnviosPage implements OnInit {
   private ShippingPostKO;
   private IdentificationTypeGetAOK;
   private IdentificationTypeGetAKO;
+  private ShippingGetOK;
+  private ShippingGetKO;
 
   private services_l_loaded:boolean   = false;
   private shippings_l_loaded:boolean  = false;
@@ -66,6 +69,30 @@ export class OneEnviosPage implements OnInit {
 
     this.gral.presentLoading();
 
+    //////////////////////////
+    /// GET - INFO ENVIO
+    this.ShippingGetOK = this.mainS.ShippingGetOK.subscribe({  next: ( response:ShippingResponse ) => {
+      this.shipping                              = response; // [MODIFICAR] Luego debería agregar algún metodo o algo para hacer la adaptación de los datos de la respuesta con respecto al modelo para put y post
+      this.shipping.sender_identification.type   = response.sender_identification.identification_type.id;
+      this.shipping.receiver_identification.type = response.receiver_identification.identification_type.id;
+      this.shipping.destination_branch_office    = response.destinationBranchOffice.id;
+      this.shipping.service_type_id              = response.serviceType.id;
+      this.shipping.items                        = response.shippingItems;
+
+      for( let c=0; c < this.shipping.items.length; c++ ){
+        this.shipping.items[ c ].description = this.shipping.items[ c ].item;
+      }
+
+      this.gral.dismissLoading();
+    } });
+
+    this.ShippingGetKO = this.mainS.ShippingGetKO.subscribe({  next: ( response : any[]) => {
+      this.gral.dismissLoading();
+    } });
+
+
+    //////////////////////////
+    /// GET TIPOS DE IDENTIFICACIÓN
     this.IdentificationTypeGetAOK = this.identifyTS.IdentificationTypeGetAOK.subscribe({  next: ( response : any[]) => {
       this.identifyTList      = response;
       this.identifyT_l_loaded = true;
@@ -80,7 +107,7 @@ export class OneEnviosPage implements OnInit {
     } });
 
     ///////////////////////
-
+    /// GET - DISTANCIAS
     this.DistancesGetAOK = this.distanceS.DistancesGetAOK.subscribe({  next: ( response : any[]) => {
       this.distancesList      = response;
       this.distances_l_loaded = true;
@@ -95,7 +122,7 @@ export class OneEnviosPage implements OnInit {
     } });
 
     ///////////////////////
-
+    /// GET - SUCURSALES
     this.BranchOfficeGetAOK = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: ( response : any[]) => {
       this.branchOfficeList   = this.BranchOfficeS.filterEActualOffice( response );
       this.branch_of_l_loaded = true;
@@ -110,7 +137,7 @@ export class OneEnviosPage implements OnInit {
     } });
 
     /////////////////////
-
+    /// GET - TIPOS DE SERVICIOS
     this.ServiceGetAOK = this.serviceS.ServiceGetAOK.subscribe({  next: ( response : any[]) => {
       this.servicesTypes     = response;
       this.services_l_loaded = true;
@@ -125,7 +152,7 @@ export class OneEnviosPage implements OnInit {
     } });
 
     //////////////////////
-
+    /// GET - ENVIOS
     this.ShippingTypeGetAOK = this.mainS.ShippingTypeGetAOK.subscribe({  next: ( response : any[]) => {
       this.shippingsTypes     = response;
       this.shippings_l_loaded = true;
@@ -139,7 +166,7 @@ export class OneEnviosPage implements OnInit {
     } });
 
     //////////////////
-
+    /// POST - NUEVO ENVIO
     this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: ( response : any[]) => {
       this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
       this.router.navigate(['/exito']);
@@ -177,6 +204,8 @@ export class OneEnviosPage implements OnInit {
     this.ShippingPostKO.unsubscribe();
     this.IdentificationTypeGetAOK.unsubscribe();
     this.IdentificationTypeGetAKO.unsubscribe();
+    this.ShippingGetOK.unsubscribe();
+    this.ShippingGetKO.unsubscribe();
   }
 
   addItem(){

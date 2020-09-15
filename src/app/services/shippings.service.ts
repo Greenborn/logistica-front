@@ -3,6 +3,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
+import { Router }     from '@angular/router';
 
 import { ConfigProvider }       from './config/config';
 import { AuthService }          from './auth/auth.service';
@@ -17,8 +18,26 @@ export class ShippingsService {
   constructor(
   	public http:          HttpClient,
     public config:        ConfigProvider,
-    public authS:         AuthService
+    public authS:         AuthService,
+    public router:        Router
   ) {}
+
+  ///////////////////////////////////////////
+  public action:string;
+  public elementId:number;
+
+  goToEdit( id:number ){
+    this.action    = 'edit';
+    this.elementId = id;
+    this.router.navigate(['/envios/detalle']);
+    this.get();
+  }
+
+  public createAction:boolean = true;
+  goToCreate(){
+    this.action = 'create';
+    this.router.navigate(['/envios/nuevo']);
+  }
 
   ///////////////////////////////////////////
   /// GET ALL
@@ -31,7 +50,7 @@ export class ShippingsService {
     }
 
     let conf = this.config.getConfigData();
-    
+
     this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + expand,
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
         data => {  this.ShippingGetAOK.next(data); },
@@ -43,17 +62,22 @@ export class ShippingsService {
   /// GET
   public ShippingGetOK = new Subject();
   public ShippingGetKO = new Subject();
+  public LastElement:any;
+  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingTypes';
 
-  get(id){
+  get(){
     if ( !this.authS.logedIn() ){
         return false;
     }
 
     let conf = this.config.getConfigData();
 
-    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + id,
+    this.http.get(conf['apiBaseUrl'] + conf['shippingsAction'] + '/' + this.elementId + this.getExpand,
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) }).subscribe(
-        data => {  this.ShippingGetOK.next(data); },
+        data => {
+                  this.LastElement = data;
+                  this.ShippingGetOK.next(data);
+        },
         err =>  {  this.ShippingGetKO.next(err);  }
       );
   }
