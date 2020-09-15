@@ -21,6 +21,24 @@ export class AllEnviosPage implements OnInit {
   public totalRegs:number;
   public pageCount:number;
 
+  public filtersCollapsed:boolean = true;
+  public filterFieldOptions:any   = [
+    { 'code':'date', 'text':'Fecha', 'enabled':true },
+    { 'code':'originBranchOffice', 'text':'Sucursal de Origen', 'enabled':true },
+    { 'code':'destinationBranchOffice', 'text':'Sucursal de Destino', 'enabled':true },
+    { 'code':'origin_full_name', 'text':'Nombre Origen', 'enabled':true },
+    { 'code':'destination_full_name', 'text':'Nombre Destino', 'enabled':true },
+    { 'code':'price', 'text':'Precio', 'enabled':true },
+    { 'code':'status', 'text':'Estado', 'enabled':true },
+    { 'code':'origin_address', 'text':'Dirección de Origen', 'enabled':false },
+    { 'code':'destination_address', 'text':'Dirección de Destino', 'enabled':false },
+    { 'code':'payment_at_origin', 'text':'Pagado en Origen', 'enabled':false },
+    { 'code':'serviceType', 'text':'Tipo de Servicio', 'enabled':false },
+    { 'code':'sender_identification', 'text':'Identificación Remitente', 'enabled':false },
+    { 'code':'receiver_identification', 'text':'Identificación Destinatario', 'enabled':false }
+  ];
+  public EnabledFilterFieldOptions:any = [ 0, 1, 2, 3, 4, 5, 6 ];
+
   private ShippingGetAOK;
   private ShippingGetAKO;
 
@@ -37,6 +55,19 @@ export class AllEnviosPage implements OnInit {
 
     this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: ( response : any ) => {
       this.shippings = response.items;
+
+      for ( let c=0; c < this.shippings.length; c ++ ){
+        this.shippings[ c ].originBranchOffice      = this.shippings[ c ].originBranchOffice.name;
+        this.shippings[ c ].destinationBranchOffice = this.shippings[ c ].destinationBranchOffice.name;
+        this.shippings[ c ].status                  = this.shippings[ c ].status.label;
+        this.shippings[ c ].serviceType             = this.shippings[ c ].serviceType.description;
+        this.shippings[ c ].sender_identification   = this.shippings[ c ].sender_identification.value;
+        this.shippings[ c ].receiver_identification = this.shippings[ c ].receiver_identification.value;
+        this.shippings[ c ].price                   = this.format.getLocaleMoneyF( this.shippings[ c ].price );
+        this.shippings[ c ].date                    = this.format.getSDateFromTimeStamp( this.shippings[ c ].date );
+        this.shippings[ c ].payment_at_origin       = this.format.getTextOfBoolean( this.shippings[ c ].payment_at_origin );
+      }
+
       this.totalRegs = response._meta.totalCount;
       this.pageCount = response._meta.pageCount;
 
@@ -59,8 +90,29 @@ export class AllEnviosPage implements OnInit {
     this.ShippingGetAKO.unsubscribe();
   }
 
-  filters(){
+  applyFilter(){
+    this.loadPage( this.actualPage );
+  }
 
+  filterOptionClick( i:number ){
+
+    if ( !this.filterFieldOptions[ i ].enabled ){
+      if ( this.EnabledFilterFieldOptions.findIndex( (element) => element == i ) == -1 ){
+        this.EnabledFilterFieldOptions.push( i );
+        this.EnabledFilterFieldOptions.sort();
+      }
+    } else {
+      for ( let c=0; c < this.EnabledFilterFieldOptions.length; c ++){
+        if ( this.EnabledFilterFieldOptions[ c ] == i ){
+          this.EnabledFilterFieldOptions.splice( c, 1);
+        }
+      }
+    }
+
+  }
+
+  showFilters(){
+    this.filtersCollapsed = !this.filtersCollapsed;
   }
 
   loadPage( page ){
