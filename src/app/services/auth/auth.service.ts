@@ -36,7 +36,7 @@ export class AuthService {
             localStorage.setItem( 'branchOffice', JSON.stringify( (data as any).branchOffice ) );
             localStorage.setItem( 'logedIn',      JSON.stringify( (data as any).status ) );
 
-            this.router.navigate(['/home']);
+            this.router.navigate(['/envios']);
           } else {
             this.gral.newMensaje( 'Usuario o contraseña incorrecta.' );
           }
@@ -52,7 +52,7 @@ export class AuthService {
 
   private menuLinksSeted:boolean = false;
   toLoginIfNL(){
-    
+
     if ( !this.menuLinksSeted ) {
       this.menuLinksSeted = true;
       this.setMenuLinks();
