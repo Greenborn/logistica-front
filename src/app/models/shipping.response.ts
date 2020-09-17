@@ -15,6 +15,7 @@ export class ShippingResponse {
     public vehicle_id:number;
     public shipping_type_id:number = 1;
     public destinationBranchOffice;
+    public originBranchOffice;
 
     public price;
     public payment_at_origin:any = true;
