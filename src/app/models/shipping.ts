@@ -10,8 +10,9 @@ export class Shipping {
     public receiver_identification:any = { "type": 1, "value" : "" };
     public items:any = [];
 
-    public distance_id;
-    public service_type_id;
+    public distance_id:number;
+    public vehicle_id:number;
+    public service_type_id:number;
     public shipping_type_id:number = 1;
     public destination_branch_office;
 

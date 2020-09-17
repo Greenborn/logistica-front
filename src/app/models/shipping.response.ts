@@ -10,8 +10,9 @@ export class ShippingResponse {
     public receiver_identification:any = { "type": 1, "value" : "" };
     public shippingItems:any = [];
 
-    public distance_id;
+    public distance;
     public serviceType;
+    public vehicle_id:number;
     public shipping_type_id:number = 1;
     public destinationBranchOffice;
 
@@ -23,5 +24,7 @@ export class ShippingResponse {
 
     public items;  //[MODIFICAR] despues agregaré un metodo o algo para no tener propiedades que no se usan en este modelo pero si son necesarias en el usado para hacer post y put
     public service_type_id;
+    public distance_id;
+    public shippingType;
     public destination_branch_office;
 }
