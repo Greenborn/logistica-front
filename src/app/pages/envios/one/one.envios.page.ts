@@ -8,6 +8,8 @@ import { BranchOfficesService } from '../../../services/branch.offices.service';
 import { ServicesService }      from '../../../services/services.service';
 import { DistancesService }     from '../../../services/distances.service';
 import { IdentificationService }from '../../../services/identification.service';
+import { VehicleService }       from '../../../services/vehicles.service';
+import { FormateoService }      from '../../../services/formateo.service';
 
 import { ShippingItem }     from '../../../models/shipping.item';
 import { Shipping     }     from '../../../models/shipping';
@@ -34,12 +36,17 @@ export class OneEnviosPage implements OnInit {
   private IdentificationTypeGetAKO;
   private ShippingGetOK;
   private ShippingGetKO;
+  private ShippingPutOK;
+  private ShippingPutKO;
+  private VehicleGetAOK;
+  private VehicleGetAKO;
 
   private services_l_loaded:boolean   = false;
   private shippings_l_loaded:boolean  = false;
   private distances_l_loaded:boolean  = false;
   private branch_of_l_loaded:boolean  = false;
   private identifyT_l_loaded:boolean  = false;
+  private vehicle_l_loaded:boolean    = false;
 
   public shippngItem              = new ShippingItem();
   public shipping                 = new Shipping();
@@ -52,16 +59,21 @@ export class OneEnviosPage implements OnInit {
   public distancesList:any;
   public identifyTList:any;
   public branchOfficeList:any;
+  public VehicleList:any;
+  public deliveryNotes:any;
+  public enableEditionText:string = 'Habilitar Edición';
 
   constructor(
     public  gral:          GeneralService,
     private auth:          AuthService,
+    private vehicleS:      VehicleService,
     public  mainS:         ShippingsService,
     public  BranchOfficeS: BranchOfficesService,
     public  distanceS:     DistancesService,
     public  serviceS:      ServicesService,
     public  identifyTS:    IdentificationService,
     public  router:        Router,
+    public  format:        FormateoService
   ) { }
 
   ngOnInit() {
@@ -78,6 +90,11 @@ export class OneEnviosPage implements OnInit {
       this.shipping.destination_branch_office    = response.destinationBranchOffice.id;
       this.shipping.service_type_id              = response.serviceType.id;
       this.shipping.items                        = response.shippingItems;
+      this.shipping.distance_id                  = response.distance.id;
+      this.shipping.shipping_type_id             = response.shippingType.id;
+
+      this.deliveryNotes    = this.mainS.responseLastPost._links.remito;
+      this.payInDestination = !this.shipping.payment_at_origin;
 
       for( let c=0; c < this.shipping.items.length; c++ ){
         this.shipping.items[ c ].description = this.shipping.items[ c ].item;
@@ -88,6 +105,21 @@ export class OneEnviosPage implements OnInit {
 
     this.ShippingGetKO = this.mainS.ShippingGetKO.subscribe({  next: ( response : any[]) => {
       this.gral.dismissLoading();
+    } });
+
+    //////////////////////////
+    /// GET VEHÍCULOS
+    this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
+      this.VehicleList      = response;
+      this.vehicle_l_loaded = true;
+
+      this.proveNotifyAParamsLoaded();
+
+    } });
+
+    this.VehicleGetAKO = this.vehicleS.VehicleGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.vehicle_l_loaded = false;
     } });
 
 
@@ -166,10 +198,21 @@ export class OneEnviosPage implements OnInit {
     } });
 
     //////////////////
-    /// POST - NUEVO ENVIO
-    this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: ( response : any[]) => {
+    /// PUT - EDITAR ENVÍO
+    this.ShippingPutOK = this.mainS.ShippingPutOK.subscribe({  next: ( response : any[]) => {
       this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
       this.router.navigate(['/exito']);
+    } });
+
+    this.ShippingPutKO = this.mainS.ShippingPutKO.subscribe({  next: ( response : any[]) => {
+      this.gral.newMensaje( 'Ha ocurrido un error, reintente nuevamente.' );
+      this.gral.dismissLoading();
+    } });
+
+    //////////////////
+    /// POST - NUEVO ENVIO
+    this.ShippingPostOK = this.mainS.ShippingPostOK.subscribe({  next: ( response : any[]) => {
+      this.mainS.goToAll();
     } });
 
     this.ShippingPostKO = this.mainS.ShippingPostKO.subscribe({  next: ( response : any[]) => {
@@ -182,12 +225,23 @@ export class OneEnviosPage implements OnInit {
     this.distanceS.getAll();
     this.identifyTS.getAll();
     this.mainS.getTypes();
+    this.vehicleS.getAll();
   }
 
   private proveNotifyAParamsLoaded(){
-    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded && this.identifyT_l_loaded ){
+    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded && this.identifyT_l_loaded && this.vehicle_l_loaded ){
       this.creationParamsLoaded = true;
       this.gral.dismissLoading();
+    }
+  }
+
+  editionEnable(){
+    this.mainS.elementEnableEdition = !this.mainS.elementEnableEdition;
+
+    if ( this.mainS.elementEnableEdition ){
+        this.enableEditionText = 'Deshabilitar Edición';
+    } else {
+        this.enableEditionText = 'Habilitar Edición';
     }
   }
 
@@ -206,6 +260,10 @@ export class OneEnviosPage implements OnInit {
     this.IdentificationTypeGetAKO.unsubscribe();
     this.ShippingGetOK.unsubscribe();
     this.ShippingGetKO.unsubscribe();
+    this.ShippingPutOK.unsubscribe();
+    this.ShippingPutKO.unsubscribe();
+    this.VehicleGetAOK.unsubscribe();
+    this.VehicleGetAOK.unsubscribe();
   }
 
   addItem(){
@@ -227,7 +285,11 @@ export class OneEnviosPage implements OnInit {
 
   next(){
     if ( this.mainS.validateModel( this.shipping ) ){
-      this.mainS.post( this.shipping );
+      if ( this.mainS.action == 'edit' ){
+          this.mainS.put( this.shipping );
+      } else if ( this.mainS.action == 'create' ) {
+          this.mainS.post( this.shipping );
+      }
     } else {
       this.gral.newMensaje( this.mainS.validationErrors );
     }

@@ -22,21 +22,41 @@ export class ShippingsService {
     public router:        Router
   ) {}
 
+  getStatusTypes(){
+    return [
+      { 'id': 1, 'description':'Nuevo' },
+      { 'id': 2, 'description':'En camino' },
+      { 'id': 3, 'description':'Llegó a sucursal' },
+      { 'id': 4, 'description':'Entregado' }
+    ];
+  }
+
   ///////////////////////////////////////////
   public action:string;
   public elementId:number;
+  public elementEnableEdition:boolean;
+  public textSubmitAction:string;
 
   goToEdit( id:number ){
-    this.action    = 'edit';
-    this.elementId = id;
+    this.action               = 'edit';
+    this.elementId            = id;
+    this.textSubmitAction     = 'Editar';
+    this.elementEnableEdition = false;
     this.router.navigate(['/envios/detalle']);
     this.get();
   }
 
   public createAction:boolean = true;
   goToCreate(){
-    this.action = 'create';
+    this.elementEnableEdition = true;
+    this.action               = 'create';
+    this.textSubmitAction     = 'Guardar';
     this.router.navigate(['/envios/nuevo']);
+  }
+
+  goToAll(){
+    this.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+    this.router.navigate(['/exito']);
   }
 
   ///////////////////////////////////////////
@@ -63,7 +83,7 @@ export class ShippingsService {
   public ShippingGetOK = new Subject();
   public ShippingGetKO = new Subject();
   public LastElement:any;
-  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingTypes';
+  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingType,distance';
 
   get(){
     if ( !this.authS.logedIn() ){
