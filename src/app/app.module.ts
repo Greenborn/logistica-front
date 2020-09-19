@@ -24,6 +24,7 @@ import { SuccessPage }       from './pages/gral/success/success';
 
 import { SideMenuComponent }     from './component/side-menu/side-menu.component';
 import { HeaderComponent }       from './component/header/header.component';
+import { LoadingComponent }      from './component/loading/loading.component';
 import { ToggleButtonComponent } from './component/side-menu/toggle-button/toggle-button.component';
 
 import { NgbModule }                      from '@ng-bootstrap/ng-bootstrap';
@@ -37,11 +38,11 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
     AppComponent,
     HomePage,
     LoginPage,
-    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, 
+    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote,
     SucursalesPage,
     VehiculosPage,
     UsuariosPage,
-    HeaderComponent,
+    HeaderComponent, LoadingComponent,
     SuccessPage,
     SideMenuComponent, ToggleButtonComponent
   ],

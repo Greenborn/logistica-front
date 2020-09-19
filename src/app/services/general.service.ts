@@ -2,16 +2,15 @@
 //que utilizarían todas las páginas, como los mensajes de alerta, loadings, etc.
 // Esto es asi, por que al parecer no es una practica buena extender páginas en Angular
 import { Injectable }        from '@angular/core';
-import { AlertController, LoadingController }   from '@ionic/angular';
+import { AlertController }   from '@ionic/angular';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralService {
 
-  public loading = null;
+  public loadingPresent = false;
 
   constructor(
-    public alertController: AlertController,
-    public loadingCtrl:     LoadingController
+    public alertController: AlertController
   ) { }
 
   getAppTitle(){
@@ -29,17 +28,12 @@ export class GeneralService {
     await alert.present();
   }
 
-  async dismissLoading(){
-    if (this.loading === null){
-     // this.presentLoading();
-    }
-    await this.loading.dismiss();
+  dismissLoading(){
+    this.loadingPresent = false;
   }
 
-  async presentLoading(d=0){
-    this.loading = await this.loadingCtrl.create({ message: 'Por favor espere...', duration: d});
-
-    await this.loading.present();
+  presentLoading(d=0){
+    this.loadingPresent = true;
   }
 
   errMsg(r){
