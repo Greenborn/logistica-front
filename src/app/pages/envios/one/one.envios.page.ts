@@ -60,7 +60,7 @@ export class OneEnviosPage implements OnInit {
   public identifyTList:any;
   public branchOfficeList:any;
   public VehicleList:any;
-  public deliveryNotes:any;
+  public deliveryNotes:any = { 'original':'', 'doubled':'', 'tripled':'', 'cuadrupled':'' };
   public enableEditionText:string = 'Habilitar Edición';
 
   constructor(
@@ -92,8 +92,14 @@ export class OneEnviosPage implements OnInit {
       this.shipping.items                        = response.shippingItems;
       this.shipping.distance_id                  = response.distance.id;
       this.shipping.shipping_type_id             = response.shippingType.id;
+      this.shipping.status                       = response.status.id;
 
-      this.deliveryNotes    = this.mainS.responseLastPost._links.remito;
+      this.deliveryNotes.original   = response.remitos.original   + '&token=' + this.auth.getToken();
+      this.deliveryNotes.doubled    = response.remitos.doubled    + '&token=' + this.auth.getToken();
+      this.deliveryNotes.tripled    = response.remitos.tripled    + '&token=' + this.auth.getToken();
+      this.deliveryNotes.cuadrupled = response.remitos.cuadrupled + '&token=' + this.auth.getToken();
+
+
       this.payInDestination = !this.shipping.payment_at_origin;
 
       for( let c=0; c < this.shipping.items.length; c++ ){
@@ -200,7 +206,7 @@ export class OneEnviosPage implements OnInit {
     //////////////////
     /// PUT - EDITAR ENVÍO
     this.ShippingPutOK = this.mainS.ShippingPutOK.subscribe({  next: ( response : any[]) => {
-      this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+      this.mainS.get();
       this.router.navigate(['/exito']);
     } });
 

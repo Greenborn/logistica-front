@@ -83,7 +83,7 @@ export class ShippingsService {
   public ShippingGetOK = new Subject();
   public ShippingGetKO = new Subject();
   public LastElement:any;
-  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingType,distance';
+  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingType,distance,remitos';
 
   get(){
     if ( !this.authS.logedIn() ){

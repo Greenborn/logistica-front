@@ -285,22 +285,22 @@
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                         <span>Original</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.remito.original}}" target="_blank">Ver</a>
+                        <a class="btn btn-info" href="{{deliveryNotes.original}}" target="_blank">Ver</a>
                       </li>
 
                       <li class="list-group-item">
                         <span>Duplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.remito_duplicado}}" target="_blank">Ver</a>
+                        <a class="btn btn-info" href="{{deliveryNotes.doubled}}" target="_blank">Ver</a>
                       </li>
 
                       <li class="list-group-item">
                         <span>Triplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.remito_triplicado}}" target="_blank">Ver</a>
+                        <a class="btn btn-info" href="{{deliveryNotes.tripled}}" target="_blank">Ver</a>
                       </li>
 
                       <li class="list-group-item">
                         <span>Cuadruplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.remito_cuadruplicado}}" target="_blank">Ver</a>
+                        <a class="btn btn-info" href="{{deliveryNotes.cuadrupled}}" target="_blank">Ver</a>
                       </li>
                     </ul>
 
@@ -314,7 +314,8 @@
               <div class="row">
                 <div class="col"></div>
                 <div class="col-auto">
-                  <button type="submit" class="btn btn-primary" (click)="next()">{{ mainS.textSubmitAction }}</button>
+                  <button type="submit" class="btn btn-primary" (click)="next()"
+                          [disabled] = "!( mainS.elementEnableEdition || mainS.action == 'create' )">{{ mainS.textSubmitAction }}</button>
                 </div>
                 <div class="col"></div>
               </div>
