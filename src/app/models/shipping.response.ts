@@ -28,4 +28,5 @@ export class ShippingResponse {
     public distance_id;
     public shippingType;
     public destination_branch_office;
+    public remitos:any;
 }

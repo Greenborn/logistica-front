@@ -12,7 +12,7 @@ import { ShippingsService }             from '../../../services/shippings.servic
 })
 export class EnvioDeliveryNote {
 
-  public deliveryNotes:any;
+  public deliveryNotes:any = { 'original':'', 'remito_duplicado':'', 'remito_triplicado':'', 'remito_cuadruplicado':'' };
 
   constructor(
     public router:         Router,
@@ -25,7 +25,16 @@ export class EnvioDeliveryNote {
   ngOnInit() {
     this.auth.toLoginIfNL();
 
-    this.deliveryNotes = this.mainS.responseLastPost._links.remito;
+    if( this.mainS.action == 'create' ){
+      this.deliveryNotes = this.mainS.responseLastPost._links.remito;
+    } else {
+      this.deliveryNotes.original             = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_duplicado     = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_triplicado    = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_cuadruplicado = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
+
+    }
+
   }
 
   next(){

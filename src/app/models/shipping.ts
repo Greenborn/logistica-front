@@ -17,6 +17,7 @@ export class Shipping {
     public destination_branch_office;
 
     public price;
+    public remitos:any;
     public originBranchOffice;
     public payment_at_origin:any = true;
 
