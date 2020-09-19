@@ -32,7 +32,7 @@ export class ShippingsService {
   }
 
   ///////////////////////////////////////////
-  public action:string;
+  public action:string = '';
   public elementId:number;
   public elementEnableEdition:boolean;
   public textSubmitAction:string;

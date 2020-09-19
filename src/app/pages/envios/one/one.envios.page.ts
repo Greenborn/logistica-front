@@ -79,6 +79,10 @@ export class OneEnviosPage implements OnInit {
   ngOnInit() {
     this.auth.toLoginIfNL();
 
+    if ( this.mainS.action == '' ){
+      this.mainS.goToCreate();
+    }
+
     this.gral.presentLoading();
 
     //////////////////////////
