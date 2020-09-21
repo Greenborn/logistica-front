@@ -7,7 +7,8 @@ import { AuthService }      from '../../../services/auth/auth.service';
 
 @Component({
   selector:    'success-page',
-  templateUrl: 'success.html'
+  templateUrl: 'success.html',
+  styleUrls: ['./success.scss'],
 })
 export class SuccessPage {
 
