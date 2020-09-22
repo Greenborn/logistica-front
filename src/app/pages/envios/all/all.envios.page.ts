@@ -35,7 +35,9 @@ export class AllEnviosPage implements OnInit {
     { 'code':'payment_at_origin', 'text':'Pagado en Origen', 'enabled':false },
     { 'code':'serviceType', 'text':'Tipo de Servicio', 'enabled':false },
     { 'code':'sender_identification', 'text':'Identificación Remitente', 'enabled':false },
-    { 'code':'receiver_identification', 'text':'Identificación Destinatario', 'enabled':false }
+    { 'code':'receiver_identification', 'text':'Identificación Destinatario', 'enabled':false },
+    { 'code':'receiver_identification_type', 'text':'Tipo de Identificación Destinatario', 'enabled':false },
+    { 'code':'sender_identification_type', 'text':'Tipo de Identificación Remitente', 'enabled':false }
   ];
   public EnabledFilterFieldOptions:any = [ 0, 1, 2, 3, 4, 5, 6 ];
 
@@ -57,6 +59,8 @@ export class AllEnviosPage implements OnInit {
       this.shippings = response.items;
 
       for ( let c=0; c < this.shippings.length; c ++ ){
+        this.shippings[ c ].receiver_identification_type = this.shippings[ c ].receiver_identification.identification_type.name;
+        this.shippings[ c ].sender_identification_type   = this.shippings[ c ].sender_identification.identification_type.name;
         this.shippings[ c ].originBranchOffice      = this.shippings[ c ].originBranchOffice.name;
         this.shippings[ c ].destinationBranchOffice = this.shippings[ c ].destinationBranchOffice.name;
         this.shippings[ c ].status                  = this.shippings[ c ].status.label;

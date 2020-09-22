@@ -8,6 +8,11 @@ export class SideMenuService {
   private menuTitle:string     = 'sin titulo';
   private displayTitle:boolean = false;
   private links:any            = [];
+  public  menuVisible:boolean  = true;
+
+  public toggleMenu(){
+    this.menuVisible = !this.menuVisible;
+  }
 
   public getMenuTitle(){
     return this.menuTitle;

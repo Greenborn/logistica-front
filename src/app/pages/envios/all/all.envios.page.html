@@ -1,14 +1,12 @@
 <ion-header>
   <app-header [title]="'Envíos'"></app-header>
+  <app-side-menu></app-side-menu>
 </ion-header>
 
 <ion-content padding>
 
   <div class="d-flex" id="wrapper">
-      <!-- Sidebar -->
-      <app-side-menu></app-side-menu>
-      <!-- /#sidebar-wrapper -->
-
+    
       <!-- Page Content -->
       <div id="page-content-wrapper">
 
@@ -31,15 +29,20 @@
           <div class="row">
             <div class="col" *ngIf="!filtersCollapsed">
 
-                <form class="form-inline">
-                  <div class="form-check form-check-inline" *ngFor="let field of filterFieldOptions;  let i = index">
+                <div class="row pl-3">
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 " *ngFor="let field of filterFieldOptions;  let i = index">
                     <input class="form-check-input" type="checkbox"
                             [(ngModel)]="filterFieldOptions[ i ].enabled" [ngModelOptions]="{standalone: true}"
                             (click)="filterOptionClick( i )">
                     <label class="form-check-label" for="inlineCheckbox1" >{{ field.text }}</label>
                   </div>
-                  <button type="submit" class="btn btn-primary mb-2" (click)="applyFilter()">Aplicar</button>
-                </form>
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary mb-2" (click)="applyFilter()">Aplicar</button>
+                  </div>
+                </div>
               </div>
 
           </div>
@@ -51,17 +54,17 @@
                 <table class="table">
                   <thead class="thead-light">
                     <tr>
-                      <th scope="col" class="text-center">#</th>
-                      <th *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center">{{ filterFieldOptions[ field ].text }}</th>
-                      <th scope="col" class="text-center">Acciones</th>
+                      <th scope="col" class="text-center align-middle">#</th>
+                      <th *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ filterFieldOptions[ field ].text }}</th>
+                      <th scope="col" class="text-center align-middle">Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let cf of shippings; let i = index">
-                      <th scope="row" class="text-center">{{cf.id}}</th>
-                      <td *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center">{{ cf[ filterFieldOptions[ field ].code ] }}</td>
+                      <th scope="row" class="text-center align-middle">{{cf.id}}</th>
+                      <td *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ filterFieldOptions[ field ].code ] }}</td>
 
-                      <td class="text-center">
+                      <td class="text-center align-middle">
                         <button type="button" class="btn btn-info">    <ion-icon name="pencil-outline" (click)="edit( cf.id )"></ion-icon> </button>
                         <button type="button" class="btn btn-warning"> <ion-icon name="trash-outline"  ></ion-icon> </button>
                       </td>
