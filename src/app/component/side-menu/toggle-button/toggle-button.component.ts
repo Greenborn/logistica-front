@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SideMenuService } from './../side-menu.service';
 
 import * as $ from 'jquery';
 
@@ -9,11 +10,13 @@ import * as $ from 'jquery';
 })
 export class ToggleButtonComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public service: SideMenuService
+  ) { }
 
   ngOnInit() {}
 
   menuToggle(){
-    $("#sidebar-wrapper").toggleClass("side-bar-toggled");
+    this.service.toggleMenu();
   }
 }

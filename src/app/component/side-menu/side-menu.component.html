@@ -1,4 +1,4 @@
-<div class="bg-light border-right" id="sidebar-wrapper">
+<div class="bg-light border-right" id="sidebar-wrapper" [ngClass]="{ 'side-bar-toggled':service.menuVisible }">
   <div class="sidebar-heading" *ngIf="service.isTitleVisible()">{{service.getMenuTitle()}} </div>
   <div class="list-group list-group-flush">
     <a *ngFor="let option of service.getOptions()" href="#{{option.link}}" (click)="option.onClick" class="list-group-item list-group-item-action bg-light {{option.class}}">{{option.label}}</a>
