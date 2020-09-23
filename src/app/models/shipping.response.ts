@@ -29,4 +29,5 @@ export class ShippingResponse {
     public shippingType;
     public destination_branch_office;
     public remitos:any;
+    public vehicle;
 }

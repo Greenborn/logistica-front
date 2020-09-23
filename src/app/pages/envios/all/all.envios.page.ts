@@ -37,7 +37,8 @@ export class AllEnviosPage implements OnInit {
     { 'code':'sender_identification', 'text':'Identificación Remitente', 'enabled':false },
     { 'code':'receiver_identification', 'text':'Identificación Destinatario', 'enabled':false },
     { 'code':'receiver_identification_type', 'text':'Tipo de Identificación Destinatario', 'enabled':false },
-    { 'code':'sender_identification_type', 'text':'Tipo de Identificación Remitente', 'enabled':false }
+    { 'code':'sender_identification_type', 'text':'Tipo de Identificación Remitente', 'enabled':false },
+    { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
   ];
   public EnabledFilterFieldOptions:any = [ 0, 1, 2, 3, 4, 5, 6 ];
 
@@ -70,6 +71,9 @@ export class AllEnviosPage implements OnInit {
         this.shippings[ c ].price                   = this.format.getLocaleMoneyF( this.shippings[ c ].price );
         this.shippings[ c ].date                    = this.format.getSDateFromTimeStamp( this.shippings[ c ].date );
         this.shippings[ c ].payment_at_origin       = this.format.getTextOfBoolean( this.shippings[ c ].payment_at_origin );
+        if ( this.shippings[ c ].vehicle != null ){
+          this.shippings[ c ].vehicle = this.shippings[ c ].vehicle.description;
+        }
       }
 
       this.totalRegs = response._meta.totalCount;
@@ -134,7 +138,7 @@ export class AllEnviosPage implements OnInit {
 
     this.actualPage = page;
 
-    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice&page=' + this.actualPage);
+    this.mainS.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle&page=' + this.actualPage);
     this.gral.presentLoading();
   }
 
