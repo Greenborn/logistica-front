@@ -15,6 +15,7 @@ export class Shipping {
     public service_type_id:number;
     public shipping_type_id:number = 1;
     public destination_branch_office;
+    public vehicle;
 
     public price;
     public remitos:any;

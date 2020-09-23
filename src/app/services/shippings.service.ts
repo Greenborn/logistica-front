@@ -55,7 +55,7 @@ export class ShippingsService {
   }
 
   goToAll(){
-    this.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice');
+    this.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle');
     this.router.navigate(['/exito']);
   }
 
@@ -83,7 +83,7 @@ export class ShippingsService {
   public ShippingGetOK = new Subject();
   public ShippingGetKO = new Subject();
   public LastElement:any;
-  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingType,distance,remitos';
+  public getExpand = '?expand=originBranchOffice,serviceType,destinationBranchOffice,shippingItems,shippingType,distance,remitos,vehicle';
 
   get(){
     if ( !this.authS.logedIn() ){

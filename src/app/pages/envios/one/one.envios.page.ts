@@ -98,6 +98,10 @@ export class OneEnviosPage implements OnInit {
       this.shipping.shipping_type_id             = response.shippingType.id;
       this.shipping.status                       = response.status.id;
 
+      if ( response.vehicle != null ){
+        this.shipping.vehicle_id                   = response.vehicle.id;
+      }
+
       this.deliveryNotes.original   = response.remitos.original   + '&token=' + this.auth.getToken();
       this.deliveryNotes.doubled    = response.remitos.doubled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.tripled    = response.remitos.tripled    + '&token=' + this.auth.getToken();
@@ -211,7 +215,7 @@ export class OneEnviosPage implements OnInit {
     /// PUT - EDITAR ENVÍO
     this.ShippingPutOK = this.mainS.ShippingPutOK.subscribe({  next: ( response : any[]) => {
       this.mainS.get();
-      this.router.navigate(['/exito']);
+      this.mainS.goToAll();
     } });
 
     this.ShippingPutKO = this.mainS.ShippingPutKO.subscribe({  next: ( response : any[]) => {

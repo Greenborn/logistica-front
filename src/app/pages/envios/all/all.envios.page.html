@@ -6,7 +6,7 @@
 <ion-content padding>
 
   <div class="d-flex" id="wrapper">
-    
+
       <!-- Page Content -->
       <div id="page-content-wrapper">
 
@@ -65,8 +65,7 @@
                       <td *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ filterFieldOptions[ field ].code ] }}</td>
 
                       <td class="text-center align-middle">
-                        <button type="button" class="btn btn-info">    <ion-icon name="pencil-outline" (click)="edit( cf.id )"></ion-icon> </button>
-                        <button type="button" class="btn btn-warning"> <ion-icon name="trash-outline"  ></ion-icon> </button>
+                        <button type="button" class="btn btn-info" (click)="edit( cf.id )">    <ion-icon name="pencil-outline"></ion-icon> </button>
                       </td>
                     </tr>
                   </tbody>
