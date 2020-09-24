@@ -5,18 +5,13 @@
 
 <ion-content padding>
 
-  <div class="d-flex" id="wrapper">
-  
-      <!-- Page Content -->
-      <div id="page-content-wrapper">
-
         <div class="container">
 
-          <div class="row" *ngIf="creationParamsLoaded">
+          <form class="row" *ngIf="creationParamsLoaded">
 
             <div class="col-12" *ngIf="mainS.action == 'edit'">
               <div class="row">
-                <button type="" class="btn btn-primary" (click)="editionEnable()"> {{enableEditionText}} </button>
+                <button type="button" class="btn btn-primary" (click)="editionEnable()"> {{enableEditionText}} </button>
               </div>
             </div>
 
@@ -36,44 +31,44 @@
                       <div class="form-group" *ngIf="mainS.action == 'edit'">
                           <label for="sucursal-origen">Sucursal</label>
                           <input type="text" class="form-control" id="sucursal-origen" [disabled] = "true"
-                                  value="{{ shipping.originBranchOffice.name }}" />
+                                 value="{{ viewData.originBranchOffice.name }}"  />
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                         <label for="name">Nombre y Apellido</label>
-                        <input type="text" class="form-control" id="name" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.origin_full_name" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="origin_full_name"
+                                [(ngModel)]="shipping.origin_full_name"  formControlName="origin_full_name"/>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Documento</label>
-                          <select class="form-control" id="tipo-envio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.sender_identification.type" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="sender_identification_t"
+                                  [(ngModel)]="shipping.sender_identification.type" formControlName="sender_identification_t">
                               <option *ngFor="let cf of identifyTList.items" [value]="cf.id">{{cf.name}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                         <label for="doc-number-o">Número de Documento</label>
-                        <input type="text" class="form-control" id="doc-number-o" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.sender_identification.value" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="sender_identification_v"
+                                [(ngModel)]="shipping.sender_identification.value" formControlName="sender_identification_v" />
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                         <label for="contact">Teléfono / Email</label>
-                        <input type="text" class="form-control" id="contact" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.origin_contact" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="origin_contact"
+                                [(ngModel)]="shipping.origin_contact" formControlName="origin_contact"/>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                         <label for="origin-addr">Dirección</label>
-                        <input type="text" class="form-control" id="origin-addr" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.origin_address" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="origin_address"
+                                [(ngModel)]="shipping.origin_address" formControlName="origin_address"/>
                       </div>
 
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.payment_at_origin" [ngModelOptions]="{standalone: true}" (change)="payInDestination = !shipping.payment_at_origin">
+                      <div class="form-check" [formGroup]="form">
+                        <input type="checkbox" class="form-check-input" id="payment_at_origin"  formControlName="payment_at_origin"
+                                [(ngModel)]="shipping.payment_at_origin" (change)="payInDestination = !shipping.payment_at_origin">
                         <label class="form-check-label" for="exampleCheck1">Pagar en Origen</label>
                       </div>
 
@@ -97,44 +92,44 @@
 
                     <form>
 
-                      <div class="form-group">
-                        <label for="name-dest">Nombre y Apellido</label>
-                        <input type="text" class="form-control" id="name-dest" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.destination_full_name" [ngModelOptions]="{standalone: true}"/>
-                      </div>
-
-                      <div class="form-group">
-                          <label for="tipo-envio">Tipo de Documento</label>
-                          <select class="form-control" id="tipo-envio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.receiver_identification.type" [ngModelOptions]="{standalone: true}">
-                              <option *ngFor="let cf of identifyTList.items" [value]="cf.id">{{cf.name}}</option>
-                          </select>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="doc-number-d">Número de Documento</label>
-                        <input type="text" class="form-control" id="doc-number-d" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.receiver_identification.value" [ngModelOptions]="{standalone: true}"/>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="tel-dest">Teléfono</label>
-                        <input type="text" class="form-control" id="tel-dest" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.destination_contact" [ngModelOptions]="{standalone: true}"/>
-                      </div>
-
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Destino</label>
-                          <select class="form-control" id="tipo-envio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.destination_branch_office" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="destination_branch_office"
+                                  [(ngModel)]="shipping.destination_branch_office" formControlName="destination_branch_office">
                               <option *ngFor="let cf of branchOfficeList.items" [value]="cf.id">{{cf.name}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
+                        <label for="name-dest">Nombre y Apellido</label>
+                        <input type="text" class="form-control" id="destination_full_name"
+                                [(ngModel)]="shipping.destination_full_name" formControlName="destination_full_name"/>
+                      </div>
+
+                      <div class="form-group" [formGroup]="form">
+                          <label for="tipo-envio">Tipo de Documento</label>
+                          <select class="form-control" id="receiver_identification_t"
+                                  [(ngModel)]="shipping.receiver_identification.type" formControlName="receiver_identification_t">
+                              <option *ngFor="let cf of identifyTList.items" [value]="cf.id">{{cf.name}}</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group" [formGroup]="form">
+                        <label for="doc-number-d">Número de Documento</label>
+                        <input type="text" class="form-control" id="receiver_identification_v"
+                                [(ngModel)]="shipping.receiver_identification.value" formControlName="receiver_identification_v"/>
+                      </div>
+
+                      <div class="form-group" [formGroup]="form">
+                        <label for="tel-dest">Teléfono / Email</label>
+                        <input type="text" class="form-control" id="destination_contact" formControlName="destination_contact"
+                                [(ngModel)]="shipping.destination_contact" />
+                      </div>
+
+                      <div class="form-group" [formGroup]="form">
                         <label for="dest-addr">Dirección</label>
-                        <input type="text" class="form-control" id="dest-addr" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.destination_address" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="destination_address"
+                                [(ngModel)]="shipping.destination_address" formControlName="destination_address"/>
                       </div>
 
                       <div class="form-check">
@@ -169,50 +164,50 @@
                                   value="{{format.getSDateFromTimeStamp( shipping.date )}}" />
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Distancia</label>
-                          <select class="form-control" id="tipo-envio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.distance_id" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="distance_id"
+                                  [(ngModel)]="shipping.distance_id" formControlName="distance_id">
                               <option *ngFor="let cf of distancesList.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Envio</label>
-                          <select class="form-control" id="tipo-envio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.shipping_type_id" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="shipping_type_id"
+                                  [(ngModel)]="shipping.shipping_type_id" formControlName="shipping_type_id">
                               <option *ngFor="let cf of shippingsTypes.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Servicio</label>
-                          <select class="form-control" id="tipo-servicio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.service_type_id" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="service_type_id"
+                                  [(ngModel)]="shipping.service_type_id" formControlName="service_type_id">
                               <option *ngFor="let cf of servicesTypes.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group" *ngIf="mainS.action == 'edit'">
+                      <div class="form-group" *ngIf="mainS.action == 'edit'" [formGroup]="form">
                           <label for="tipo-envio">Vehículo</label>
-                          <select class="form-control" id="tipo-servicio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.vehicle_id" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="vehicle_id"
+                                  [(ngModel)]="shipping.vehicle_id" formControlName="vehicle_id">
                               <option *ngFor="let cf of VehicleList.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group" *ngIf="mainS.action == 'edit'">
+                      <div class="form-group" *ngIf="mainS.action == 'edit'" [formGroup]="form">
                           <label for="tipo-envio">Estado</label>
-                          <select class="form-control" id="tipo-servicio" [disabled] = "!mainS.elementEnableEdition"
-                                  [(ngModel)]="shipping.status" [ngModelOptions]="{standalone: true}">
+                          <select class="form-control" id="status"
+                                  [(ngModel)]="shipping.status" formControlName="status">
                               <option *ngFor="let cf of mainS.getStatusTypes()" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" [formGroup]="form">
                         <label for="name">Precio</label>
-                        <input type="text" class="form-control" id="price" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="shipping.price" [ngModelOptions]="{standalone: true}"/>
+                        <input type="text" class="form-control" id="price"
+                                [(ngModel)]="shipping.price" formControlName="price"/>
                       </div>
 
                     </form>
@@ -282,23 +277,31 @@
 
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
-                        <span>Original</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.original}}" target="_blank">Ver</a>
+                        <div class="row">
+                          <div class="col"><span>Original</span> </div>
+                          <div class="col-auto"><a class="btn btn-info" href="{{deliveryNotes.original}}" target="_blank">Ver</a> </div>
+                        </div>
                       </li>
 
                       <li class="list-group-item">
-                        <span>Duplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.doubled}}" target="_blank">Ver</a>
+                        <div class="row">
+                          <div class="col"><span>Duplicado</span> </div>
+                          <div class="col-auto"><a class="btn btn-info" href="{{deliveryNotes.doubled}}" target="_blank">Ver</a> </div>
+                        </div>
                       </li>
 
                       <li class="list-group-item">
-                        <span>Triplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.tripled}}" target="_blank">Ver</a>
+                        <div class="row">
+                          <div class="col"><span>Triplicado</span> </div>
+                          <div class="col-auto"><a class="btn btn-info" href="{{deliveryNotes.tripled}}" target="_blank">Ver</a></div>
+                        </div>
                       </li>
 
                       <li class="list-group-item">
-                        <span>Cuadruplicado</span>
-                        <a class="btn btn-info" href="{{deliveryNotes.cuadrupled}}" target="_blank">Ver</a>
+                        <div class="row">
+                          <div class="col"><span>Cuadruplicado</span></div>
+                          <div class="col-auto"><a class="btn btn-info" href="{{deliveryNotes.cuadrupled}}" target="_blank">Ver</a></div>
+                        </div>
                       </li>
                     </ul>
 
@@ -319,7 +322,7 @@
               </div>
             </div>
 
-          </div>
+          </form>
 
           <div class="row" *ngIf="!creationParamsLoaded">
             <!--- INICIO COMPONENTE PARAMETROS ENVIO NO CARGADOS --->
@@ -335,10 +338,5 @@
           </div>
           <!--- FIN COMPONENTE PARAMETROS ENVIO NO CARGADOS --->
         </div>
-
-      </div>
-      <!-- /#page-content-wrapper -->
-    </div>
-    <!-- /#wrapper -->
 
 </ion-content>
