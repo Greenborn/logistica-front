@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef }         from '@angular/core';
 import { Router, ActivatedRoute }    from '@angular/router';
+import { FormGroup, FormControl, ValidationErrors, FormBuilder, Validators, FormsModule, ReactiveFormsModule }   from '@angular/forms'
 
 import { GeneralService }       from '../../../services/general.service';
 import { AuthService }          from '../../../services/auth/auth.service';
@@ -47,11 +48,13 @@ export class OneEnviosPage implements OnInit {
   private branch_of_l_loaded:boolean  = false;
   private identifyT_l_loaded:boolean  = false;
   private vehicle_l_loaded:boolean    = false;
+  public  form;
 
   public shippngItem              = new ShippingItem();
   public shipping                 = new Shipping();
   public payInDestination:boolean = false;
   public payInOrigin:boolean      = true;
+  public viewData:any             = { originBranchOffice:{} };
 
   public creationParamsLoaded:boolean = false;
   public servicesTypes:any;
@@ -67,14 +70,40 @@ export class OneEnviosPage implements OnInit {
     public  gral:          GeneralService,
     private auth:          AuthService,
     private vehicleS:      VehicleService,
+    private formBuilder:   FormBuilder,
     public  mainS:         ShippingsService,
     public  BranchOfficeS: BranchOfficesService,
     public  distanceS:     DistancesService,
     public  serviceS:      ServicesService,
     public  identifyTS:    IdentificationService,
     public  router:        Router,
+    public  elements:      ElementRef,
     public  format:        FormateoService
-  ) { }
+  ) {
+  }
+
+  formSetDisabledState(){
+    const state = !this.mainS.elementEnableEdition ? 'disable' : 'enable';
+
+    Object.keys(this.form.controls).forEach((controlName) => {
+        this.form.controls[controlName][state]();
+    });
+  }
+
+  resaltaInputError(id:string){
+    let e   = this.elements.nativeElement.querySelectorAll(id)[0];
+    if (e !== undefined){
+      e.style = "border-color:red; background:#FAA;";
+      e.focus();
+    }
+  }
+
+  resetResaltadoInputError(){
+    let e = this.elements.nativeElement.querySelectorAll('.form-control');
+    for (let c=0; c < e.length; c++){
+      e[c].style = "border-color:rgb(206, 212, 218); background:#FFF;";
+    }
+  }
 
   ngOnInit() {
     this.auth.toLoginIfNL();
@@ -83,37 +112,40 @@ export class OneEnviosPage implements OnInit {
       this.mainS.goToCreate();
     }
 
-    this.gral.presentLoading();
+    this.form = new FormGroup({
+        origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        sender_identification_t:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        sender_identification_v:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        origin_contact:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        origin_address:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        payment_at_origin:         new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        receiver_identification_t: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        receiver_identification_v: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        destination_contact:       new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        destination_branch_office: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        destination_address:       new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        distance_id:               new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        shipping_type_id:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        service_type_id:           new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        vehicle_id:                new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
+        status:                    new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
+        price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+    });
 
     //////////////////////////
     /// GET - INFO ENVIO
     this.ShippingGetOK = this.mainS.ShippingGetOK.subscribe({  next: ( response:ShippingResponse ) => {
-      this.shipping                              = response; // [MODIFICAR] Luego debería agregar algún metodo o algo para hacer la adaptación de los datos de la respuesta con respecto al modelo para put y post
-      this.shipping.sender_identification.type   = response.sender_identification.identification_type.id;
-      this.shipping.receiver_identification.type = response.receiver_identification.identification_type.id;
-      this.shipping.destination_branch_office    = response.destinationBranchOffice.id;
-      this.shipping.service_type_id              = response.serviceType.id;
-      this.shipping.items                        = response.shippingItems;
-      this.shipping.distance_id                  = response.distance.id;
-      this.shipping.shipping_type_id             = response.shippingType.id;
-      this.shipping.status                       = response.status.id;
+      this.shipping.setValuesFromResponse( response );
 
-      if ( response.vehicle != null ){
-        this.shipping.vehicle_id                   = response.vehicle.id;
-      }
+      this.viewData.originBranchOffice = response.originBranchOffice;
 
       this.deliveryNotes.original   = response.remitos.original   + '&token=' + this.auth.getToken();
       this.deliveryNotes.doubled    = response.remitos.doubled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.tripled    = response.remitos.tripled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.cuadrupled = response.remitos.cuadrupled + '&token=' + this.auth.getToken();
 
-
       this.payInDestination = !this.shipping.payment_at_origin;
-
-      for( let c=0; c < this.shipping.items.length; c++ ){
-        this.shipping.items[ c ].description = this.shipping.items[ c ].item;
-      }
-
       this.gral.dismissLoading();
     } });
 
@@ -234,12 +266,17 @@ export class OneEnviosPage implements OnInit {
       this.gral.dismissLoading();
     } });
 
-    this.serviceS.getAll();
-    this.BranchOfficeS.getAll();
-    this.distanceS.getAll();
-    this.identifyTS.getAll();
-    this.mainS.getTypes();
-    this.vehicleS.getAll();
+    if ( !this.creationParamsLoaded ){
+      this.gral.presentLoading();
+      this.serviceS.getAll();
+      this.BranchOfficeS.getAll();
+      this.distanceS.getAll();
+      this.identifyTS.getAll();
+      this.mainS.getTypes();
+      this.vehicleS.getAll();
+    }
+
+    this.resetResaltadoInputError();
   }
 
   private proveNotifyAParamsLoaded(){
@@ -251,6 +288,7 @@ export class OneEnviosPage implements OnInit {
 
   editionEnable(){
     this.mainS.elementEnableEdition = !this.mainS.elementEnableEdition;
+    this.formSetDisabledState();
 
     if ( this.mainS.elementEnableEdition ){
         this.enableEditionText = 'Deshabilitar Edición';
@@ -298,6 +336,25 @@ export class OneEnviosPage implements OnInit {
   }
 
   next(){
+    this.resetResaltadoInputError();
+    let tieneError = false;
+
+    Object.keys(this.form.controls).forEach(key => {
+
+      const controlErrors: ValidationErrors = this.form.get(key).errors;
+      if (controlErrors != null) {
+            Object.keys(controlErrors).forEach(keyError => {
+              this.resaltaInputError( '#' + key );
+              tieneError = true;
+            });
+      }
+    });
+
+    if ( tieneError ){
+      this.gral.newMensaje( 'Revise el formulario, tiene errores.' );
+      return false;
+    }
+
     if ( this.mainS.validateModel( this.shipping ) ){
       if ( this.mainS.action == 'edit' ){
           this.mainS.put( this.shipping );
