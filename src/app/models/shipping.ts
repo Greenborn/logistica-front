@@ -6,8 +6,8 @@ export class Shipping {
     public destination_contact;
     public origin_address;
     public destination_address;
-    public sender_identification:any = { "type": 1, "value" : "" };
-    public receiver_identification:any = { "type": 1, "value" : "" };
+    public sender_identification:any   = { type: 1, value: "", id:0 };
+    public receiver_identification:any = { type: 1, value: "", id:0 };
     public items:any = [];
     public price;
 
@@ -25,6 +25,8 @@ export class Shipping {
 
     public setValuesFromResponse( response:any ){
       this.sender_identification.type    = response.sender_identification.identification_type.id;
+      this.sender_identification.id      = response.sender_identification.id;
+      this.receiver_identification.id    = response.receiver_identification.id;
       this.receiver_identification.type  = response.receiver_identification.identification_type.id;
       this.destination_branch_office     = response.destinationBranchOffice.id;
       this.service_type_id               = response.serviceType.id;
