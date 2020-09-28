@@ -7,6 +7,7 @@ import { Router }     from '@angular/router';
 
 import { ConfigProvider }       from './config/config';
 import { AuthService }          from './auth/auth.service';
+import { FormateoService }      from './formateo.service';
 
 import { Shipping }     from '../models/shipping';
 import { ShippingType } from '../models/shipping.type';
@@ -19,7 +20,8 @@ export class ShippingsService {
   	public http:          HttpClient,
     public config:        ConfigProvider,
     public authS:         AuthService,
-    public router:        Router
+    public router:        Router,
+    private format:       FormateoService
   ) {}
 
   getStatusTypes(){
@@ -32,6 +34,20 @@ export class ShippingsService {
   }
 
   ///////////////////////////////////////////
+  public services_l_loaded:boolean   = false;
+  public shippings_l_loaded:boolean  = false;
+  public distances_l_loaded:boolean  = false;
+  public branch_of_l_loaded:boolean  = false;
+  public identifyT_l_loaded:boolean  = false;
+  public vehicle_l_loaded:boolean    = false;
+  public creationParamsLoaded:boolean = false;
+  public servicesTypes:any;
+  public shippingsTypes:any;
+  public distancesList:any;
+  public identifyTList:any;
+  public branchOfficeList:any;
+  public VehicleList:any;
+
   public action:string = '';
   public elementId:number;
   public elementEnableEdition:boolean;
@@ -117,7 +133,7 @@ export class ShippingsService {
       model.payment_at_origin = 0;
     }
 
-    //agregar vlaidaciones
+    model.price = Number( this.format.getFloat( model.price ) );
 
     if ( model.items.length <= 0 ){
       this.validationErrors = "Es necesario cargar al menos un item.";

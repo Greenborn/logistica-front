@@ -232,8 +232,8 @@ export class FormateoService {
 
   getFloat(val) {
       if (!val) { return '';  }
-
-      val = val.replace(/^0+/, '');
+      
+      val = (val as string).replace(/^0+/, '');
       let s:string='';
       s=val.replace(/[^0-9,]/g, '');
       s=s.replace(',','.');
