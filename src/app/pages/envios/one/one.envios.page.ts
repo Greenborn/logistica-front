@@ -42,12 +42,6 @@ export class OneEnviosPage implements OnInit {
   private VehicleGetAOK;
   private VehicleGetAKO;
 
-  private services_l_loaded:boolean   = false;
-  private shippings_l_loaded:boolean  = false;
-  private distances_l_loaded:boolean  = false;
-  private branch_of_l_loaded:boolean  = false;
-  private identifyT_l_loaded:boolean  = false;
-  private vehicle_l_loaded:boolean    = false;
   public  form;
 
   public shippngItem              = new ShippingItem();
@@ -56,13 +50,6 @@ export class OneEnviosPage implements OnInit {
   public payInOrigin:boolean      = true;
   public viewData:any             = { originBranchOffice:{} };
 
-  public creationParamsLoaded:boolean = false;
-  public servicesTypes:any;
-  public shippingsTypes:any;
-  public distancesList:any;
-  public identifyTList:any;
-  public branchOfficeList:any;
-  public VehicleList:any;
   public deliveryNotes:any = { 'original':'', 'doubled':'', 'tripled':'', 'cuadrupled':'' };
   public enableEditionText:string = 'Habilitar Edición';
 
@@ -113,15 +100,19 @@ export class OneEnviosPage implements OnInit {
     }
 
     this.form = new FormGroup({
-        origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
+                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ\s]+$') ] ),
         sender_identification_t:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
-        sender_identification_v:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        sender_identification_v:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
+                                        [ Validators.required, Validators.pattern('^[0-9]*$') ] ),
         origin_contact:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         origin_address:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         payment_at_origin:         new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
-        destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
+                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ\s]+$') ] ),
         receiver_identification_t: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
-        receiver_identification_v: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        receiver_identification_v: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
+                                        [ Validators.required, Validators.pattern('^[0-9]*$') ] ),
         destination_contact:       new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         destination_branch_office: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         destination_address:       new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
@@ -130,7 +121,8 @@ export class OneEnviosPage implements OnInit {
         service_type_id:           new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         vehicle_id:                new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         status:                    new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
-        price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
+                                        [ Validators.required, Validators.pattern("^\s*-?((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s?(\u20AC)?\s*$") ]),
     });
 
     //////////////////////////
@@ -156,8 +148,8 @@ export class OneEnviosPage implements OnInit {
     //////////////////////////
     /// GET VEHÍCULOS
     this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
-      this.VehicleList      = response;
-      this.vehicle_l_loaded = true;
+      this.mainS.VehicleList      = response;
+      this.mainS.vehicle_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
 
@@ -165,15 +157,15 @@ export class OneEnviosPage implements OnInit {
 
     this.VehicleGetAKO = this.vehicleS.VehicleGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.vehicle_l_loaded = false;
+      this.mainS.vehicle_l_loaded = false;
     } });
 
 
     //////////////////////////
     /// GET TIPOS DE IDENTIFICACIÓN
     this.IdentificationTypeGetAOK = this.identifyTS.IdentificationTypeGetAOK.subscribe({  next: ( response : any[]) => {
-      this.identifyTList      = response;
-      this.identifyT_l_loaded = true;
+      this.mainS.identifyTList      = response;
+      this.mainS.identifyT_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
 
@@ -181,14 +173,14 @@ export class OneEnviosPage implements OnInit {
 
     this.IdentificationTypeGetAKO = this.identifyTS.IdentificationTypeGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.identifyT_l_loaded = false;
+      this.mainS.identifyT_l_loaded = false;
     } });
 
     ///////////////////////
     /// GET - DISTANCIAS
     this.DistancesGetAOK = this.distanceS.DistancesGetAOK.subscribe({  next: ( response : any[]) => {
-      this.distancesList      = response;
-      this.distances_l_loaded = true;
+      this.mainS.distancesList      = response;
+      this.mainS.distances_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
 
@@ -196,14 +188,14 @@ export class OneEnviosPage implements OnInit {
 
     this.DistancesGetAKO = this.distanceS.DistancesGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.distances_l_loaded = false;
+      this.mainS.distances_l_loaded = false;
     } });
 
     ///////////////////////
     /// GET - SUCURSALES
     this.BranchOfficeGetAOK = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: ( response : any[]) => {
-      this.branchOfficeList   = this.BranchOfficeS.filterEActualOffice( response );
-      this.branch_of_l_loaded = true;
+      this.mainS.branchOfficeList   = this.BranchOfficeS.filterEActualOffice( response );
+      this.mainS.branch_of_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
 
@@ -211,14 +203,14 @@ export class OneEnviosPage implements OnInit {
 
     this.BranchOfficeGetAKO = this.BranchOfficeS.BranchOfficeGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.branch_of_l_loaded = false;
+      this.mainS.branch_of_l_loaded = false;
     } });
 
     /////////////////////
     /// GET - TIPOS DE SERVICIOS
     this.ServiceGetAOK = this.serviceS.ServiceGetAOK.subscribe({  next: ( response : any[]) => {
-      this.servicesTypes     = response;
-      this.services_l_loaded = true;
+      this.mainS.servicesTypes     = response;
+      this.mainS.services_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
 
@@ -226,21 +218,21 @@ export class OneEnviosPage implements OnInit {
 
     this.ServiceGetAKO = this.serviceS.ServiceGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.services_l_loaded = false;
+      this.mainS.services_l_loaded = false;
     } });
 
     //////////////////////
     /// GET - ENVIOS
     this.ShippingTypeGetAOK = this.mainS.ShippingTypeGetAOK.subscribe({  next: ( response : any[]) => {
-      this.shippingsTypes     = response;
-      this.shippings_l_loaded = true;
+      this.mainS.shippingsTypes     = response;
+      this.mainS.shippings_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
     } });
 
     this.ShippingTypeGetAKO = this.mainS.ShippingTypeGetAKO.subscribe({  next: ( response : any[]) => {
       //se debería reintentar y/o mostrar mensaje de error
-      this.shippings_l_loaded = false;
+      this.mainS.shippings_l_loaded = false;
     } });
 
     //////////////////
@@ -266,7 +258,7 @@ export class OneEnviosPage implements OnInit {
       this.gral.dismissLoading();
     } });
 
-    if ( !this.creationParamsLoaded ){
+    if ( !this.mainS.creationParamsLoaded ){
       this.gral.presentLoading();
       this.serviceS.getAll();
       this.BranchOfficeS.getAll();
@@ -280,8 +272,9 @@ export class OneEnviosPage implements OnInit {
   }
 
   private proveNotifyAParamsLoaded(){
-    if ( this.services_l_loaded && this.shippings_l_loaded && this.distances_l_loaded && this.branch_of_l_loaded && this.identifyT_l_loaded && this.vehicle_l_loaded ){
-      this.creationParamsLoaded = true;
+    if ( this.mainS.services_l_loaded && this.mainS.shippings_l_loaded && this.mainS.distances_l_loaded
+      && this.mainS.branch_of_l_loaded && this.mainS.identifyT_l_loaded && this.mainS.vehicle_l_loaded ){
+      this.mainS.creationParamsLoaded = true;
       this.gral.dismissLoading();
     }
   }
@@ -342,6 +335,7 @@ export class OneEnviosPage implements OnInit {
     Object.keys(this.form.controls).forEach(key => {
 
       const controlErrors: ValidationErrors = this.form.get(key).errors;
+
       if (controlErrors != null) {
             Object.keys(controlErrors).forEach(keyError => {
               this.resaltaInputError( '#' + key );

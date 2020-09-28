@@ -32,6 +32,20 @@ export class ShippingsService {
   }
 
   ///////////////////////////////////////////
+  public services_l_loaded:boolean   = false;
+  public shippings_l_loaded:boolean  = false;
+  public distances_l_loaded:boolean  = false;
+  public branch_of_l_loaded:boolean  = false;
+  public identifyT_l_loaded:boolean  = false;
+  public vehicle_l_loaded:boolean    = false;
+  public creationParamsLoaded:boolean = false;
+  public servicesTypes:any;
+  public shippingsTypes:any;
+  public distancesList:any;
+  public identifyTList:any;
+  public branchOfficeList:any;
+  public VehicleList:any;
+
   public action:string = '';
   public elementId:number;
   public elementEnableEdition:boolean;
