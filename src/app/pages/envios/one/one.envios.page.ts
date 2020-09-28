@@ -85,6 +85,14 @@ export class OneEnviosPage implements OnInit {
     }
   }
 
+  moneyReset(v){
+    if(v=='' || v =='$ '){
+      return '$ 0';
+    } else {
+      return v;
+    }
+  }
+
   resetResaltadoInputError(){
     let e = this.elements.nativeElement.querySelectorAll('.form-control');
     for (let c=0; c < e.length; c++){
@@ -101,7 +109,7 @@ export class OneEnviosPage implements OnInit {
 
     this.form = new FormGroup({
         origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
-                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ\s]+$') ] ),
+                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
         sender_identification_t:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         sender_identification_v:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[0-9]*$') ] ),
@@ -109,7 +117,7 @@ export class OneEnviosPage implements OnInit {
         origin_address:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         payment_at_origin:         new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
-                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ\s]+$') ] ),
+                                        [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
         receiver_identification_t: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         receiver_identification_v: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[0-9]*$') ] ),
@@ -122,7 +130,7 @@ export class OneEnviosPage implements OnInit {
         vehicle_id:                new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         status:                    new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
-                                        [ Validators.required, Validators.pattern("^\s*-?((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s?(\u20AC)?\s*$") ]),
+                                        [ Validators.required, Validators.pattern(/^\s*-?(\u0024)?(\u0020)?((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s*$/) ]),
     });
 
     //////////////////////////
@@ -335,7 +343,7 @@ export class OneEnviosPage implements OnInit {
     Object.keys(this.form.controls).forEach(key => {
 
       const controlErrors: ValidationErrors = this.form.get(key).errors;
-
+console.log(controlErrors);
       if (controlErrors != null) {
             Object.keys(controlErrors).forEach(keyError => {
               this.resaltaInputError( '#' + key );

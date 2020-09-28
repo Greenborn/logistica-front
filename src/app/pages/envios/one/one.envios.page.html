@@ -83,7 +83,7 @@
               <div class="col form-box pb-3">
                 <div class="row">
                   <div class="col text-center  title-content-3">
-                    <h3>Destino</h3>
+                    <h3>Localidad</h3>
                   </div>
                 </div>
 
@@ -207,6 +207,8 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="name">Precio</label>
                         <input type="text" class="form-control" id="price"
+                        (keyup)="shipping.price = format.getMoney(shipping.price);"
+                        (click)="shipping.price = ''" (ionBlur)="shipping.price = moneyReset(shipping.price)"
                                 [(ngModel)]="shipping.price" formControlName="price"/>
                       </div>
 
