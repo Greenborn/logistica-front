@@ -33,6 +33,15 @@ export class ShippingsService {
     ];
   }
 
+  getStatusColors(){
+    return {
+      '1':'rgb(255, 212, 212)',
+      '2':'#FFFF43',
+      '3':'#FF8A43',
+      '4':'#87FF43'
+    };
+  }
+
   ///////////////////////////////////////////
   public services_l_loaded:boolean   = false;
   public shippings_l_loaded:boolean  = false;
