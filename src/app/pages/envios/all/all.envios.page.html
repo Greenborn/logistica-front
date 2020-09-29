@@ -16,6 +16,7 @@
             <div class="col-auto">
               <button type="" class="btn btn-primary" (click)="create()">Nuevo Envío</button>
               <button type="" class="btn btn-primary" (click)="showFilters()">Filtros</button>
+              <button type="" class="btn btn-primary" (click)="showResaltado()">Resaltado</button>
             </div>
 
             <div class="col"></div>
@@ -40,6 +41,16 @@
                 </div>
               </div>
 
+              <div class="col" *ngIf="!resaltadoCollapsed">
+                <div class="row pl-3">
+                  <div class="col">
+                    <input class="form-check-input" type="checkbox"
+                            [(ngModel)]="resaltado[ 0 ].enabled" [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label" for="inlineCheckbox1" >Estado de envío</label>
+                  </div>
+                </div>
+              </div>
+
           </div>
 
           <div class="row">
@@ -55,7 +66,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let cf of shippings; let i = index">
+                    <tr *ngFor="let cf of shippings; let i = index" [style.background-color]="getBackgrounColor( cf.status_id )">
                       <th scope="row" class="text-center align-middle">{{cf.id}}</th>
                       <td *ngFor="let field of EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ filterFieldOptions[ field ].code ] }}</td>
 

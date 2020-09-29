@@ -201,24 +201,6 @@ export class FormateoService {
     return "$ "+s+parts[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, this.GROUP_SEPARATOR) + (!parts[1] ? '' :this.DECIMAL_SEPARATOR+ parts[1]);
   }
 
-  getMoneyCS(valString) {
-    let signo = 1;
-
-    if (!valString) { return ''; }
-    if (valString[valString.length-1] == '-'){ signo = -1; }
-
-    let val = valString.toString();
-    let parts = this.unFormatMoney(val).split(this.DECIMAL_SEPARATOR);
-    if(parts[1]) { parts[1] = parts[1].slice(0, 2);}
-    if(val.slice(-1)===this.DECIMAL_SEPARATOR) {parts[0]+=this.DECIMAL_SEPARATOR;}
-    let s = '';
-
-    if(signo == -1){
-      s='-';
-    }
-    return "$ "+s+parts[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, this.GROUP_SEPARATOR) + (!parts[1] ? '' :this.DECIMAL_SEPARATOR+ parts[1]);
-  }
-
   unFormatMoney(val) {
       if (!val) { return ''; }
 

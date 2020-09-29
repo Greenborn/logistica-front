@@ -21,7 +21,11 @@ export class AllEnviosPage implements OnInit {
   public totalRegs:number;
   public pageCount:number;
 
-  public filtersCollapsed:boolean = true;
+  public filtersCollapsed:boolean   = true;
+  public resaltadoCollapsed:boolean = true;
+  public resaltado:any = [
+    { 'field':'status', 'enabled':true, 'colors':[] }
+  ];
   public filterFieldOptions:any   = [
     { 'code':'date', 'text':'Fecha', 'enabled':true },
     { 'code':'originBranchOffice', 'text':'Sucursal de Origen', 'enabled':true },
@@ -53,8 +57,17 @@ export class AllEnviosPage implements OnInit {
     private router: Router
   ) { }
 
+  getBackgrounColor( id_status ){
+    if ( !this.resaltado[ 0 ].enabled ){
+      return '#FFF';
+    }
+    return this.resaltado[ 0 ].colors[ id_status ];
+  }
+
   ngOnInit() {
     this.auth.toLoginIfNL();
+
+    this.resaltado[ 0 ].colors = this.mainS.getStatusColors();
 
     this.ShippingGetAOK = this.mainS.ShippingGetAOK.subscribe({  next: ( response : any ) => {
       this.shippings = response.items;
@@ -64,6 +77,7 @@ export class AllEnviosPage implements OnInit {
         this.shippings[ c ].sender_identification_type   = this.shippings[ c ].sender_identification.identification_type.name;
         this.shippings[ c ].originBranchOffice      = this.shippings[ c ].originBranchOffice.name;
         this.shippings[ c ].destinationBranchOffice = this.shippings[ c ].destinationBranchOffice.name;
+        this.shippings[ c ].status_id               = this.shippings[ c ].status.id;
         this.shippings[ c ].status                  = this.shippings[ c ].status.label;
         this.shippings[ c ].serviceType             = this.shippings[ c ].serviceType.description;
         this.shippings[ c ].sender_identification   = this.shippings[ c ].sender_identification.value;
@@ -125,6 +139,10 @@ export class AllEnviosPage implements OnInit {
 
   showFilters(){
     this.filtersCollapsed = !this.filtersCollapsed;
+  }
+
+  showResaltado(){
+    this.resaltadoCollapsed = !this.resaltadoCollapsed;
   }
 
   loadPage( page ){
