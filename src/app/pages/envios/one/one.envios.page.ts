@@ -136,7 +136,7 @@ export class OneEnviosPage implements OnInit {
     //////////////////////////
     /// GET - INFO ENVIO
     this.ShippingGetOK = this.mainS.ShippingGetOK.subscribe({  next: ( response:ShippingResponse ) => {
-      this.shipping.setValuesFromResponse( response );
+      this.shipping.setValuesFromResponse( response, this.format );
 
       this.viewData.originBranchOffice = response.originBranchOffice;
 
@@ -343,7 +343,6 @@ export class OneEnviosPage implements OnInit {
     Object.keys(this.form.controls).forEach(key => {
 
       const controlErrors: ValidationErrors = this.form.get(key).errors;
-console.log(controlErrors);
       if (controlErrors != null) {
             Object.keys(controlErrors).forEach(keyError => {
               this.resaltaInputError( '#' + key );
