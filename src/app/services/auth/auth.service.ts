@@ -83,12 +83,18 @@ export class AuthService {
 
   setMenuLinks(){
     this.menuService.clearOptions();
-    this.menuService.addOption({ 'label':'Envios',      'link':'/envios',      'icon':'', 'class':'', 'permisions':[] });
+    this.menuService.addOption({ label:'Envios', icon:'', class:'', permisions:[], collapsed:false,
+      subOptions:[
+        { label:'Listado', icon:'', class:'', permisions:[], link: '/envios' },
+        { label:'Nuevo', icon:'', class:'', permisions:[], link: '/envios/nuevo' },
+        { label:'Hoja de Ruta', icon:'', class:'', permisions:[], link: '/envios/hojaruta' }
+      ],
+    });
     //this.menuService.addOption({ 'label':'Usuarios',    'link':'/usuarios',      'icon':'', 'class':'', 'permisions':[] });
     //this.menuService.addOption({ 'label':'Sucursales',  'link':'/sucursales',      'icon':'', 'class':'', 'permisions':[] });
     this.menuService.addOption({
-      'onClick': () => { this.toLogOut(); },
-      'label':'Salir', 'link':'', 'icon':'', 'class':'', 'permisions':[]
+      onClick: () => { this.toLogOut(); }, collapsed:false,
+      label:'Salir', icon:'', class:'', permisions:[], subOptions:[]
     });
     //this.menuService.addOption({ 'label':'Vehiculos',   'link':'/vehiculos',      'icon':'', 'class':'', 'permisions':[] });
   }
