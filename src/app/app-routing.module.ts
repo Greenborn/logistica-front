@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'home',          component: HomePage },
   { path: 'envios',        component: AllEnviosPage },
   { path: 'envios/nuevo',  component: OneEnviosPage },
+  { path: 'envios/hojaruta',  component: OneEnviosPage },
   { path: 'envios/remito', component: EnvioDeliveryNote },
   { path: 'envios/detalle',component: OneEnviosPage },
   { path: 'sucursales',    component: SucursalesPage },

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router }     from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +36,21 @@ export class SideMenuService {
   }
 
   public addOption( option:any ){
-    if ( option.onClick == null || option.onClick == undefined ){
-      option.onClick = ()=>{};
+    if ( option.hasOwnProperty( 'link' ) ){
+      option.onClick = () => { this.router.navigate( [ option.link ] ); };
     }
+    if ( option.onClick == undefined ) {
+      option.onClick = ()=>{ };
+    }
+
+    for ( let c = 0; c < option.subOptions.length; c++ ){
+      if ( option.subOptions[ c ].link != undefined ){
+        option.subOptions[ c ].onClick = () => { this.router.navigate( [ option.subOptions[ c ].link ] ); };
+      } else {
+        option.subOptions[ c ].onClick = ()=>{ };
+      }
+    }
+
     this.links.push(option);
   }
 
@@ -49,5 +62,7 @@ export class SideMenuService {
     return this.links;
   }
 
-  constructor() { }
+  constructor(
+    public  router: Router,
+  ) { }
 }

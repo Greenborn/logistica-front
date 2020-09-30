@@ -16,4 +16,14 @@ export class SideMenuComponent implements OnInit {
   ngOnInit() {
   }
 
+  mainOptionClick( i:number ){
+
+    this.service.getOptions()[ i ].collapsed = !this.service.getOptions()[ i ].collapsed;
+
+    if ( this.service.getOptions()[ i ].onClick != undefined ){
+      this.service.getOptions()[ i ].onClick();
+    }
+
+  }
+
 }
