@@ -12,8 +12,38 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col border-bottom mb-3">
+              <ul>
+                <li>Los envíos listados a continuación son aquellos que tienen <b>Estado Nuevo</b>.</li>
+                <li>Todos se encuentran pre-seleccionados, si desea quitar alguno de la hoja de ruta, debe desmarcar el checkbox correspondiente al mismo.</li>
+                <li>Adicionalmente se deberá <b>seleccionar el vehículo</b> en el cual se transportarán los envíos.</li>
+              </ul>
+            </div>
+          </div>
+
           <envios-table [config]="tableConfig" [output]="tableOutput"></envios-table>
 
+          <div class="row border-top pt-3 mb-3" *ngIf="mainS.RoadmapParamsLoaded">
+            <div class="col"></div>
+            <div class="col-auto">
+              <form class="form-inline">
+                 <label for="vehicle">Vincular envíos a vehículo:&nbsp;</label>
+                 <select class="form-control" id="vehicle_id"
+                         [(ngModel)]="vehicle_id" [ngModelOptions]="{standalone: true}">
+                     <option *ngFor="let cf of mainS.VehicleList.items" [value]="cf.id">{{cf.description}}</option>
+                 </select>
+                </form>
+            </div>
+            <div class="col"></div>
+          </div>
+
+        </div>
+
+        <div class="row mt-3">
+          <div class="col"></div>
+          <div class="col-auto"><button type="" class="btn btn-info  mb-2" (click)="nextRoadMap()">Generar</button></div>
+          <div class="col"></div>
         </div>
 
 </ion-content>

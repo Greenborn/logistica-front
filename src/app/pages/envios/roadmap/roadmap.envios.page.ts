@@ -4,6 +4,7 @@ import { Router }    from '@angular/router';
 import { GeneralService }     from '../../../services/general.service';
 import { AuthService }        from '../../../services/auth/auth.service';
 import { ShippingsService }   from '../../../services/shippings.service';
+import { VehicleService }     from '../../../services/vehicles.service';
 
 import { Shipping } from '../../../models/shipping';
 import { OutputTableModel } from '../../../component/envios-table/output.table.model';
@@ -18,12 +19,18 @@ export class RoadmapEnviosPage implements OnInit {
   public tableConfig:any = {};
   public tableOutput:OutputTableModel = new OutputTableModel();
 
+  public vehicle_id;
+
   private onTableChange;
+
+  private VehicleGetAOK;
+  private VehicleGetAKO;
 
   constructor(
     public  gral:    GeneralService,
     private auth:    AuthService,
     public  mainS:   ShippingsService,
+    private vehicleS: VehicleService,
     private router:  Router
   ) {
   }
@@ -63,12 +70,35 @@ export class RoadmapEnviosPage implements OnInit {
     };
 
     this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response ) => {
-          console.log( response );
+
     } });
+
+    //////////////////////////
+    /// GET VEHÍCULOS
+    this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
+      this.mainS.VehicleList      = response;
+      this.mainS.RoadmapParamsLoaded = true;
+    } });
+
+    this.VehicleGetAKO = this.vehicleS.VehicleGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.mainS.RoadmapParamsLoaded = false;
+    } });
+
+    if ( !this.mainS.RoadmapParamsLoaded ){
+      this.vehicleS.getAll();
+    }
+
+  }
+
+  nextRoadMap(){
+    
   }
 
   ngOnDestroy(){
     this.onTableChange.unsubscribe();
+    this.VehicleGetAOK.unsubscribe();
+    this.VehicleGetAOK.unsubscribe();
   }
 
 }

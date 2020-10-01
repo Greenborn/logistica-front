@@ -50,6 +50,7 @@ export class ShippingsService {
   public identifyT_l_loaded:boolean  = false;
   public vehicle_l_loaded:boolean    = false;
   public creationParamsLoaded:boolean = false;
+  public RoadmapParamsLoaded:boolean  = false;
   public servicesTypes:any;
   public shippingsTypes:any;
   public distancesList:any;
