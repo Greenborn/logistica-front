@@ -46,7 +46,10 @@
       <table class="table">
         <thead class="thead-light">
           <tr>
-            <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect"></th>
+            <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect">
+              <input class="" type="checkbox"
+                      [(ngModel)]="checkAllReg" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
+            </th>
             <th scope="col" class="text-center align-middle">#</th>
             <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
             <th scope="col" class="text-center align-middle" *ngIf="config.actionsEnabled">Acciones</th>
@@ -55,8 +58,8 @@
         <tbody>
           <tr *ngFor="let cf of shippings; let i = index" [style.background-color]="getBackgrounColor( cf.status_id )">
             <th scope="col" class="text-center align-middle" *ngIf="config.regSelect">
-              <input class="" type="checkbox"
-                      [value]="'true'">
+              <input class="" type="checkbox" (change)="checkBoxRegChange()"
+                      [(ngModel)]="checkBoxArray[ cf.id ]" [ngModelOptions]="{standalone: true}" >
             </th>
             <th scope="row" class="text-center align-middle">{{cf.id}}</th>
             <td *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ config.filterFieldOptions[ field ].code ] }}</td>
