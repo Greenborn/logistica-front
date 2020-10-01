@@ -9,6 +9,7 @@ import { SucursalesPage }       from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage  }       from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage  }        from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote  }   from './pages/envios/delivery.note/envio.delivery.note';
+import { RoadmapEnviosPage  }   from './pages/envios/roadmap/roadmap.envios.page';
 import { SuccessPage  }         from './pages/gral/success/success';
 
 const routes: Routes = [
@@ -16,7 +17,7 @@ const routes: Routes = [
   { path: 'home',          component: HomePage },
   { path: 'envios',        component: AllEnviosPage },
   { path: 'envios/nuevo',  component: OneEnviosPage },
-  { path: 'envios/hojaruta',  component: OneEnviosPage },
+  { path: 'envios/hojaruta',  component: RoadmapEnviosPage },
   { path: 'envios/remito', component: EnvioDeliveryNote },
   { path: 'envios/detalle',component: OneEnviosPage },
   { path: 'sucursales',    component: SucursalesPage },

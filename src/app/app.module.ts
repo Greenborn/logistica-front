@@ -21,10 +21,12 @@ import { VehiculosPage }     from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }      from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote } from './pages/envios/delivery.note/envio.delivery.note';
 import { SuccessPage }       from './pages/gral/success/success';
+import { RoadmapEnviosPage } from './pages/envios/roadmap/roadmap.envios.page';
 
 import { SideMenuComponent }     from './component/side-menu/side-menu.component';
 import { HeaderComponent }       from './component/header/header.component';
 import { LoadingComponent }      from './component/loading/loading.component';
+import { EnviosTableComponent }  from './component/envios-table/envios.table.component';
 import { ToggleButtonComponent } from './component/side-menu/toggle-button/toggle-button.component';
 
 import { NgbModule }                      from '@ng-bootstrap/ng-bootstrap';
@@ -38,7 +40,8 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
     AppComponent,
     HomePage,
     LoginPage,
-    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote,
+    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, RoadmapEnviosPage,
+    EnviosTableComponent,
     SucursalesPage,
     VehiculosPage,
     UsuariosPage,

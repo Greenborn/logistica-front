@@ -1,27 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }    from '@angular/router';
 
-import { GeneralService }   from '../../../services/general.service';
-import { AuthService }      from '../../../services/auth/auth.service';
-import { ShippingsService } from '../../../services/shippings.service';
+import { GeneralService }     from '../../../services/general.service';
+import { AuthService }        from '../../../services/auth/auth.service';
+import { ShippingsService }   from '../../../services/shippings.service';
 
 import { Shipping } from '../../../models/shipping';
 
 @Component({
-  selector: 'app-envios-all',
-  templateUrl: './all.envios.page.html',
-  styleUrls: ['./all.envios.page.scss'],
+  selector: 'app-envios-roadmap',
+  templateUrl: './roadmap.envios.page.html',
+  styleUrls: ['./roadmap.envios.page.scss'],
 })
-export class AllEnviosPage implements OnInit {
+export class RoadmapEnviosPage implements OnInit {
 
   public tableConfig:any = {};
 
   constructor(
-    public  gral:   GeneralService,
-    private auth:   AuthService,
-    public  mainS:  ShippingsService,
-    private router: Router
+    public  gral:    GeneralService,
+    private auth:    AuthService,
+    public  mainS:   ShippingsService,
+    private router:  Router
   ) {
+  }
+
+  ngOnInit() {
+    this.auth.toLoginIfNL();
+
     this.tableConfig = {
       id: 'roadmap',
       resaltado: [
@@ -47,14 +52,11 @@ export class AllEnviosPage implements OnInit {
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
       provider: this.mainS,
-      actionOptions: { edit: true, new: true },
-      actionsEnabled: true,
-      resaltadoEnabled: true,
-      regSelect: false
+      actionOptions: { edit: false, new: false },
+      actionsEnabled: false,
+      resaltadoEnabled: false,
+      regSelect: true
     };
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy(){
