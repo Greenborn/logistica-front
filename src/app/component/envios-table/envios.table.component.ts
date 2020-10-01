@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Subject }                          from 'rxjs';
 
 import { GeneralService }     from '../../services/general.service';
 import { FormateoService }    from '../../services/formateo.service';
+
+import { OutputTableModel } from './output.table.model';
 
 @Component({
   selector: 'envios-table',
@@ -11,6 +14,7 @@ import { FormateoService }    from '../../services/formateo.service';
 export class EnviosTableComponent implements OnInit {
 
   @Input() config:any;
+  @Input() output:OutputTableModel;
 
   private ShippingGetAOK;
   private ShippingGetAKO;
@@ -24,6 +28,10 @@ export class EnviosTableComponent implements OnInit {
 
   public filtersCollapsed:boolean   = true;
   public resaltadoCollapsed:boolean = true;
+
+  public  checkBoxArray:any    = [];
+  public  checkAllReg:boolean  = true;
+  private checkBoxSelected:any = [];
 
   constructor(
     public gral:    GeneralService,
@@ -54,6 +62,11 @@ export class EnviosTableComponent implements OnInit {
         if ( this.shippings[ c ].vehicle != null ){
           this.shippings[ c ].vehicle = this.shippings[ c ].vehicle.description;
         }
+
+        // si la clave ya existe no se sobreescribe su valor
+        if ( !this.checkBoxArray.hasOwnProperty( String( this.shippings[ c ].id ) ) ){
+          this.checkBoxArray[ String( this.shippings[ c ].id ) ] = true;
+        }
       }
 
       this.totalRegs = response._meta.totalCount;
@@ -71,6 +84,28 @@ export class EnviosTableComponent implements OnInit {
     } });
 
     this.loadPage( this.actualPage );
+  }
+
+  checkAllClick(){
+    for ( let c = 0; c < this.shippings.length; c++ ){
+      this.checkBoxArray[ this.shippings[ c ].id ] = this.checkAllReg;
+    }
+
+    this.checkBoxRegChange();
+  }
+
+  checkBoxRegChange(){
+    this.checkBoxSelected = [];
+    this.checkBoxArray.forEach( ( element, key ) => { //se hace un nuevo arreglo solo con los id de los reg seleccionados
+      if ( element ){
+        this.checkBoxSelected.push( key );
+      }
+    });
+
+    if ( this.output != undefined ){
+        this.output.regsSelected = this.checkBoxSelected;
+        this.output.onChangeRegSelected.next( this.output );
+    }
   }
 
   showFilters(){

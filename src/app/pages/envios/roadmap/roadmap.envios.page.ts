@@ -6,6 +6,7 @@ import { AuthService }        from '../../../services/auth/auth.service';
 import { ShippingsService }   from '../../../services/shippings.service';
 
 import { Shipping } from '../../../models/shipping';
+import { OutputTableModel } from '../../../component/envios-table/output.table.model';
 
 @Component({
   selector: 'app-envios-roadmap',
@@ -15,6 +16,9 @@ import { Shipping } from '../../../models/shipping';
 export class RoadmapEnviosPage implements OnInit {
 
   public tableConfig:any = {};
+  public tableOutput:OutputTableModel = new OutputTableModel();
+
+  private onTableChange;
 
   constructor(
     public  gral:    GeneralService,
@@ -57,9 +61,14 @@ export class RoadmapEnviosPage implements OnInit {
       resaltadoEnabled: false,
       regSelect: true
     };
+
+    this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response ) => {
+          console.log( response );
+    } });
   }
 
   ngOnDestroy(){
+    this.onTableChange.unsubscribe();
   }
 
 }
