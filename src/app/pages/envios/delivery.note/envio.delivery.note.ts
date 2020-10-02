@@ -29,9 +29,9 @@ export class EnvioDeliveryNote {
       this.deliveryNotes = this.mainS.responseLastPost._links.remito;
     } else {
       this.deliveryNotes.original             = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
-      this.deliveryNotes.remito_duplicado     = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
-      this.deliveryNotes.remito_triplicado    = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
-      this.deliveryNotes.remito_cuadruplicado = this.mainS.LastElement.remitos.original   + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_duplicado     = this.mainS.LastElement.remitos.doubled    + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_triplicado    = this.mainS.LastElement.remitos.tripled    + '&token=' + this.auth.getToken();
+      this.deliveryNotes.remito_cuadruplicado = this.mainS.LastElement.remitos.cuadrupled + '&token=' + this.auth.getToken();
 
     }
 
