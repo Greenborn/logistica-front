@@ -22,6 +22,8 @@ export class AllEnviosPage implements OnInit {
     public  mainS:  ShippingsService,
     private router: Router
   ) {
+    this.auth.toLoginIfNL();
+
     this.tableConfig = {
       id: 'roadmap',
       resaltado: [
@@ -52,6 +54,7 @@ export class AllEnviosPage implements OnInit {
       resaltadoEnabled: true,
       regSelect: false
     };
+
   }
 
   ngOnInit() {

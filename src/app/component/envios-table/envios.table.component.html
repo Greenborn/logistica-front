@@ -1,4 +1,4 @@
-<div class="row  align-items-center mb-2">
+<div class="row  align-items-center mb-2" *ngIf="componentEnabled">
   <div class="col-auto">
     <button type="" class="btn btn-primary" (click)="create()" *ngIf="config.actionOptions.new">Nuevo Envío</button>
     <button type="" class="btn btn-primary" (click)="showFilters()">Filtros</button>
@@ -8,7 +8,7 @@
   <div class="col"></div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="componentEnabled">
   <div class="col" *ngIf="!filtersCollapsed">
 
       <div class="row pl-3">
@@ -39,7 +39,7 @@
 
 </div>
 
-<div class="row">
+<div class="row" *ngIf="componentEnabled">
   <div class="col">
     <div class="table-responsive">
 
@@ -75,7 +75,7 @@
   </div>
 </div>
 
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example" *ngIf="componentEnabled">
   <ul class="pagination justify-content-center">
     <li class="page-item" [ngClass]="{disabled: actualPage == 1 }">
       <a class="page-link" (click)="loadPage( actualPage-1 )" tabindex="-1">Anterior</a>

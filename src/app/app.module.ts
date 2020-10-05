@@ -35,6 +35,8 @@ import { NgbDateCustomI18 }               from './providers/ngb-date-custom-i18.
 import { NgbDateParserFormatter, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule }        from '@angular/platform-browser/animations';
 
+import { AuthenticationGuard  } from './services/auth/auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,6 +64,7 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
   providers: [
     StatusBar,
     SplashScreen,
+    AuthenticationGuard,
     { provide: RouteReuseStrategy,     useClass: IonicRouteStrategy },
     { provide: LocationStrategy,       useClass: HashLocationStrategy },
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
