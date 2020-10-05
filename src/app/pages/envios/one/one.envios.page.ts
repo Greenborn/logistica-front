@@ -85,14 +85,6 @@ export class OneEnviosPage implements OnInit {
     }
   }
 
-  moneyReset(v){
-    if(v=='' || v =='$ '){
-      return '$ 0';
-    } else {
-      return v;
-    }
-  }
-
   resetResaltadoInputError(){
     let e = this.elements.nativeElement.querySelectorAll('.form-control');
     for (let c=0; c < e.length; c++){
@@ -130,7 +122,7 @@ export class OneEnviosPage implements OnInit {
         vehicle_id:                new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         status:                    new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
-                                        [ Validators.required, Validators.pattern(/^\s*-?(\u0024)?(\u0020)?((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s*$/) ]),
+                                        [ Validators.required, Validators.pattern(/^\s*((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s*$/) ]),
     });
 
     //////////////////////////
