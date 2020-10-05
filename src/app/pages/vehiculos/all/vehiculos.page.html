@@ -1,21 +1,11 @@
 <ion-header>
-  <div class="row">
-      <div class="col title-content-2">
-        <div class="row">
-          <div class="col-auto"> <app-toggle-button></app-toggle-button> </div>
-          <div class="col"><div class="t2-table"><div class="t2-cell">{{gral.getAppTitle()}} - Vehículos</div></div></div>
-          <div class="col-5 col-sm-3 col-md-3 col-lg-3"><img class="img-logo" src="" /></div>
-        </div>
-      </div>
-  </div>
+  <app-header [title]="'Vehículos'"></app-header>
+  <app-side-menu></app-side-menu>
 </ion-header>
 
 <ion-content padding>
 
   <div class="d-flex" id="wrapper">
-      <!-- Sidebar -->
-      <app-side-menu></app-side-menu>
-      <!-- /#sidebar-wrapper -->
 
       <!-- Page Content -->
       <div id="page-content-wrapper">

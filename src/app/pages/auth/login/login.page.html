@@ -11,29 +11,44 @@
 
 <ion-content>
 
-  <div class="row">
+  <div class="row align-items-center vh-75">
 
     <div class="offset-sm-2 offset-md-3 offset-lg-3 offset-xl-4 col-12 col-sm-8 col-md-6 col-lg-6 col-xl-4">
-
-      <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Usuario</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-          <small id="emailHelp" class="form-text text-muted"></small>
+      <div class="row">
+        <div class="col mb-4">
+          <img class="img-responsivess" src="assets/img/logotipo.png" />
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="exampleInputPassword1">Contraseña</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
+      <div class="row">
+        <form class="col">
 
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Recordarme</label>
-        </div>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><ion-icon name="person-outline"></ion-icon></div>
+            </div>
+            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Usuario"
+                    [(ngModel)]="login.username" [ngModelOptions]="{standalone: true}">
+          </div>
 
-        <button type="submit" class="btn btn-primary" (click)="next()">Ingresar</button>
-      </form>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><ion-icon name="key-outline"></ion-icon></div>
+            </div>
+            <input type="password" class="form-control" id="inlineFormInputGroup" placeholder="Contraseña"
+                    [(ngModel)]="login.password" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Recordarme</label>
+          </div>
+
+          <div class="input-group mb-2 text-center">
+            <button type="submit" class="btn btn-info margin-center-h"  (click)="next()">Ingresar</button>
+          </div>
+        </form>
+      </div>
 
     </div>
 

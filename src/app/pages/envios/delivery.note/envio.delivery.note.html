@@ -1,0 +1,55 @@
+<ion-header>
+  <app-header [title]="'Envíos - Remitos'"></app-header>
+  <app-side-menu></app-side-menu>
+</ion-header>
+
+<ion-content padding>
+
+        <div class="container">
+          <div class="row">
+
+              <div class="col-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col">      <span>Original</span> </div>
+                        <div class="col-auto"> <a class="btn btn-info" href="{{deliveryNotes.original}}" target="_blank">Ver</a> </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col"> <span>Duplicado</span> </div>
+                        <div class="col-auto"> <a class="btn btn-info" href="{{deliveryNotes.remito_duplicado}}" target="_blank">Ver</a> </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col"> <span>Triplicado</span> </div>
+                        <div class="col-auto"> <a class="btn btn-info" href="{{deliveryNotes.remito_triplicado}}" target="_blank">Ver</a> </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col"> <span>Cuadruplicado</span> </div>
+                        <div class="col-auto"> <a class="btn btn-info" href="{{deliveryNotes.remito_cuadruplicado}}" target="_blank">Ver</a> </div>
+                      </div>
+                    </li>
+
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col">  </div>
+                        <div class="col-auto"> <a class="btn btn-info" (click)="next()" target="_blank">Ir a Envíos</a> </div>
+                        <div class="col">  </div>
+                      </div>
+                    </li>
+                  </ul>
+              </div>
+
+          </div>
+
+        </div>
+
+</ion-content>

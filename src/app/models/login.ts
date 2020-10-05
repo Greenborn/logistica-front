@@ -1,4 +1,4 @@
 export class Login {
-  public user;
-  public pass;
+  public username;
+  public password;
 }

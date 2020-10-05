@@ -16,13 +16,29 @@ export class BranchOfficesService {
     public authS:  AuthService
   ) {}
 
+  /////////////////////////////////////////////////
+  /// RETORNA LISTADO EXCLUYENDO LA OFICINA ACTUAL
+  filterEActualOffice( data:any ){
+    let list:any         = [];
+    let actualOffice:any = this.authS.getBranchOffice();
+
+    for( let c=0; c < data.items.length; c++ ){
+      if ( data.items[ c ].id !== actualOffice.id ){
+        list.push( data.items[ c ] );
+      }
+    }
+
+    data.items = list;
+    return data;
+  }
+
   ///////////////////////////////////////////
   /// GET ALL
   public BranchOfficeGetAOK = new Subject();
   public BranchOfficeGetAKO = new Subject();
 
   getAll(){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -40,7 +56,7 @@ export class BranchOfficesService {
   public BranchOfficeGetKO = new Subject();
 
   get(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -58,7 +74,7 @@ export class BranchOfficesService {
   public BranchOfficePostKO = new Subject();
 
   post(model:BranchOffice){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -76,7 +92,7 @@ export class BranchOfficesService {
   public BranchOfficePutKO = new Subject();
 
   put(model:BranchOffice){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -94,7 +110,7 @@ export class BranchOfficesService {
   public BranchOfficePutEKO = new Subject();
 
   putExpand(model:BranchOffice, p){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();
@@ -112,7 +128,7 @@ export class BranchOfficesService {
   public BranchOfficeDelKO = new Subject();
 
   delete(id){
-    if ( !this.authS.logedIn ){
+    if ( !this.authS.logedIn() ){
         return false;
     }
     let conf = this.config.getConfigData();

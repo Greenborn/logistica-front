@@ -1,0 +1,90 @@
+<div class="row  align-items-center mb-2">
+  <div class="col-auto">
+    <button type="" class="btn btn-primary" (click)="create()" *ngIf="config.actionOptions.new">Nuevo Envío</button>
+    <button type="" class="btn btn-primary" (click)="showFilters()">Filtros</button>
+    <button type="" class="btn btn-primary" (click)="showResaltado()" *ngIf="config.resaltadoEnabled">Resaltado</button>
+  </div>
+
+  <div class="col"></div>
+</div>
+
+<div class="row">
+  <div class="col" *ngIf="!filtersCollapsed">
+
+      <div class="row pl-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 " *ngFor="let field of config.filterFieldOptions;  let i = index">
+          <input class="form-check-input" type="checkbox"
+                  [(ngModel)]="config.filterFieldOptions[ i ].enabled" [ngModelOptions]="{standalone: true}"
+                  (click)="filterOptionClick( i )">
+          <label class="form-check-label" for="inlineCheckbox1" >{{ field.text }}</label>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <button type="submit" class="btn btn-primary mb-2" (click)="applyFilter()">Aplicar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col" *ngIf="!resaltadoCollapsed">
+      <div class="row pl-3">
+        <div class="col">
+          <input class="form-check-input" type="checkbox"
+                  [(ngModel)]="config.resaltado[ 0 ].enabled" [ngModelOptions]="{standalone: true}">
+          <label class="form-check-label" for="inlineCheckbox1" >Estado de envío</label>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="table-responsive">
+
+      <table class="table">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect">
+              <input class="" type="checkbox"
+                      [(ngModel)]="checkAllReg" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
+            </th>
+            <th scope="col" class="text-center align-middle">#</th>
+            <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
+            <th scope="col" class="text-center align-middle" *ngIf="config.actionsEnabled">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cf of shippings; let i = index" [style.background-color]="getBackgrounColor( cf.status_id )">
+            <th scope="col" class="text-center align-middle" *ngIf="config.regSelect">
+              <input class="" type="checkbox" (change)="checkBoxRegChange()"
+                      [(ngModel)]="checkBoxArray[ cf.id ]" [ngModelOptions]="{standalone: true}" >
+            </th>
+            <th scope="row" class="text-center align-middle">{{cf.id}}</th>
+            <td *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ config.filterFieldOptions[ field ].code ] }}</td>
+
+            <td class="text-center align-middle" *ngIf="config.actionsEnabled">
+              <button type="button" class="btn btn-info" (click)="edit( cf.id )" *ngIf="config.actionOptions.edit">    <ion-icon name="pencil-outline"></ion-icon> </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [ngClass]="{disabled: actualPage == 1 }">
+      <a class="page-link" (click)="loadPage( actualPage-1 )" tabindex="-1">Anterior</a>
+    </li>
+    <li class="page-item" *ngFor="let cf of pageLinks;" [ngClass]="{disabled: actualPage == cf.page }">
+      <a class="page-link" (click)="loadPage( cf.page )">{{ cf.page }}</a>
+    </li>
+    <li class="page-item" [ngClass]="{disabled: ( actualPage + 1 ) > pageCount }">
+      <a class="page-link" (click)="loadPage( actualPage+1 )" >Siguiente</a>
+    </li>
+  </ul>
+</nav>

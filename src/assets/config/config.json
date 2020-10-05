@@ -1,8 +1,0 @@
-{
-  "apiBaseUrl":"http://logistica-api.coodesoft.com.ar/",
-  "distancesAction":"distances",
-  "shippingsAction":"shippings",
-  "branchOfficesAction":"branch-offices",
-  "shippingTypesAction":"shipping-types",
-  "servicesAction":"service-types"
-}

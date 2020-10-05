@@ -1,6 +1,19 @@
-<div class="bg-light border-right" id="sidebar-wrapper">
+<div class="bg-light border-right" id="sidebar-wrapper" [ngClass]="{ 'side-bar-toggled':service.menuVisible }">
   <div class="sidebar-heading" *ngIf="service.isTitleVisible()">{{service.getMenuTitle()}} </div>
-  <div class="list-group list-group-flush">
-    <a *ngFor="let option of service.getOptions()" href="#{{option.link}}" class="list-group-item list-group-item-action bg-light {{option.class}}">{{option.label}}</a>
+  <div class="list-group">
+
+    <div *ngFor="let option of service.getOptions(); let i = index"
+          class="{{option.class}}">
+        <div class="opt-cont p-3 border-bottom" (click)="mainOptionClick( i )"> {{option.label}} </div>
+        <div *ngIf="option.subOptions.length > 0" class="list-group collapse" [ngClass]="{ show:option.collapsed }">
+
+          <div *ngFor="let subOpt of option.subOptions" (click)="subOpt.onClick()"
+                class="p-3 border-bottom bg-white opt-cont">
+                <div class="ml-3"> {{subOpt.label}} </div>
+          </div>
+
+        </div>
+    </div>
+
   </div>
 </div>

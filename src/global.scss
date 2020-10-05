@@ -37,8 +37,8 @@
 .title-content-3, .title-content-2, .title-content-4 {
   padding:          3em !important;
   margin-bottom:    1em;
-  border-bottom:    2px solid #7f7171;
-  background:       #AE1F2A;
+  border-bottom:    2px solid #DDD;
+  background:       #52a5b4;
 }
 
 .title-content-3, .title-content-4 {
@@ -66,7 +66,7 @@
   padding-bottom:   0 !important;
   padding-top:      0 !important;
   border:           none;
-  background-color: #CCC;
+  background-color: #52a5b4;
   color:            #000;
   margin:           0px;
   height:           3em;
@@ -89,12 +89,13 @@
   .t2-cell{
     display:          table-cell;
     vertical-align:   middle;
-    font-size:        1em;
+    font-size:        1.25em;
+    color:            #FFF;
   }
 }
 
 .header-md{
-  background: #CCC;
+  background: #52a5b4;
 }
 
 .app-body {
@@ -206,46 +207,37 @@ body {
   overflow-x: hidden;
 }
 
-#sidebar-wrapper {
-  min-height: 100vh;
-  margin-left: -15rem;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
-}
-#sidebar-wrapper .sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
-}
-#sidebar-wrapper .list-group {
-  width: 15rem;
-}
-#page-content-wrapper {
-  min-width: 100vw;
-}
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
-}
-@media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
+app-side-menu {
+  position:      fixed;
+  z-index:       900;
+  box-shadow:    0 .5rem 1rem rgba(0,0,0,.15) !important;
 
+  .side-bar-toggled {
+    margin-left:   -15rem !important;
+  }
 }
 
-app-side-menu > .side-bar-toggled {
-  margin-left: -15rem !important;
+.btn-light{
+  color:      #000 !important;
 }
 
 /* SIDEBAR FIN [MODIFICAR] Mover estos estilos para el componente */
 
 .form-box {
-  border:         1px solid #000;
+  border:         1px solid #AAA;
   margin-top:     1rem;
   margin-bottom:  1rem;
+}
+
+.vh-100{
+  height: calc(100vh - 48px);
+}
+
+.vh-75{
+  height: calc(75vh - 48px);
+}
+
+.margin-center-h{
+  margin-left:  auto;
+  margin-right: auto;
 }
