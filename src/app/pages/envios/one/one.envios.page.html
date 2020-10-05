@@ -207,8 +207,6 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="name">Precio</label>
                         <input type="text" class="form-control" id="price"
-                        (keyup)="shipping.price = format.getMoney(shipping.price);"
-                        (click)="shipping.price = ''" (ionBlur)="shipping.price = moneyReset(shipping.price)"
                                 [(ngModel)]="shipping.price" formControlName="price"/>
                       </div>
 

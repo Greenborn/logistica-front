@@ -145,11 +145,15 @@ export class FormateoService {
 
   //////////////////////////
   //// NÚMEROS           ///
-  getFloatLA(val, groupSep){
-    if (!val) { return ''; }
-    val = val.toString().split(groupSep);
-    return val[0]+groupSep+val[1].slice(0, 2);
+  getFloatLA(val){
+     if (!val) { return ''; }
+     val = val.toString().split( this.GROUP_SEPARATOR );
+     if ( val.length < 2 ){
+      val[1]='00';
+     }
+     return val[0]+this.DECIMAL_SEPARATOR+val[1].slice(0, 2);
   }
+
 
   //////////////////////////
   //// MONEDAS          ////
@@ -186,21 +190,6 @@ export class FormateoService {
     return "$ "+s+ ent + (!parts[1] ? '' :this.DECIMAL_SEPARATOR+ parts[1]);
   }
 
-  getMoney(valString, signo=1) {
-    if (!valString) { return ''; }
-
-    let val = valString.toString();
-    let parts = this.unFormatMoney(val).split(this.DECIMAL_SEPARATOR);
-    if(parts[1]) { parts[1] = parts[1].slice(0, 2);}
-    if(val.slice(-1)===this.DECIMAL_SEPARATOR) {parts[0]+=this.DECIMAL_SEPARATOR;}
-    let s = '';
-
-    if(signo == -1){
-      s='-';
-    }
-    return "$ "+s+parts[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, this.GROUP_SEPARATOR) + (!parts[1] ? '' :this.DECIMAL_SEPARATOR+ parts[1]);
-  }
-
   unFormatMoney(val) {
       if (!val) { return ''; }
 
@@ -214,7 +203,7 @@ export class FormateoService {
 
   getFloat(val) {
       if (!val) { return '';  }
-      
+
       val = (val as string).replace(/^0+/, '');
       let s:string='';
       s=val.replace(/[^0-9,]/g, '');

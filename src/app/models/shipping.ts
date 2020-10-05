@@ -41,7 +41,7 @@ export class Shipping {
       this.destination_contact   = response.destination_contact;
       this.origin_address        = response.origin_address;
       this.destination_address   = response.destination_address;
-      this.price                 = format.getLocaleMoneyF( String( response.price ) );
+      this.price                 = format.getFloatLA( String( response.price ) );
       this.date                  = response.date;
 
       this.sender_identification.value   = response.sender_identification.value;
