@@ -51,9 +51,11 @@ export class Shipping {
         this.vehicle_id = response.vehicle.id;
       }
 
+      let itemsaux:any = [];
       for( let c=0; c < response.shippingItems.length; c++ ){
-        this.items.push( { description: response.shippingItems[ c ].item, id: response.shippingItems[ c ].id } );
+        itemsaux.push( { description: response.shippingItems[ c ].item, id: response.shippingItems[ c ].id } );
       }
+      this.items = itemsaux;
 
     }
 }
