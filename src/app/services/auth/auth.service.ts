@@ -50,23 +50,19 @@ export class AuthService {
       );
   }
 
-  private menuLinksSeted:boolean = false;
   toLoginIfNL(){
 
-    if ( !this.menuLinksSeted ) {
-      this.menuLinksSeted = true;
-      this.setMenuLinks();
-    }
-
     if ( !this.logedIn() ){
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
+    } else {
+      this.setMenuLinks();
     }
   }
 
   toLogOut(){
     localStorage.setItem( 'logedIn',  JSON.stringify( false ) );
     localStorage.setItem( 'token',    JSON.stringify( '' ) );
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   logedIn(){

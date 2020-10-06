@@ -3,6 +3,7 @@ import { Subject }                          from 'rxjs';
 
 import { GeneralService }     from '../../services/general.service';
 import { FormateoService }    from '../../services/formateo.service';
+import { AuthService }        from '../../services/auth/auth.service';
 
 import { OutputTableModel } from './output.table.model';
 
@@ -29,16 +30,22 @@ export class EnviosTableComponent implements OnInit {
   public filtersCollapsed:boolean   = true;
   public resaltadoCollapsed:boolean = true;
 
-  public  checkBoxArray:any    = [];
-  public  checkAllReg:boolean  = true;
-  private checkBoxSelected:any = [];
+  public  checkBoxArray:any        = [];
+  public  checkAllReg:boolean      = true;
+  private checkBoxSelected:any     = [];
+  public  componentEnabled:boolean = true;
 
   constructor(
     public gral:    GeneralService,
-    public  format: FormateoService
+    public  format: FormateoService,
+    public auth:    AuthService
   ) { }
 
   ngOnInit() {
+    if ( this.config == undefined ){
+      this.componentEnabled = false;
+    }
+
     if ( !this.config.resaltadoEnabled ){
       this.config.resaltado[ 0 ].enabled = false;
     }
@@ -83,7 +90,9 @@ export class EnviosTableComponent implements OnInit {
 
     } });
 
-    this.loadPage( this.actualPage );
+    if ( this.auth.logedIn() ){
+      this.loadPage( this.actualPage );
+    } 
   }
 
   checkAllClick(){
