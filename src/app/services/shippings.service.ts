@@ -72,12 +72,19 @@ export class ShippingsService {
     this.get();
   }
 
-  public createAction:boolean = true;
+  public createAction:boolean  = true;
+  public oneElement            = new Shipping();
+  public oneElementshippngItem = new ShippingItem();
   goToCreate(){
-    this.elementEnableEdition = true;
-    this.action               = 'create';
-    this.textSubmitAction     = 'Guardar';
+    this.setCreateParams();
     this.router.navigate(['/envios/nuevo']);
+  }
+  setCreateParams(){
+    this.elementEnableEdition  = true;
+    this.action                = 'create';
+    this.textSubmitAction      = 'Guardar';
+    this.oneElement            = new Shipping();
+    this.oneElementshippngItem = new ShippingItem();
   }
 
   goToAll(){

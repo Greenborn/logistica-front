@@ -44,8 +44,6 @@ export class OneEnviosPage implements OnInit {
 
   public  form;
 
-  public shippngItem              = new ShippingItem();
-  public shipping                 = new Shipping();
   public payInDestination:boolean = false;
   public payInOrigin:boolean      = true;
   public viewData:any             = { originBranchOffice:{} };
@@ -99,6 +97,14 @@ export class OneEnviosPage implements OnInit {
       this.mainS.goToCreate();
     }
 
+    let routerE = this.router.events.subscribe( ( event ) => {
+      if ( event.hasOwnProperty( 'url' ) ) {
+        if ( ( event as any ).url == '/envios/nuevo' ){
+          this.mainS.setCreateParams();
+        }
+      }
+    });
+
     this.form = new FormGroup({
         origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
@@ -128,7 +134,7 @@ export class OneEnviosPage implements OnInit {
     //////////////////////////
     /// GET - INFO ENVIO
     this.ShippingGetOK = this.mainS.ShippingGetOK.subscribe({  next: ( response:ShippingResponse ) => {
-      this.shipping.setValuesFromResponse( response, this.format );
+      this.mainS.oneElement.setValuesFromResponse( response, this.format );
 
       this.viewData.originBranchOffice = response.originBranchOffice;
 
@@ -137,7 +143,7 @@ export class OneEnviosPage implements OnInit {
       this.deliveryNotes.tripled    = response.remitos.tripled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.cuadrupled = response.remitos.cuadrupled + '&token=' + this.auth.getToken();
 
-      this.payInDestination = !this.shipping.payment_at_origin;
+      this.payInDestination = !this.mainS.oneElement.payment_at_origin;
       this.gral.dismissLoading();
     } });
 
@@ -312,12 +318,12 @@ export class OneEnviosPage implements OnInit {
   }
 
   addItem(){
-    this.shipping.items.push( { 'description': this.shippngItem.description } );
-    this.shippngItem = new ShippingItem();
+    this.mainS.oneElement.items.push( { 'description': this.mainS.oneElementshippngItem.description } );
+    this.mainS.oneElementshippngItem = new ShippingItem();
   }
 
   delItem(i){
-    this.shipping.items.splice(i, 1);
+    this.mainS.oneElement.items.splice(i, 1);
   }
 
   payNDestination(){
@@ -348,11 +354,11 @@ export class OneEnviosPage implements OnInit {
       return false;
     }
 
-    if ( this.mainS.validateModel( this.shipping ) ){
+    if ( this.mainS.validateModel( this.mainS.oneElement ) ){
       if ( this.mainS.action == 'edit' ){
-          this.mainS.put( this.shipping );
+          this.mainS.put( this.mainS.oneElement );
       } else if ( this.mainS.action == 'create' ) {
-          this.mainS.post( this.shipping );
+          this.mainS.post( this.mainS.oneElement );
       }
     } else {
       this.gral.newMensaje( this.mainS.validationErrors );
