@@ -62,6 +62,7 @@ export class RoadmapEnviosPage implements OnInit {
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
+      ExtraFilterTerms: '&filter[status]=1',
       provider: this.mainS,
       actionOptions: { edit: false, new: false },
       actionsEnabled: false,
@@ -92,7 +93,7 @@ export class RoadmapEnviosPage implements OnInit {
   }
 
   nextRoadMap(){
-    
+
   }
 
   ngOnDestroy(){
