@@ -48,6 +48,7 @@ export class AllEnviosPage implements OnInit {
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
+      ExtraFilterTerms: '',
       provider: this.mainS,
       actionOptions: { edit: true, new: true },
       actionsEnabled: true,

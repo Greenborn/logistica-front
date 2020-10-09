@@ -92,7 +92,7 @@ export class EnviosTableComponent implements OnInit {
 
     if ( this.auth.logedIn() ){
       this.loadPage( this.actualPage );
-    } 
+    }
   }
 
   checkAllClick(){
@@ -147,7 +147,7 @@ export class EnviosTableComponent implements OnInit {
 
     this.actualPage = page;
 
-    this.config.provider.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle&page=' + this.actualPage);
+    this.config.provider.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle&page=' + this.actualPage + this.config.ExtraFilterTerms);
     this.gral.presentLoading();
   }
 
