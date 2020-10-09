@@ -19,6 +19,7 @@ export class EnviosTableComponent implements OnInit {
 
   private ShippingGetAOK;
   private ShippingGetAKO;
+  private updateTableSubject;
 
   public shippings;
 
@@ -31,8 +32,10 @@ export class EnviosTableComponent implements OnInit {
   public resaltadoCollapsed:boolean = true;
 
   public  checkBoxArray:any        = [];
+  private regData:any              = [];
   public  checkAllReg:boolean      = true;
   private checkBoxSelected:any     = [];
+  private fieldsSelected:any       = [];
   public  componentEnabled:boolean = true;
 
   constructor(
@@ -44,6 +47,14 @@ export class EnviosTableComponent implements OnInit {
   ngOnInit() {
     if ( this.config == undefined ){
       this.componentEnabled = false;
+    }
+
+    if ( this.config.updateTableSubject != undefined ){
+      this.updateTableSubject = this.config.updateTableSubject.subscribe({  next: ( params : any) => {
+        if ( this.auth.logedIn() ){
+          this.loadPage( this.actualPage );
+        }
+      } });
     }
 
     if ( !this.config.resaltadoEnabled ){
@@ -84,6 +95,7 @@ export class EnviosTableComponent implements OnInit {
           this.pageLinks.push( { 'page':c } );
       }
       this.gral.dismissLoading();
+      this.checkBoxRegChange();
     } });
 
     this.ShippingGetAKO = this.config.provider.ShippingGetAKO.subscribe({  next: ( response : any) => {
@@ -111,8 +123,26 @@ export class EnviosTableComponent implements OnInit {
       }
     });
 
+    //se recorren los envios para armar un nuevo arreglo con la información de los registros seleccionados para ser usado en el .pdf de hoja de ruta
+    this.regData = [];
+    for ( let i=0; i < this.checkBoxSelected.length; i++ ){ //[MODIFICAR] Esto se puede hacer de forma mas eficiente
+      for ( let c=0; c < this.shippings.length; c++ ){
+        if ( Number( this.shippings[ c ].id ) == Number ( this.checkBoxSelected[ i ] ) ){
+          this.regData.push( this.shippings[ c ] );
+        }
+      }
+    }
+
+    //se perpara el arreglo de campos seleccionados
+    this.fieldsSelected = [];
+    for ( let c=0; c < this.config.EnabledFilterFieldOptions.length; c++ ){
+      this.fieldsSelected.push( this.config.filterFieldOptions[ this.config.EnabledFilterFieldOptions[ c ] ] );
+    }
+
     if ( this.output != undefined ){
-        this.output.regsSelected = this.checkBoxSelected;
+        this.output.regsSelected   = this.checkBoxSelected;
+        this.output.regData        = this.regData;
+        this.output.fieldsSelected = this.fieldsSelected;
         this.output.onChangeRegSelected.next( this.output );
     }
   }
@@ -162,6 +192,7 @@ export class EnviosTableComponent implements OnInit {
   ngOnDestroy(){
     this.ShippingGetAOK.unsubscribe();
     this.ShippingGetAKO.unsubscribe();
+    this.updateTableSubject.unsubscribe();
   }
 
   filterOptionClick( i:number ){
@@ -178,6 +209,8 @@ export class EnviosTableComponent implements OnInit {
         }
       }
     }
+
+    this.checkBoxRegChange();
 
   }
 
