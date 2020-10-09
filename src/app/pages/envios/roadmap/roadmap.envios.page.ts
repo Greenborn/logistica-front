@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }    from '@angular/router';
+import { Subject }           from 'rxjs';
 
 import { GeneralService }     from '../../../services/general.service';
 import { AuthService }        from '../../../services/auth/auth.service';
 import { ShippingsService }   from '../../../services/shippings.service';
 import { VehicleService }     from '../../../services/vehicles.service';
+import { PdfService }         from '../../../services/pdf.service';
+import { FormateoService }    from '../../../services/formateo.service';
+import { RoadmapService }     from '../../../services/roadmap.service';
 
 import { Shipping } from '../../../models/shipping';
+import { RoadMap } from '../../../models/roadmap';
 import { OutputTableModel } from '../../../component/envios-table/output.table.model';
 
 @Component({
@@ -22,21 +27,31 @@ export class RoadmapEnviosPage implements OnInit {
   public vehicle_id;
 
   private onTableChange;
+  private updateTable      = new Subject();
+  private regsOutput:any   = [];
+
+  private roadMap:RoadMap = new RoadMap();
+  private RoadmapPostOK;
+  private RoadmapPostKO;
 
   private VehicleGetAOK;
   private VehicleGetAKO;
 
   constructor(
-    public  gral:    GeneralService,
-    private auth:    AuthService,
-    public  mainS:   ShippingsService,
+    public  gral:     GeneralService,
+    private auth:     AuthService,
+    public  mainS:    ShippingsService,
+    private roadMapS: RoadmapService,
     private vehicleS: VehicleService,
-    private router:  Router
+    private pdfS:     PdfService,
+    private router:   Router,
+    public  format:   FormateoService,
   ) {
   }
 
   ngOnInit() {
     this.auth.toLoginIfNL();
+    this.pdfS.loadPdfMaker();
 
     this.tableConfig = {
       id: 'roadmap',
@@ -63,6 +78,7 @@ export class RoadmapEnviosPage implements OnInit {
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
       ExtraFilterTerms: '&filter[status]=1',
+      updateTableSubject: this.updateTable,
       provider: this.mainS,
       actionOptions: { edit: false, new: false },
       actionsEnabled: false,
@@ -70,8 +86,8 @@ export class RoadmapEnviosPage implements OnInit {
       regSelect: true
     };
 
-    this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response ) => {
-
+    this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response: any[] ) => {
+      this.regsOutput  = response;
     } });
 
     //////////////////////////
@@ -86,6 +102,25 @@ export class RoadmapEnviosPage implements OnInit {
       this.mainS.RoadmapParamsLoaded = false;
     } });
 
+    //////////////////////////
+    /// ROADMAP
+    this.RoadmapPostOK = this.roadMapS.RoadmapPostOK.subscribe({  next: ( response : any[]) => {
+      this.gral.dismissLoading();
+      this.pdfS.generatePdfRoadMap({
+        date: this.format.getStringDate( new Date() ),
+        name: 'Hoja_de_ruta_',
+        regData: this.regsOutput,
+        onGenerate: () => {  }
+      });
+    } });
+
+    this.RoadmapPostKO = this.roadMapS.RoadmapPostKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.gral.dismissLoading();
+      this.gral.newMensaje( 'Ha ocurrido un error, por favor reintente. ');
+
+    } });
+
     if ( !this.mainS.RoadmapParamsLoaded ){
       this.vehicleS.getAll();
     }
@@ -93,13 +128,21 @@ export class RoadmapEnviosPage implements OnInit {
   }
 
   nextRoadMap(){
-
+    this.gral.presentLoading();
+    this.roadMap           = new RoadMap();
+    this.roadMap.shippings = this.regsOutput.regsSelected;
+    if ( this.vehicle_id != undefined ){
+      this.roadMap.vehicle_id = this.vehicle_id;
+    }
+    this.roadMapS.post( this.roadMap );
   }
 
   ngOnDestroy(){
     this.onTableChange.unsubscribe();
     this.VehicleGetAOK.unsubscribe();
     this.VehicleGetAOK.unsubscribe();
+    this.RoadmapPostKO.unsubscribe();
+    this.RoadmapPostOK.unsubscribe();
   }
 
 }

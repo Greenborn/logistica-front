@@ -17,7 +17,8 @@ export class ConfigProvider {
       "servicesAction":"service-types",
       "servicesIdentificationType":"identification-types",
       "loginAction":"login",
-      "vehiclesAction":"vehicles"
+      "vehiclesAction":"vehicles",
+      "roadMapAction": "roadmaps"
     };
   }
 
