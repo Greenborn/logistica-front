@@ -25,6 +25,7 @@ export class RoadmapEnviosPage implements OnInit {
   public tableOutput:OutputTableModel = new OutputTableModel();
 
   public vehicle_id;
+  public vehicleList;
 
   private onTableChange;
   private updateTable      = new Subject();
@@ -93,7 +94,9 @@ export class RoadmapEnviosPage implements OnInit {
     //////////////////////////
     /// GET VEHÍCULOS
     this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
-      this.mainS.VehicleList      = response;
+      this.vehicleList = response;
+      this.vehicleList.items.push( { id:-1, description:' - sin especificar - ' } );
+      this.vehicle_id = -1;
       this.mainS.RoadmapParamsLoaded = true;
     } });
 
