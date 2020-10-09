@@ -134,7 +134,7 @@ export class RoadmapEnviosPage implements OnInit {
     this.gral.presentLoading();
     this.roadMap           = new RoadMap();
     this.roadMap.shippings = this.regsOutput.regsSelected;
-    if ( this.vehicle_id != undefined ){
+    if ( this.vehicle_id != -1 ){
       this.roadMap.vehicle_id = this.vehicle_id;
     }
     this.roadMapS.post( this.roadMap );
