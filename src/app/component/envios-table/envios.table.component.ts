@@ -52,6 +52,9 @@ export class EnviosTableComponent implements OnInit {
     if ( this.config.updateTableSubject != undefined ){
       this.updateTableSubject = this.config.updateTableSubject.subscribe({  next: ( params : any) => {
         if ( this.auth.logedIn() ){
+          this.shippings        = [];
+          this.checkBoxArray    = [];
+          this.checkAllReg      = true;
           this.loadPage( this.actualPage );
         }
       } });
@@ -62,28 +65,39 @@ export class EnviosTableComponent implements OnInit {
     }
 
     this.ShippingGetAOK = this.config.provider.ShippingGetAOK.subscribe({  next: ( response : any ) => {
-      this.shippings = response.items;
+      this.shippings = [];
 
-      for ( let c=0; c < this.shippings.length; c ++ ){
-        this.shippings[ c ].receiver_identification_type = this.shippings[ c ].receiver_identification.identification_type.name;
-        this.shippings[ c ].sender_identification_type   = this.shippings[ c ].sender_identification.identification_type.name;
-        this.shippings[ c ].originBranchOffice      = this.shippings[ c ].originBranchOffice.name;
-        this.shippings[ c ].destinationBranchOffice = this.shippings[ c ].destinationBranchOffice.name;
-        this.shippings[ c ].status_id               = this.shippings[ c ].status.id;
-        this.shippings[ c ].status                  = this.shippings[ c ].status.label;
-        this.shippings[ c ].serviceType             = this.shippings[ c ].serviceType.description;
-        this.shippings[ c ].sender_identification   = this.shippings[ c ].sender_identification.value;
-        this.shippings[ c ].receiver_identification = this.shippings[ c ].receiver_identification.value;
-        this.shippings[ c ].price                   = this.format.getLocaleMoneyF( this.shippings[ c ].price );
-        this.shippings[ c ].date                    = this.format.getSDateFromTimeStamp( this.shippings[ c ].date );
-        this.shippings[ c ].payment_at_origin       = this.format.getTextOfBoolean( this.shippings[ c ].payment_at_origin );
-        if ( this.shippings[ c ].vehicle != null ){
-          this.shippings[ c ].vehicle = this.shippings[ c ].vehicle.description;
+      for ( let c=0; c < response.items.length; c ++ ){
+        this.shippings.push( {
+          receiver_identification_type: response.items[ c ].receiver_identification.identification_type.name,
+          sender_identification_type:   response.items[ c ].sender_identification.identification_type.name,
+          originBranchOffice:           response.items[ c ].originBranchOffice.name,
+          destinationBranchOffice:      response.items[ c ].destinationBranchOffice.name,
+          status_id:                    response.items[ c ].status.id,
+          status:                       response.items[ c ].status.label,
+          serviceType:                  response.items[ c ].serviceType.description,
+          sender_identification:        response.items[ c ].sender_identification.value,
+          receiver_identification:      response.items[ c ].receiver_identification.value,
+          price:                        this.format.getLocaleMoneyF( response.items[ c ].price ),
+          date:                         this.format.getSDateFromTimeStamp( response.items[ c ].date ),
+          payment_at_origin:            this.format.getTextOfBoolean( response.items[ c ].payment_at_origin ),
+          vehicle:                      '',
+          origin_full_name:             response.items[ c ].origin_full_name,
+          origin_contact:               response.items[ c ].origin_contact,
+          destination_full_name:        response.items[ c ].destination_full_name,
+          destination_contact:          response.items[ c ].destination_contact,
+          origin_address:               response.items[ c ].origin_address,
+          destination_address:          response.items[ c ].destination_address,
+          id:                           response.items[ c ].id
+        } );
+
+        if ( response.items[ c ].vehicle != null ){
+          this.shippings[ c ].vehicle = response.items[ c ].vehicle.description;
         }
 
         // si la clave ya existe no se sobreescribe su valor
-        if ( !this.checkBoxArray.hasOwnProperty( String( this.shippings[ c ].id ) ) ){
-          this.checkBoxArray[ String( this.shippings[ c ].id ) ] = true;
+        if ( !this.checkBoxArray.hasOwnProperty( String( response.items[ c ].id ) ) ){
+          this.checkBoxArray[ String( response.items[ c ].id ) ] = true;
         }
       }
 
@@ -138,7 +152,7 @@ export class EnviosTableComponent implements OnInit {
     for ( let c=0; c < this.config.EnabledFilterFieldOptions.length; c++ ){
       this.fieldsSelected.push( this.config.filterFieldOptions[ this.config.EnabledFilterFieldOptions[ c ] ] );
     }
-
+console.log(this.checkBoxSelected);
     if ( this.output != undefined ){
         this.output.regsSelected   = this.checkBoxSelected;
         this.output.regData        = this.regData;

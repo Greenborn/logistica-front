@@ -6,7 +6,6 @@ import { Subject }    from 'rxjs';
 import { Router }     from '@angular/router';
 
 import { ConfigProvider }       from './config/config';
-import { AuthService }          from './auth/auth.service';
 import { FormateoService }      from './formateo.service';
 
 import { Shipping }     from '../models/shipping';
@@ -16,10 +15,11 @@ import { ShippingItem } from '../models/shipping.item';
 @Injectable({ providedIn: 'root' })
 export class ShippingsService {
 
+  public authS;
+
   constructor(
   	public http:          HttpClient,
     public config:        ConfigProvider,
-    public authS:         AuthService,
     public router:        Router,
     private format:       FormateoService
   ) {}
@@ -87,9 +87,19 @@ export class ShippingsService {
     this.oneElementshippngItem = new ShippingItem();
   }
 
+  public reloadAllV = new Subject();
   goToAll(){
-    this.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle');
-    this.router.navigate(['/exito']);
+    this.router.navigate([ '/envios' ]);
+    this.reloadAllV.next( true );
+  }
+
+  goToRemitoV( id:number = -1){
+    if ( id != -1 ){
+      this.elementId = id;
+    }
+
+    this.get();
+    this.router.navigate([ '/envios/remito' ]);
   }
 
   ///////////////////////////////////////////

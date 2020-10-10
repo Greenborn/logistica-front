@@ -5,9 +5,11 @@ import { Subject }    from 'rxjs';
 
 import { Login }  from '../../models/login';
 
-import { ConfigProvider }  from '../config/config';
-import { GeneralService }  from '../general.service';
-import { SideMenuService } from '../../component/side-menu/side-menu.service';
+import { ConfigProvider }   from '../config/config';
+import { GeneralService }   from '../general.service';
+import { ShippingsService } from '../shippings.service';
+import { RoadmapService }   from '../roadmap.service';
+import { SideMenuService }  from '../../component/side-menu/side-menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +17,17 @@ import { SideMenuService } from '../../component/side-menu/side-menu.service';
 export class AuthService {
 
   constructor(
-    public  router: Router,
-    public  http:   HttpClient,
-    public  config: ConfigProvider,
-    public  menuService: SideMenuService,
-    public  gral:   GeneralService
+    private  router:      Router,
+    private  http:        HttpClient,
+    private  config:      ConfigProvider,
+    private  menuService: SideMenuService,
+    private  shippingS:   ShippingsService,
+    private  roadmapS:    RoadmapService,
+    private  gral:        GeneralService
   ) {
+    //seteo de provider de autenticación para evitar dependencia circular
+    this.shippingS.authS = this;
+    this.roadmapS.authS  = this;
   }
 
   login( model ){
@@ -81,9 +88,12 @@ export class AuthService {
     this.menuService.clearOptions();
     this.menuService.addOption({ label:'Envios', icon:'', class:'', permisions:[], collapsed:false,
       subOptions:[
-        { label:'Listado', icon:'', class:'', permisions:[], link: '/envios' },
-        { label:'Nuevo', icon:'', class:'', permisions:[], link: '/envios/nuevo' },
-        { label:'Hoja de Ruta', icon:'', class:'', permisions:[], link: '/envios/hojaruta' }
+        { label:'Listado', icon:'', class:'', permisions:[],
+            onClick: () => { this.shippingS.goToAll(); } },
+        { label:'Nuevo', icon:'', class:'',   permisions:[],
+            onClick: () => { this.shippingS.goToCreate(); } },
+        { label:'Hoja de Ruta', icon:'', class:'', permisions:[],
+            onClick: () => { this.roadmapS.goToRoadMapP(); }  }
       ],
     });
     //this.menuService.addOption({ 'label':'Usuarios',    'link':'/usuarios',      'icon':'', 'class':'', 'permisions':[] });

@@ -11,7 +11,7 @@ import { VehiculosPage  }       from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage  }        from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote  }   from './pages/envios/delivery.note/envio.delivery.note';
 import { RoadmapEnviosPage  }   from './pages/envios/roadmap/roadmap.envios.page';
-import { SuccessPage  }         from './pages/gral/success/success';
+import { ResultPage  }         from './pages/gral/result/result';
 
 import { AuthenticationGuard  } from './services/auth/auth.guard';
 
@@ -27,7 +27,9 @@ const routes: Routes = [
   { path: 'sucursales',    component: SucursalesPage      , canActivate: [AuthenticationGuard]},
   { path: 'vehiculos',     component: VehiculosPage       , canActivate: [AuthenticationGuard]},
   { path: 'usuarios',      component: UsuariosPage        , canActivate: [AuthenticationGuard]},
-  { path: 'exito',         component: SuccessPage         , canActivate: [AuthenticationGuard]},
+  { path: 'exito',         component: ResultPage         , canActivate: [AuthenticationGuard]},
+  { path: 'error',         component: ResultPage         , canActivate: [AuthenticationGuard]},
+  { path: 'atencion',      component: ResultPage         , canActivate: [AuthenticationGuard]},
 ];
 
 @NgModule({

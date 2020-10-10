@@ -32,13 +32,12 @@ export class EnvioDeliveryNote {
       this.deliveryNotes.remito_duplicado     = this.mainS.LastElement.remitos.doubled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.remito_triplicado    = this.mainS.LastElement.remitos.tripled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.remito_cuadruplicado = this.mainS.LastElement.remitos.cuadrupled + '&token=' + this.auth.getToken();
-
     }
 
   }
 
   next(){
-    this.router.navigate(['/envios']);
+    this.mainS.goToAll();
   }
 
   ngOnDestroy(){

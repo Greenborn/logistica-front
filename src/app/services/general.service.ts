@@ -9,6 +9,8 @@ export class GeneralService {
 
   public loadingPresent = false;
 
+  private errorGenericText = 'Ha ocurrido un error no especificado, por favor reintente luego.';
+
   constructor(
     public alertController: AlertController
   ) { }
@@ -36,8 +38,14 @@ export class GeneralService {
     this.loadingPresent = true;
   }
 
-  errMsg(r){
-
+  errMsg( response:any ){
+    if ( response.hasOwnProperty( 'error' ) ){
+      if ( response.error.hasOwnProperty( 'message' ) ){
+        this.newMensaje( response.error.message );
+      } else {
+        this.newMensaje( this.errorGenericText );
+      }
+    }
   }
 
 }
