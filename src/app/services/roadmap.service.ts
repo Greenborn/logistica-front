@@ -1,20 +1,29 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
+import { Router }     from '@angular/router';
 
 import { ConfigProvider }      from './config/config';
-import { AuthService }         from './auth/auth.service';
 
 import { RoadMap } from '../models/roadmap';
 
 @Injectable({ providedIn: 'root' })
 export class RoadmapService {
 
+  public authS;
+
   constructor(
   	public http:   HttpClient,
     public config: ConfigProvider,
-    public authS:  AuthService
+    public router: Router,
   ) {}
+
+  ///////////////////////////////////////////
+  public reloadRoadMapV = new Subject();
+  goToRoadMapP(){
+    this.router.navigate([ '/envios/hojaruta' ]);
+    this.reloadRoadMapV.next( true );
+  }
 
   ///////////////////////////////////////////
   /// POST

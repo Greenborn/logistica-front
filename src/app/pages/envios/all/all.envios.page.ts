@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject }           from 'rxjs';
 import { Router }    from '@angular/router';
 
 import { GeneralService }   from '../../../services/general.service';
@@ -16,6 +17,9 @@ export class AllEnviosPage implements OnInit {
 
   public tableConfig:any = {};
 
+  private reloadAllV;
+  private updateTable = new Subject();
+
   constructor(
     public  gral:   GeneralService,
     private auth:   AuthService,
@@ -23,7 +27,16 @@ export class AllEnviosPage implements OnInit {
     private router: Router
   ) {
     this.auth.toLoginIfNL();
+    this.setConfig();
 
+    this.reloadAllV = this.mainS.reloadAllV.subscribe({  next: ( params: any ) => {
+      this.setConfig();
+      this.updateTable.next( true );
+    } });
+
+  }
+
+  setConfig(){
     this.tableConfig = {
       id: 'roadmap',
       resaltado: [
@@ -48,6 +61,7 @@ export class AllEnviosPage implements OnInit {
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
+      updateTableSubject: this.updateTable,
       ExtraFilterTerms: '',
       provider: this.mainS,
       actionOptions: { edit: true, new: true },
@@ -55,13 +69,13 @@ export class AllEnviosPage implements OnInit {
       resaltadoEnabled: true,
       regSelect: false
     };
-
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy(){
+    this.reloadAllV.unsubscribe();
   }
 
 }

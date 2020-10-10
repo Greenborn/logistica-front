@@ -47,7 +47,9 @@ export class SideMenuService {
       if ( option.subOptions[ c ].link != undefined ){
         option.subOptions[ c ].onClick = () => { this.router.navigate( [ option.subOptions[ c ].link ] ); };
       } else {
-        option.subOptions[ c ].onClick = ()=>{ };
+        if ( option.onClick == undefined ){
+          option.subOptions[ c ].onClick = ()=>{ };
+        }
       }
     }
 

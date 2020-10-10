@@ -20,7 +20,7 @@ import { SucursalesPage }    from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage }     from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }      from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote } from './pages/envios/delivery.note/envio.delivery.note';
-import { SuccessPage }       from './pages/gral/success/success';
+import { ResultPage }       from './pages/gral/result/result';
 import { RoadmapEnviosPage } from './pages/envios/roadmap/roadmap.envios.page';
 
 import { SideMenuComponent }     from './component/side-menu/side-menu.component';
@@ -48,7 +48,7 @@ import { AuthenticationGuard  } from './services/auth/auth.guard';
     VehiculosPage,
     UsuariosPage,
     HeaderComponent, LoadingComponent,
-    SuccessPage,
+    ResultPage,
     SideMenuComponent, ToggleButtonComponent
   ],
   entryComponents: [],

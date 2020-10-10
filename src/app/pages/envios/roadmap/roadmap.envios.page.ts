@@ -32,6 +32,7 @@ export class RoadmapEnviosPage implements OnInit {
   private regsOutput:any   = [];
 
   private roadMap:RoadMap = new RoadMap();
+  private reloadRoadMapV;
   private RoadmapPostOK;
   private RoadmapPostKO;
 
@@ -53,11 +54,56 @@ export class RoadmapEnviosPage implements OnInit {
   ngOnInit() {
     this.auth.toLoginIfNL();
     this.pdfS.loadPdfMaker();
+    this.setConfig();
 
+    this.reloadRoadMapV = this.roadMapS.reloadRoadMapV.subscribe({  next: ( params: any ) => {
+      this.setConfig();
+      this.updateTable.next( true );
+    } });
+
+    this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response ) => {
+      this.regsOutput  = response;
+    } });
+
+    //////////////////////////
+    /// GET VEHÍCULOS
+    this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
+      this.vehicleList = response[ 'items' ];
+      this.vehicle_id = -1;
+      this.mainS.RoadmapParamsLoaded = true;
+    } });
+
+    this.VehicleGetAKO = this.vehicleS.VehicleGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.mainS.RoadmapParamsLoaded = false;
+    } });
+
+    //////////////////////////
+    /// ROADMAP
+    this.RoadmapPostOK = this.roadMapS.RoadmapPostOK.subscribe({  next: ( response : any[]) => {
+      this.gral.dismissLoading();
+      this.pdfS.generatePdfRoadMap({
+        date: this.format.getStringDate( new Date() ),
+        name: 'Hoja_de_ruta_',
+        regData: this.regsOutput,
+        onGenerate: () => {  }
+      });
+    } });
+
+    this.RoadmapPostKO = this.roadMapS.RoadmapPostKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.gral.dismissLoading();
+      this.gral.errMsg( response );
+
+    } });
+
+  }
+
+  setConfig(){
     this.tableConfig = {
       id: 'roadmap',
       resaltado: [
-        { 'field':'status', 'enabled':true, 'colors':this.mainS.getStatusColors() }
+        { 'field':'status', 'enabled':false, 'colors':this.mainS.getStatusColors() }
       ],
       filterFieldOptions: [
         { 'code':'date', 'text':'Fecha', 'enabled':true },
@@ -87,47 +133,7 @@ export class RoadmapEnviosPage implements OnInit {
       regSelect: true
     };
 
-    this.onTableChange = this.tableOutput.onChangeRegSelected.subscribe({  next: ( response: any[] ) => {
-      this.regsOutput  = response;
-    } });
-
-    //////////////////////////
-    /// GET VEHÍCULOS
-    this.VehicleGetAOK = this.vehicleS.VehicleGetAOK.subscribe({  next: ( response : any[]) => {
-      this.vehicleList = response;
-      this.vehicleList.items.push( { id:-1, description:' - sin especificar - ' } );
-      this.vehicle_id = -1;
-      this.mainS.RoadmapParamsLoaded = true;
-    } });
-
-    this.VehicleGetAKO = this.vehicleS.VehicleGetAKO.subscribe({  next: ( response : any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.mainS.RoadmapParamsLoaded = false;
-    } });
-
-    //////////////////////////
-    /// ROADMAP
-    this.RoadmapPostOK = this.roadMapS.RoadmapPostOK.subscribe({  next: ( response : any[]) => {
-      this.gral.dismissLoading();
-      this.pdfS.generatePdfRoadMap({
-        date: this.format.getStringDate( new Date() ),
-        name: 'Hoja_de_ruta_',
-        regData: this.regsOutput,
-        onGenerate: () => {  }
-      });
-    } });
-
-    this.RoadmapPostKO = this.roadMapS.RoadmapPostKO.subscribe({  next: ( response : any[]) => {
-      //se debería reintentar y/o mostrar mensaje de error
-      this.gral.dismissLoading();
-      this.gral.newMensaje( 'Ha ocurrido un error, por favor reintente. ');
-
-    } });
-
-    if ( !this.mainS.RoadmapParamsLoaded ){
-      this.vehicleS.getAll();
-    }
-
+    this.vehicleS.getAll();
   }
 
   nextRoadMap(){
@@ -146,6 +152,7 @@ export class RoadmapEnviosPage implements OnInit {
     this.VehicleGetAOK.unsubscribe();
     this.RoadmapPostKO.unsubscribe();
     this.RoadmapPostOK.unsubscribe();
+    this.reloadRoadMapV.unsubscribe();
   }
 
 }

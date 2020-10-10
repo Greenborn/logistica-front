@@ -11,10 +11,12 @@ import { DistancesService }     from '../../../services/distances.service';
 import { IdentificationService }from '../../../services/identification.service';
 import { VehicleService }       from '../../../services/vehicles.service';
 import { FormateoService }      from '../../../services/formateo.service';
+import { ResultPageService }    from '../../../pages/gral/result/result.page.service';
 
 import { ShippingItem }     from '../../../models/shipping.item';
 import { Shipping     }     from '../../../models/shipping';
 import { ShippingResponse } from '../../../models/shipping.response';
+import { ResultPageConfigModel }from '../../../pages/gral/result/result.config.model';
 
 @Component({
   selector: 'app-envios-one',
@@ -56,6 +58,7 @@ export class OneEnviosPage implements OnInit {
     private auth:          AuthService,
     private vehicleS:      VehicleService,
     private formBuilder:   FormBuilder,
+    private resPageS:      ResultPageService,
     public  mainS:         ShippingsService,
     public  BranchOfficeS: BranchOfficesService,
     public  distanceS:     DistancesService,
@@ -244,8 +247,9 @@ export class OneEnviosPage implements OnInit {
     //////////////////
     /// PUT - EDITAR ENVÍO
     this.ShippingPutOK = this.mainS.ShippingPutOK.subscribe({  next: ( response : any[]) => {
-      this.mainS.get();
-      this.mainS.goToAll();
+      let toResulParams       = new ResultPageConfigModel();
+      toResulParams.afterNext = () => { this.mainS.goToRemitoV(); };
+      this.resPageS.goToResultPage( toResulParams );
     } });
 
     this.ShippingPutKO = this.mainS.ShippingPutKO.subscribe({  next: ( response : any[]) => {
