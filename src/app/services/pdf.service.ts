@@ -17,6 +17,7 @@ export class PdfService {
 
   generatePdfRoadMap( params:any ) {
     let def = {
+      pageOrientation: 'landscape',
       content: [
           this.getTitleRoadMap( params ),
           this.getTableOverviewRoadMap( params.regData.regData ),
