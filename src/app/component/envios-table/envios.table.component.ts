@@ -33,8 +33,8 @@ export class EnviosTableComponent implements OnInit {
 
   public  checkBoxArray:any        = [];
   private regData:any              = [];
-  public  checkAllReg:boolean      = true;
   private checkBoxSelected:any     = [];
+  public  checkBoxGralInfo:any     = [ { checked:true, pristine:true, page:1 } ];
   private fieldsSelected:any       = [];
   public  componentEnabled:boolean = true;
 
@@ -49,12 +49,17 @@ export class EnviosTableComponent implements OnInit {
       this.componentEnabled = false;
     }
 
+    this.checkBoxGralInfo[ this.actualPage ] = { checked:true, pristine:true };
+
     if ( this.config.updateTableSubject != undefined ){
       this.updateTableSubject = this.config.updateTableSubject.subscribe({  next: ( params : any) => {
         if ( this.auth.logedIn() ){
           this.shippings        = [];
           this.checkBoxArray    = [];
-          this.checkAllReg      = true;
+          this.checkBoxGralInfo = {};
+          this.actualPage       = 1;
+
+          this.checkBoxGralInfo[ this.actualPage ] = { checked:true, pristine:true };
           this.loadPage( this.actualPage );
         }
       } });
@@ -97,8 +102,9 @@ export class EnviosTableComponent implements OnInit {
 
         // si la clave ya existe no se sobreescribe su valor
         if ( !this.checkBoxArray.hasOwnProperty( String( response.items[ c ].id ) ) ){
-          this.checkBoxArray[ String( response.items[ c ].id ) ] = true;
+          this.checkBoxArray[ String( response.items[ c ].id ) ] = this.checkBoxGralInfo[ this.actualPage ].checked;
         }
+
       }
 
       this.totalRegs = response._meta.totalCount;
@@ -108,6 +114,20 @@ export class EnviosTableComponent implements OnInit {
       for (let c=1; c <= (response._meta as any).pageCount; c ++){
           this.pageLinks.push( { 'page':c } );
       }
+
+      //Se genera arreglo de checkbox de seleccion general, se define la selección de todos
+      //los checkbox de la página actual
+      for ( let c=1; c <= this.pageCount; c++ ){
+        let check:boolean = false;
+        if ( this.actualPage == c ){
+          check = true;
+        }
+
+        if ( !this.checkBoxGralInfo.hasOwnProperty( c ) ){
+          this.checkBoxGralInfo[ c ] = { checked:check, pristine:true };
+        }
+      }
+
       this.gral.dismissLoading();
       this.checkBoxRegChange();
     } });
@@ -123,7 +143,8 @@ export class EnviosTableComponent implements OnInit {
 
   checkAllClick(){
     for ( let c = 0; c < this.shippings.length; c++ ){
-      this.checkBoxArray[ this.shippings[ c ].id ] = this.checkAllReg;
+      this.checkBoxArray[ this.shippings[ c ].id ]      = this.checkBoxGralInfo[ this.actualPage ].checked;
+      this.checkBoxGralInfo[ this.actualPage ].pristine = false;
     }
 
     this.checkBoxRegChange();
