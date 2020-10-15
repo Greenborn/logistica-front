@@ -48,7 +48,7 @@
           <tr>
             <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect">
               <input class="" type="checkbox"
-                      [(ngModel)]="checkAllReg" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
+                      [(ngModel)]="checkBoxGralInfo[ actualPage ].checked" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
             </th>
             <th scope="col" class="text-center align-middle">#</th>
             <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
