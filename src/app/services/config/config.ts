@@ -9,7 +9,7 @@ export class ConfigProvider {
 
   public getConfigData(){
     return {
-      "apiBaseUrl":"http://logistica-api.coodesoft.com.ar/", //  api.logisticatandil.com.ar
+      "apiBaseUrl":"https://api.logisticatandil.com.ar/", //  logistica-api.coodesoft.com.ar
       "distancesAction":"distances",
       "shippingsAction":"shippings",
       "branchOfficesAction":"branch-offices",
