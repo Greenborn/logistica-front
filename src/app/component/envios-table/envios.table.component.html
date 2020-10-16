@@ -50,7 +50,6 @@
               <input class="" type="checkbox"
                       [(ngModel)]="checkBoxGralInfo[ actualPage ].checked" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
             </th>
-            <th scope="col" class="text-center align-middle">#</th>
             <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
             <th scope="col" class="text-center align-middle" *ngIf="config.actionsEnabled">Acciones</th>
           </tr>
@@ -61,7 +60,7 @@
               <input class="" type="checkbox" (change)="checkBoxRegChange()"
                       [(ngModel)]="checkBoxArray[ cf.id ]" [ngModelOptions]="{standalone: true}" >
             </th>
-            <th scope="row" class="text-center align-middle">{{cf.id}}</th>
+
             <td *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ config.filterFieldOptions[ field ].code ] }}</td>
 
             <td class="text-center align-middle" *ngIf="config.actionsEnabled">

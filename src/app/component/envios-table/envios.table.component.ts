@@ -173,7 +173,7 @@ export class EnviosTableComponent implements OnInit {
     for ( let c=0; c < this.config.EnabledFilterFieldOptions.length; c++ ){
       this.fieldsSelected.push( this.config.filterFieldOptions[ this.config.EnabledFilterFieldOptions[ c ] ] );
     }
-console.log(this.checkBoxSelected);
+
     if ( this.output != undefined ){
         this.output.regsSelected   = this.checkBoxSelected;
         this.output.regData        = this.regData;
