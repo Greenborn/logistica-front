@@ -106,6 +106,7 @@ export class RoadmapEnviosPage implements OnInit {
         { 'field':'status', 'enabled':false, 'colors':this.mainS.getStatusColors() }
       ],
       filterFieldOptions: [
+        { 'code':'id', 'text':'#', 'enabled':true },
         { 'code':'date', 'text':'Fecha', 'enabled':true },
         { 'code':'originBranchOffice', 'text':'Sucursal de Origen', 'enabled':true },
         { 'code':'destinationBranchOffice', 'text':'Sucursal de Destino', 'enabled':true },
@@ -123,7 +124,7 @@ export class RoadmapEnviosPage implements OnInit {
         { 'code':'sender_identification_type', 'text':'Tipo de Identificación Remitente', 'enabled':false },
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
-      EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6 ],
+      EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
       ExtraFilterTerms: '&filter[status]=1',
       updateTableSubject: this.updateTable,
       provider: this.mainS,

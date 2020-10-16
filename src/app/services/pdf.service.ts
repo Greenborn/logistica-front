@@ -59,7 +59,6 @@ export class PdfService {
   }
 
   getTableOverviewRoadMap( rData:any ){
-    console.log(rData);
     let branchOfs = [];
     let out       = [];
 
