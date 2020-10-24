@@ -146,6 +146,11 @@ export class RoadmapEnviosPage implements OnInit {
   }
 
   nextRoadMap(){
+    if ( this.regsOutput.regsSelected.length == 0 ){
+      this.gral.newMensaje( 'Es necesario seleccionar al menos un envío.' );
+      return false;
+    }
+
     this.gral.presentLoading();
     this.roadMap           = new RoadMap();
     this.roadMap.shippings = this.regsOutput.regsSelected;
