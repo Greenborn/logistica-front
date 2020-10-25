@@ -82,6 +82,8 @@ export class RoadmapEnviosPage implements OnInit {
     /// ROADMAP
     this.RoadmapPostOK = this.roadMapS.RoadmapPostOK.subscribe({  next: ( response : any[]) => {
       this.gral.dismissLoading();
+
+      this.setregsOutputEmptyFields();
       this.pdfS.generatePdfRoadMap({
         date: this.format.getStringDate( new Date() ),
         name: 'Hoja_de_ruta_',
@@ -97,6 +99,12 @@ export class RoadmapEnviosPage implements OnInit {
 
     } });
 
+  }
+
+  setregsOutputEmptyFields(){
+    this.regsOutput.fieldsSelected.push( { code:undefined, text:'Nombre receptor' } );
+    this.regsOutput.fieldsSelected.push( { code:undefined, text:'DNI receptor' } );
+    this.regsOutput.fieldsSelected.push( { code:undefined, text:'Firma receptor' } );
   }
 
   setConfig(){

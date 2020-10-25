@@ -39,7 +39,7 @@ export class PdfService {
 
     //se agrega encabezado
     for ( let c=0; c < fieldData.length; c++ ){
-      reg.push( { text: fieldData[ c ].text, fillColor: '#dddddd', bold:true, fontSize: 8, border: [true, true, true, true] } );
+      reg.push( { text: fieldData[ c ].text, fillColor: '#dddddd', bold:true, fontSize: 8, alignment: 'center', border: [true, true, true, true] } );
     }
     out.push( reg );
 
