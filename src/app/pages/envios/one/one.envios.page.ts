@@ -339,6 +339,11 @@ export class OneEnviosPage implements OnInit {
     this.payInDestination = !this.payInOrigin;
   }
 
+  // Navegacion
+  goToAll(){
+    this.mainS.goToAll();
+  }
+
   next(){
     this.resetResaltadoInputError();
     let tieneError = false;
