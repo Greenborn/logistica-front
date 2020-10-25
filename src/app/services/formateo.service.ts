@@ -38,6 +38,15 @@ export class FormateoService {
 
   /////////////////////////
   //// FECHAS          ////
+  getTimeStampFNgbDatePickerA( date:any ) {
+    if ( date == undefined ){
+      return '';
+    }
+    let fecha = this.getDateNgbDatepickerArray( date ).getTime();
+
+    return fecha;
+  }
+
   getSDateFromTimeStamp( t:number ){
     let f = new Date( t * 1000 );
     return this.getStringDate( f );

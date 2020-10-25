@@ -59,17 +59,16 @@
 
         <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 2">
           <div class="form-group" >
-              <label *ngIf="filterFieldContent.criteriaSelected != '><'"> {{ filterFieldContent.controlConfig.label }} </label>
+              <label *ngIf="filterFieldContent.criteriaSelected != 'between'"> {{ filterFieldContent.controlConfig.label }} </label>
               <select class="form-control" id="" *ngIf="filterFieldContent.controlConfig.type == 'select'"
-                      (change) = "filterFieldSelecCriteriaParamChange()"
                       [(ngModel)]="filterFieldContent.params[0]" [ngModelOptions]="{standalone: true}">
                   <option *ngFor="let cf of filterFieldDataForFilter[ filterFieldContent.fieldSelec ].data" [value]="cf.id">{{ cf.description }}</option>
               </select>
 
-              <label *ngIf="filterFieldContent.criteriaSelected == '><'"> {{ filterFieldContent.controlConfig.label }} desde </label>
+              <label *ngIf="filterFieldContent.criteriaSelected == 'between'"> {{ filterFieldContent.controlConfig.label }} desde </label>
               <div class="input-group" *ngIf="filterFieldContent.controlConfig.type == 'date'">
                 <input class="form-control"  name="dp1"
-                       ngbDatepicker #d="ngbDatepicker"
+                       ngbDatepicker #d="ngbDatepicker" [readonly]="true"
                        [(ngModel)]     = "filterFieldContent.params[0]" [ngModelOptions]="{standalone: true}" />
                 <div class="input-group-append">
                   <button class="btn-outline-secondary calendar" (click)="d.toggle()" type="button">
@@ -81,13 +80,13 @@
           </div>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 2 && filterFieldContent.criteriaSelected == '><'">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 2 && filterFieldContent.criteriaSelected == 'between'">
             <div class="form-group">
-              <label *ngIf="filterFieldContent.criteriaSelected == '><'"> {{ filterFieldContent.controlConfig.label }} hasta </label>
+              <label *ngIf="filterFieldContent.criteriaSelected == 'between'"> {{ filterFieldContent.controlConfig.label }} hasta </label>
               <div class="input-group" *ngIf="filterFieldContent.controlConfig.type == 'date'">
                 <input class="form-control"  name="dp2"
-                       ngbDatepicker #e="ngbDatepicker"
-                       [(ngModel)]     = "filterFieldContent.params[1]" [ngModelOptions]="{standalone: true}" />
+                       ngbDatepicker #e="ngbDatepicker" [readonly]="true"
+                       [(ngModel)]     = "filterFieldContent.params[1]" [ngModelOptions]="{standalone: true}"/>
                 <div class="input-group-append">
                   <button class="btn-outline-secondary calendar" (click)="e.toggle()" type="button">
                     <ion-icon name="calendar"></ion-icon>

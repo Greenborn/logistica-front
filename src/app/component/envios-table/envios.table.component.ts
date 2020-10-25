@@ -32,15 +32,15 @@ export class EnviosTableComponent implements OnInit {
   public resaltadoCollapsed:boolean          = true;
   public filterFieldContentCollapsed:boolean = true;
 
-  public filterFieldContent:any        = { fieldSelec: '', criteriaSelected:null, criteriaOptions:[], compareOptions:[], controlConfig: [], params:['',''] };
+  public filterFieldContent:any        = { fieldSelec: 'unfiltered', criteriaSelected:null, criteriaOptions:[], compareOptions:[], controlConfig: [], params:['',''] };
   public filterFieldContentStep:number = 0;
   public filterFieldDataForFilter:any  = {}; //{ 'status':{ data:[] } } [INFO] Estructura esperable a almacenar
   public getInfoFFSubscription:any;
   public filterFieldContentTC:any = [
-    { id:'=',  description: 'Es igual a' },
-    { id:'>',  description: 'Es mayor a' },
-    { id:'<',  description: 'Es menor a' },
-    { id:'><', description: 'Está entre' },
+    { id:'=',       description: 'Es igual a' },
+    { id:'>',       description: 'Es mayor a' },
+    { id:'<',       description: 'Es menor a' },
+    { id:'between', description: 'Está entre' },
   ];
 
   public  checkBoxArray:any        = [];
@@ -198,6 +198,13 @@ export class EnviosTableComponent implements OnInit {
         this.filterFieldContent.controlConfig  = confFF.controlConfig;
         this.filterFieldContent.compareOptions = confFF.comp;
 
+        /*Se verifica si hay funcion para conversión de valores (pre envio)
+          si no existe se especifica una funcion que retorna el propio valor
+        */
+        if ( !this.filterFieldContent.controlConfig.hasOwnProperty( 'formatFunction' ) ) {
+          this.filterFieldContent.controlConfig[ 'formatFunction' ] = ( value ) => { return value; };
+        }
+
         /* Se inicializa el arreglo de criterios agregando solo las opciones
         especificadas en la configuración */
         this.filterFieldContent.criteriaOptions = [];
@@ -263,24 +270,6 @@ export class EnviosTableComponent implements OnInit {
     if ( !this.filterFieldContent.controlConfig.hasOwnProperty( 'dataSubject' ) ){
       this.filterFieldContentStep = 2;
     }
-
-  /*  switch ( this.filterFieldContent.criteriaSelected ) {
-      case '=':
-        break;
-
-      case '<', '>':
-        break;
-
-      case '><':
-        break;
-
-      default:
-        break;
-    }*/
-  }
-
-  filterFieldSelecCriteriaParamChange(){
-
   }
 
   checkAllClick(){
@@ -290,6 +279,53 @@ export class EnviosTableComponent implements OnInit {
     }
 
     this.checkBoxRegChange();
+  }
+
+  //ahora solo se fija de que esten seteados los valores
+  validateFilterParams(){
+    if ( this.filterFieldContent.params.length == 0 ){
+      return false
+    }
+
+    if ( this.filterFieldContent.criteriaSelected == '><' ) {
+      if ( this.filterFieldContent.params[ 0 ] == '' || this.filterFieldContent.params[ 1 ] == '' ) {
+        return false;
+      }
+    } else {
+      if ( this.filterFieldContent.params[ 0 ] == '' ){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  getFilterParams(){
+    let out:string = '';
+    let values:any = [0,0];
+
+    values[ 0 ] = this.filterFieldContent.controlConfig.formatFunction( this.filterFieldContent.params[ 0 ] );
+    values[ 1 ] = this.filterFieldContent.controlConfig.formatFunction( this.filterFieldContent.params[ 1 ] );
+
+    switch ( this.filterFieldContent.criteriaSelected ) {
+      case '=':
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + values[ 0 ];
+        break;
+
+      case '>':
+      case '<':
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + values[ 0 ];
+        break;
+
+      case 'between':
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '[' + this.filterFieldContent.criteriaSelected + ']=' + values[ 0 ] + ',' + values[ 1 ];
+        break;
+
+      default:
+        console.error('? comparador inválido!');
+        break;
+    }
+
+    return out;
   }
 
   checkBoxRegChange(){
@@ -370,6 +406,16 @@ export class EnviosTableComponent implements OnInit {
     this.actualPage = page;
 
     let params:string = '?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle&page=' + this.actualPage + this.config.ExtraFilterTerms;
+
+    if ( this.filterFieldContent.fieldSelec != 'unfiltered' ){
+      if ( !this.validateFilterParams() ){
+          this.gral.newMensaje( 'Revise los filtros, criterio erroneo.' );
+          return false;
+      }
+
+      params += this.getFilterParams();
+    }
+
     this.config.provider.getAll( params );
     this.gral.presentLoading();
   }
