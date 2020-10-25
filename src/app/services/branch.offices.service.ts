@@ -32,10 +32,41 @@ export class BranchOfficesService {
     return data;
   }
 
+  /*-----------------------------------------
+   GET ALL - para filtros de componente de tabla
+   se recarga si anteriormente no se hizo petición por
+   este motivo
+  -------------------------------------------*/
+  public  BranchOfficeGetATFOK = new Subject();
+  getAlltoTableFilter(){
+      if ( this.BranchOfficeGetALP == undefined ){
+        let subscribeGetAll:any;
+
+        subscribeGetAll = this.BranchOfficeGetAOK.subscribe({  next: ( data : any) => {
+          this.BranchOfficeGetATFOK.next( this.formatToSelectArray( data ) );
+          subscribeGetAll.unsubscribe();
+        } });
+
+        this.getAll();
+      } else {
+        this.BranchOfficeGetATFOK.next(  this.formatToSelectArray( this.BranchOfficeGetALP ) );
+      }
+  }
+
+  //formateamos la info a un formato comun para selects
+  private formatToSelectArray( data:any ){
+    let out:any = [];
+    for ( let c=0; c < data[ 'items' ].length; c++ ){
+      out.push( { id:data[ 'items' ][ c ].id, description: data[ 'items' ][ c ].name } );
+    }
+    return out;
+  }
+
   ///////////////////////////////////////////
   /// GET ALL
-  public BranchOfficeGetAOK = new Subject();
-  public BranchOfficeGetAKO = new Subject();
+  public BranchOfficeGetAOK     = new Subject();
+  public BranchOfficeGetAKO     = new Subject();
+  public BranchOfficeGetALP:any = undefined;
 
   getAll(){
     if ( !this.authS.logedIn() ){
@@ -45,7 +76,10 @@ export class BranchOfficesService {
 
     this.http.get(conf['apiBaseUrl'] + conf['branchOfficesAction'],
       { headers: new HttpHeaders({ 'Content-Type':  'application/json', 'Authorization':'Bearer ' + this.authS.getToken() }) } ).subscribe(
-        data => {  this.BranchOfficeGetAOK.next(data); },
+        data => {
+          this.BranchOfficeGetALP = data;
+          this.BranchOfficeGetAOK.next(data);
+        },
         err =>  {  this.BranchOfficeGetAKO.next(err);  }
       );
   }

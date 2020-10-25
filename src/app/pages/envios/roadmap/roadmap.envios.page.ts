@@ -134,6 +134,7 @@ export class RoadmapEnviosPage implements OnInit {
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
       ExtraFilterTerms: '&filter[status]=1',
+      filterContentOptions: [ ],
       updateTableSubject: this.updateTable,
       provider: this.mainS,
       actionOptions: { edit: false, new: false },
