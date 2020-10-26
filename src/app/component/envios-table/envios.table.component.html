@@ -115,7 +115,7 @@
         <thead class="thead-light">
           <tr>
             <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect">
-              <input class="" type="checkbox"
+              <input class="" type="checkbox" *ngIf="shippings.length > 0"
                       [(ngModel)]="checkBoxGralInfo[ actualPage ].checked" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
             </th>
             <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
@@ -134,6 +134,10 @@
             <td class="text-center align-middle" *ngIf="config.actionsEnabled">
               <button type="button" class="btn btn-info" (click)="edit( cf.id )" *ngIf="config.actionOptions.edit">    <ion-icon name="pencil-outline"></ion-icon> </button>
             </td>
+          </tr>
+
+          <tr class="text-center align-middle" *ngIf="shippings.length == 0">
+            <td class="text-center align-middle" colspan="20"> No se obtuvieron resultados.</td>
           </tr>
         </tbody>
       </table>
