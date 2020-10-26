@@ -9,6 +9,7 @@ import { VehicleService }     from '../../../services/vehicles.service';
 import { PdfService }         from '../../../services/pdf.service';
 import { FormateoService }    from '../../../services/formateo.service';
 import { RoadmapService }     from '../../../services/roadmap.service';
+import { BranchOfficesService } from '../../../services/branch.offices.service';
 
 import { Shipping } from '../../../models/shipping';
 import { RoadMap } from '../../../models/roadmap';
@@ -47,6 +48,7 @@ export class RoadmapEnviosPage implements OnInit {
     private vehicleS: VehicleService,
     private pdfS:     PdfService,
     private router:   Router,
+    private BranchOfS: BranchOfficesService,
     public  format:   FormateoService,
   ) {
   }
@@ -134,7 +136,25 @@ export class RoadmapEnviosPage implements OnInit {
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
       ExtraFilterTerms: '&filter[status]=1',
-      filterContentOptions: [ ],
+      filterContentOptions: [
+        { field: 'date', comp: [ '>', '<', '=', 'between' ],
+            controlConfig: { label: 'Fecha', type:'date', formatFunction: ( value ) => { return this.format.getTimeStampFNgbDatePickerA( value ); } }
+        },
+
+        { field: 'originBranchOffice', comp: [ '=' ],
+            controlConfig: {
+              label: 'Sucursal de Origen', type:'select', dataSubject: this.BranchOfS.BranchOfficeGetATFOK,
+              callbackGetData: () => { this.BranchOfS.getAlltoTableFilter(); }
+            }
+        },
+
+        { field: 'destinationBranchOffice', comp: [ '=' ],
+            controlConfig: {
+              label: 'Sucursal de Destino', type:'select', dataSubject: this.BranchOfS.BranchOfficeGetATFOK,
+              callbackGetData: () => { this.BranchOfS.getAlltoTableFilter(); }
+            }
+        },
+      ],
       updateTableSubject: this.updateTable,
       provider: this.mainS,
       actionOptions: { edit: false, new: false },
