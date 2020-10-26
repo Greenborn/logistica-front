@@ -43,7 +43,7 @@ export class AuthService {
             localStorage.setItem( 'branchOffice', JSON.stringify( (data as any).branchOffice ) );
             localStorage.setItem( 'logedIn',      JSON.stringify( (data as any).status ) );
 
-            this.router.navigate(['/envios']);
+            this.shippingS.goToAll();
           } else {
             this.gral.newMensaje( 'Usuario o contraseña incorrecta.' );
           }
