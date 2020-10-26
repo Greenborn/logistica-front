@@ -114,10 +114,13 @@ export class EnviosTableComponent implements OnInit {
         }
 
         // si la clave ya existe no se sobreescribe su valor
-        if ( !this.checkBoxArray.hasOwnProperty( String( response.items[ c ].id ) ) ){
+        if ( !this.checkBoxArray.hasOwnProperty( String( response.items[ c ].id ) ) && this.actualPage != 0 ){
           this.checkBoxArray[ String( response.items[ c ].id ) ] = this.checkBoxGralInfo[ this.actualPage ].checked;
         }
 
+        if ( this.actualPage == 0 ){
+          console.warn('pagina actual = 0?!');
+        }
       }
 
       this.totalRegs = response._meta.totalCount;
