@@ -92,6 +92,8 @@ export class RoadmapEnviosPage implements OnInit {
         regData: this.regsOutput,
         onGenerate: () => {  }
       });
+      
+      this.updateTable.next( true );
     } });
 
     this.RoadmapPostKO = this.roadMapS.RoadmapPostKO.subscribe({  next: ( response : any[]) => {
