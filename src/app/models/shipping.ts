@@ -5,6 +5,7 @@ export class Shipping {
     public destination_full_name;
     public destination_contact;
     public origin_address;
+    public origin_branch_office;
     public destination_address;
     public sender_identification:any   = { type: 1, value: "", id:0 };
     public receiver_identification:any = { type: 1, value: "", id:0 };
