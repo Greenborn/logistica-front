@@ -21,7 +21,7 @@ export class EnviosTableComponent implements OnInit {
   private ShippingGetAKO;
   private updateTableSubject;
 
-  public shippings;
+  public shippings:any = [];
 
   public actualPage:number = 1;
   public totalRegs:number;
