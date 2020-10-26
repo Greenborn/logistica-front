@@ -317,6 +317,7 @@
               <div class="row">
                 <div class="col"></div>
                 <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3" (click)="goToAll()">Cancelar</button>
                   <button type="submit" class="btn btn-primary mb-3" (click)="next()"
                           [disabled] = "!( mainS.elementEnableEdition || mainS.action == 'create' )">{{ mainS.textSubmitAction }}</button>
                 </div>
