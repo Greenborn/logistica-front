@@ -32,7 +32,12 @@ export class ShippingsService {
       { 'id': 4, 'description':'Entregado' }
     ];
   }
+  public ShippingStatusGetATFOK = new Subject();
+  getStatusWithSubject(){
+    this.ShippingStatusGetATFOK.next( this.getStatusTypes() );
+  }
 
+  //////////////////////////////////////////
   getStatusColors(){
     return {
       '1':'rgb(255, 212, 212)',

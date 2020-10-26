@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Subject }           from 'rxjs';
 import { Router }    from '@angular/router';
 
-import { GeneralService }   from '../../../services/general.service';
-import { AuthService }      from '../../../services/auth/auth.service';
-import { ShippingsService } from '../../../services/shippings.service';
+import { GeneralService }       from '../../../services/general.service';
+import { AuthService }          from '../../../services/auth/auth.service';
+import { ShippingsService }     from '../../../services/shippings.service';
+import { BranchOfficesService } from '../../../services/branch.offices.service';
 
 import { Shipping } from '../../../models/shipping';
 
@@ -21,10 +22,11 @@ export class AllEnviosPage implements OnInit {
   private updateTable = new Subject();
 
   constructor(
-    public  gral:   GeneralService,
-    private auth:   AuthService,
-    public  mainS:  ShippingsService,
-    private router: Router
+    public  gral:      GeneralService,
+    private auth:      AuthService,
+    public  mainS:     ShippingsService,
+    private BranchOfS: BranchOfficesService,
+    private router:    Router
   ) {
     this.auth.toLoginIfNL();
     this.setConfig();
@@ -62,6 +64,7 @@ export class AllEnviosPage implements OnInit {
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
+      filterContentOptions: [ ],
       updateTableSubject: this.updateTable,
       ExtraFilterTerms: '',
       provider: this.mainS,
