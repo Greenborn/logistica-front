@@ -160,11 +160,6 @@ export class ShippingsService {
       model.payment_at_origin = 0;
     }
 
-    if ( model.shipping_type_id == 1 && model.origin_branch_office == model.destination_branch_office ){
-      this.validationErrors = "Si el tipo de envío es de 'Sucursal a Sucursal' no se puede especificar la misma sucrsal para origen y destino.";
-      return false;
-    }
-
     model.price = Number( this.format.getFloat( model.price ) );
 
     if ( model.items.length <= 0 ){
