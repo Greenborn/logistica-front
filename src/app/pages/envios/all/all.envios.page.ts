@@ -6,6 +6,7 @@ import { GeneralService }       from '../../../services/general.service';
 import { AuthService }          from '../../../services/auth/auth.service';
 import { ShippingsService }     from '../../../services/shippings.service';
 import { BranchOfficesService } from '../../../services/branch.offices.service';
+import { FormateoService }      from '../../../services/formateo.service';
 
 import { Shipping } from '../../../models/shipping';
 
@@ -26,6 +27,7 @@ export class AllEnviosPage implements OnInit {
     private auth:      AuthService,
     public  mainS:     ShippingsService,
     private BranchOfS: BranchOfficesService,
+    public  format:    FormateoService,
     private router:    Router
   ) {
     this.auth.toLoginIfNL();
@@ -64,7 +66,32 @@ export class AllEnviosPage implements OnInit {
         { 'code':'vehicle', 'text':'Vehículo', 'enabled':false }
       ],
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
-      filterContentOptions: [ ],
+      filterContentOptions: [
+        { field: 'date', comp: [ '>', '<', '=', 'between' ],
+            controlConfig: { label: 'Fecha', type:'date', formatFunction: ( value ) => { return this.format.getTimeStampFNgbDatePickerA( value ); } }
+        },
+
+        { field: 'originBranchOffice', comp: [ '=' ],
+            controlConfig: {
+              label: 'Sucursal de Origen', type:'select', dataSubject: this.BranchOfS.BranchOfficeGetATFOK,
+              callbackGetData: () => { this.BranchOfS.getAlltoTableFilter(); }
+            }
+        },
+
+        { field: 'destinationBranchOffice', comp: [ '=' ],
+            controlConfig: {
+              label: 'Sucursal de Destino', type:'select', dataSubject: this.BranchOfS.BranchOfficeGetATFOK,
+              callbackGetData: () => { this.BranchOfS.getAlltoTableFilter(); }
+            }
+        },
+
+        { field: 'status', comp: [ '=' ],
+            controlConfig: {
+              label: 'Estado', type:'select', dataSubject: this.mainS.ShippingStatusGetATFOK,
+              callbackGetData: () => { this.mainS.getStatusWithSubject(); }
+            }
+        }
+      ],
       updateTableSubject: this.updateTable,
       ExtraFilterTerms: '',
       provider: this.mainS,
