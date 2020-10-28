@@ -169,11 +169,10 @@ export class EnviosTableComponent implements OnInit {
       }
     }
 
-    if ( !found && this.config.filterContentOptions.length > 0 ){
-      this.config.filterContentOptions.push( { field: 'unfiltered', comp: [], controlConfig: { label: 'Sin filtrar' } } );
+    if ( !found ){
+      this.filterFieldContent.fieldSelec = 'unfiltered';
     }
 
-    this.filterFieldContent.fieldSelec = 'unfiltered';
     this.filterFieldContentStep        = 0;
     this.filterFieldContent.params     = [];
 
