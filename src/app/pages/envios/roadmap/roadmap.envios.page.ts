@@ -92,7 +92,7 @@ export class RoadmapEnviosPage implements OnInit {
         regData: this.regsOutput,
         onGenerate: () => {  }
       });
-      
+
       this.updateTable.next( true );
     } });
 
@@ -139,6 +139,8 @@ export class RoadmapEnviosPage implements OnInit {
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
       ExtraFilterTerms: '&filter[status]=1',
       filterContentOptions: [
+        { field: 'unfiltered', comp: [], controlConfig: { label: 'Sin filtrar' } },
+
         { field: 'date', comp: [ '>', '<', '=', 'between' ],
             controlConfig: { label: 'Fecha', type:'date', formatFunction: ( value ) => { return this.format.getTimeStampFNgbDatePickerA( value ); } }
         },
