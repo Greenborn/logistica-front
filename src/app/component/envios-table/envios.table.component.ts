@@ -320,7 +320,6 @@ export class EnviosTableComponent implements OnInit {
 
       case '[=]':
         out = '&filter[' + this.filterFieldContent.fieldSelec + '][inside]' + '=' + values[ 0 ] + ',' + ( Number( values[ 0 ] ) + 1000*60*60*24 );
-        console.log(out);
         break;
 
       case '>':
