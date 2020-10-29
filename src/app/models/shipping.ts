@@ -34,6 +34,7 @@ export class Shipping {
       this.distance_id                   = response.distance.id;
       this.shipping_type_id              = response.shippingType.id;
       this.status                        = response.status.id;
+      this.payment_at_origin             = response.payment_at_origin;
 
       this.origin_full_name      = response.origin_full_name;
       this.origin_contact        = response.origin_contact;

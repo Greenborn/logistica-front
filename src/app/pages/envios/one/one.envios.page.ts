@@ -117,7 +117,7 @@ export class OneEnviosPage implements OnInit {
         origin_branch_office:      new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         origin_contact:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         origin_address:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
-        payment_at_origin:         new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        payment_at_origin:         new FormControl({ value: true, disabled: !this.mainS.elementEnableEdition }, Validators.required),
         destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
         receiver_identification_t: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
