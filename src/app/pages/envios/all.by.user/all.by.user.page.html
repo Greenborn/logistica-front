@@ -1,0 +1,31 @@
+<ion-header>
+  <app-header [title]="'Envíos'"></app-header>
+  <app-side-menu></app-side-menu>
+</ion-header>
+
+<ion-content padding>
+
+        <div class="container form-box">
+          <div class="row">
+            <div class="col text-center title-content-3">
+              <h3>Envíos por Usuario</h3>
+            </div>
+          </div>
+
+          <div class="row border-bottom mb-3">
+            <div class="col col-sm-6">
+              <form class="form-inline">
+                 <label for="vehicle">Seleccionar usuario:&nbsp;</label>
+                 <select class="form-control" (change)="aplicar()"
+                         [(ngModel)]="userSelected" [ngModelOptions]="{standalone: true}">
+                     <option *ngFor="let cf of usersList" [value]="cf.id">{{cf.username}}</option>
+                 </select>
+                </form>
+            </div>
+          </div>
+
+          <envios-table [config]="tableConfig"></envios-table>
+
+        </div>
+
+</ion-content>

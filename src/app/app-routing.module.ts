@@ -11,6 +11,7 @@ import { VehiculosPage  }       from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage  }        from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote  }   from './pages/envios/delivery.note/envio.delivery.note';
 import { RoadmapEnviosPage  }   from './pages/envios/roadmap/roadmap.envios.page';
+import { AllEnviosByUserPage }  from './pages/envios/all.by.user/all.by.user.page';
 import { ResultPage  }         from './pages/gral/result/result';
 
 import { AuthenticationGuard  } from './services/auth/auth.guard';
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'envios/hojaruta',  component: RoadmapEnviosPage, canActivate: [AuthenticationGuard]},
   { path: 'envios/remito', component: EnvioDeliveryNote   , canActivate: [AuthenticationGuard]},
   { path: 'envios/detalle',component: OneEnviosPage       , canActivate: [AuthenticationGuard]},
+  { path: 'envios/porusuario',component: AllEnviosByUserPage, canActivate: [AuthenticationGuard]},
   { path: 'sucursales',    component: SucursalesPage      , canActivate: [AuthenticationGuard]},
   { path: 'vehiculos',     component: VehiculosPage       , canActivate: [AuthenticationGuard]},
   { path: 'usuarios',      component: UsuariosPage        , canActivate: [AuthenticationGuard]},

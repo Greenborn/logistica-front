@@ -98,6 +98,12 @@ export class ShippingsService {
     this.reloadAllV.next( true );
   }
 
+  public reloadAllByUserV = new Subject();
+  goToAllByUser(){
+    this.router.navigate([ '/envios/porusuario' ]);
+    this.reloadAllByUserV.next( true );
+  }
+
   goToRemitoV( id:number = -1){
     if ( id != -1 ){
       this.elementId = id;
