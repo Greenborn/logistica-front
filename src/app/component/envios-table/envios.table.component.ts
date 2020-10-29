@@ -152,7 +152,7 @@ export class EnviosTableComponent implements OnInit {
 
     } });
 
-    if ( this.auth.logedIn() ){
+    if ( this.auth.logedIn() && !this.config.hasOwnProperty( 'waitForUpdateSubject' ) ){
       this.loadPage( this.actualPage );
     }
 
