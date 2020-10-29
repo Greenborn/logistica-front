@@ -49,7 +49,7 @@ export class SideMenuService {
     let role:string        = this.authService.getRole();
 
     if ( !option.hasOwnProperty( 'permisions' ) ){
-      return true;
+      return false;
     }
 
     if ( role == undefined || role == null ){
