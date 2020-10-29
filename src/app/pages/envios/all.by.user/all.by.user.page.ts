@@ -22,7 +22,6 @@ export class AllEnviosByUserPage implements OnInit {
 
   private reloadAllV;
   private updateTable = new Subject();
-  private userFilter:string;
 
   public UsersGetAOK;
   public UsersGetAKO;
@@ -57,8 +56,8 @@ export class AllEnviosByUserPage implements OnInit {
       }
       for ( let c=0; c < this.usersList.length; c++ ){
         if ( user == this.usersList[ c ].username ){
-          this.userFilter   = 'filter[user]=' + this.usersList.id;
           this.userSelected = this.usersList[ c ].id;
+          this.aplicar();
         }
       }
 
@@ -74,7 +73,7 @@ export class AllEnviosByUserPage implements OnInit {
   }
 
   aplicar(){
-    this.userFilter = '&filter[user]=' + this.userSelected;
+    this.tableConfig.ExtraFilterTerms = '&filter[user]=' + this.userSelected;
     this.reloadAllV.next( true );
   }
 
@@ -133,8 +132,8 @@ export class AllEnviosByUserPage implements OnInit {
             }
         }
       ],
-      updateTableSubject: this.updateTable,
-      ExtraFilterTerms: this.userFilter,
+      updateTableSubject: this.updateTable, waitForUpdateSubject: true,
+      ExtraFilterTerms: '',
       provider: this.mainS,
       actionOptions: { edit: true, new: false },
       actionsEnabled: true,
