@@ -41,6 +41,7 @@ export class EnviosTableComponent implements OnInit {
     { id:'>',       description: 'Es mayor a' },
     { id:'<',       description: 'Es menor a' },
     { id:'between', description: 'Está entre' },
+    { id:'[=]',     description: 'Es igual a' }
   ];
 
   public  checkBoxArray:any        = [];
@@ -289,8 +290,12 @@ export class EnviosTableComponent implements OnInit {
       return false
     }
 
-    if ( this.filterFieldContent.criteriaSelected == '><' ) {
-      if ( this.filterFieldContent.params[ 0 ] == '' || this.filterFieldContent.params[ 1 ] == '' ) {
+    if ( this.filterFieldContent.criteriaSelected == 'between' ) {
+      if ( this.filterFieldContent.params[ 0 ] == '' || this.filterFieldContent.params[ 1 ] == '' || this.filterFieldContent.params[ 0 ] == undefined || this.filterFieldContent.params[ 1 ] == undefined ) {
+        return false;
+      }
+
+      if ( this.filterFieldContent.controlConfig.type == 'date' && ( !this.filterFieldContent.params[ 0 ].hasOwnProperty('year') || !this.filterFieldContent.params[ 1 ].hasOwnProperty('year') ) ) {
         return false;
       }
     } else {
@@ -313,9 +318,16 @@ export class EnviosTableComponent implements OnInit {
         out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + values[ 0 ];
         break;
 
+      case '[=]':
+        out = '&filter[' + this.filterFieldContent.fieldSelec + '][inside]' + '=' + values[ 0 ] + ',' + ( Number( values[ 0 ] ) + 1000*60*60*24 );
+        break;
+
       case '>':
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + ( Number( values[ 0 ] ) + 1000*60*60*24 );  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
+        break;
+
       case '<':
-        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + values[ 0 ];
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + ( Number( values[ 0 ] ) - 1000*60*60*24 );  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
         break;
 
       case 'between':

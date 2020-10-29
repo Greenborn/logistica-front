@@ -68,8 +68,8 @@ export class AllEnviosPage implements OnInit {
       EnabledFilterFieldOptions: [ 0, 1, 2, 3, 4, 5, 6, 7 ],
       filterContentOptions: [
         { field: 'unfiltered', comp: [], controlConfig: { label: 'Sin filtrar' } },
-        
-        { field: 'date', comp: [ '>', '<', '=', 'between' ],
+
+        { field: 'date', comp: [ '>', '<', '[=]', 'between' ],
             controlConfig: { label: 'Fecha', type:'date', formatFunction: ( value ) => { return this.format.getTimeStampFNgbDatePickerA( value ); } }
         },
 
