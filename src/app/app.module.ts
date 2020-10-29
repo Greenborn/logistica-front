@@ -20,8 +20,9 @@ import { SucursalesPage }    from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage }     from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }      from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote } from './pages/envios/delivery.note/envio.delivery.note';
-import { ResultPage }       from './pages/gral/result/result';
-import { RoadmapEnviosPage } from './pages/envios/roadmap/roadmap.envios.page';
+import { ResultPage }        from './pages/gral/result/result';
+import { RoadmapEnviosPage   } from './pages/envios/roadmap/roadmap.envios.page';
+import { AllEnviosByUserPage } from './pages/envios/all.by.user/all.by.user.page';
 
 import { SideMenuComponent }     from './component/side-menu/side-menu.component';
 import { HeaderComponent }       from './component/header/header.component';
@@ -42,7 +43,7 @@ import { AuthenticationGuard  } from './services/auth/auth.guard';
     AppComponent,
     HomePage,
     LoginPage,
-    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, RoadmapEnviosPage,
+    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, RoadmapEnviosPage, AllEnviosByUserPage,
     EnviosTableComponent,
     SucursalesPage,
     VehiculosPage,

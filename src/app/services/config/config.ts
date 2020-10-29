@@ -12,6 +12,7 @@ export class ConfigProvider {
       "apiBaseUrl":"http://logistica-api.coodesoft.com.ar/", //  https://api.logisticatandil.com.ar/
       "distancesAction":"distances",
       "shippingsAction":"shippings",
+      "usersAction":"users",
       "branchOfficesAction":"branch-offices",
       "shippingTypesAction":"shipping-types",
       "servicesAction":"service-types",
