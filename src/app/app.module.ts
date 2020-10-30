@@ -20,8 +20,9 @@ import { SucursalesPage }    from './pages/sucursales/all/sucursales.page';
 import { VehiculosPage }     from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage }      from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote } from './pages/envios/delivery.note/envio.delivery.note';
-import { SuccessPage }       from './pages/gral/success/success';
-import { RoadmapEnviosPage } from './pages/envios/roadmap/roadmap.envios.page';
+import { ResultPage }        from './pages/gral/result/result';
+import { RoadmapEnviosPage   } from './pages/envios/roadmap/roadmap.envios.page';
+import { AllEnviosByUserPage } from './pages/envios/all.by.user/all.by.user.page';
 
 import { SideMenuComponent }     from './component/side-menu/side-menu.component';
 import { HeaderComponent }       from './component/header/header.component';
@@ -35,18 +36,20 @@ import { NgbDateCustomI18 }               from './providers/ngb-date-custom-i18.
 import { NgbDateParserFormatter, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule }        from '@angular/platform-browser/animations';
 
+import { AuthenticationGuard  } from './services/auth/auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomePage,
     LoginPage,
-    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, RoadmapEnviosPage,
+    AllEnviosPage, OneEnviosPage, EnvioDeliveryNote, RoadmapEnviosPage, AllEnviosByUserPage,
     EnviosTableComponent,
     SucursalesPage,
     VehiculosPage,
     UsuariosPage,
     HeaderComponent, LoadingComponent,
-    SuccessPage,
+    ResultPage,
     SideMenuComponent, ToggleButtonComponent
   ],
   entryComponents: [],
@@ -62,6 +65,7 @@ import { BrowserAnimationsModule }        from '@angular/platform-browser/animat
   providers: [
     StatusBar,
     SplashScreen,
+    AuthenticationGuard,
     { provide: RouteReuseStrategy,     useClass: IonicRouteStrategy },
     { provide: LocationStrategy,       useClass: HashLocationStrategy },
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },

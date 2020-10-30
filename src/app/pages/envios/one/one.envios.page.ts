@@ -11,10 +11,12 @@ import { DistancesService }     from '../../../services/distances.service';
 import { IdentificationService }from '../../../services/identification.service';
 import { VehicleService }       from '../../../services/vehicles.service';
 import { FormateoService }      from '../../../services/formateo.service';
+import { ResultPageService }    from '../../../pages/gral/result/result.page.service';
 
 import { ShippingItem }     from '../../../models/shipping.item';
 import { Shipping     }     from '../../../models/shipping';
 import { ShippingResponse } from '../../../models/shipping.response';
+import { ResultPageConfigModel }from '../../../pages/gral/result/result.config.model';
 
 @Component({
   selector: 'app-envios-one',
@@ -44,8 +46,6 @@ export class OneEnviosPage implements OnInit {
 
   public  form;
 
-  public shippngItem              = new ShippingItem();
-  public shipping                 = new Shipping();
   public payInDestination:boolean = false;
   public payInOrigin:boolean      = true;
   public viewData:any             = { originBranchOffice:{} };
@@ -58,6 +58,7 @@ export class OneEnviosPage implements OnInit {
     private auth:          AuthService,
     private vehicleS:      VehicleService,
     private formBuilder:   FormBuilder,
+    private resPageS:      ResultPageService,
     public  mainS:         ShippingsService,
     public  BranchOfficeS: BranchOfficesService,
     public  distanceS:     DistancesService,
@@ -85,14 +86,6 @@ export class OneEnviosPage implements OnInit {
     }
   }
 
-  moneyReset(v){
-    if(v=='' || v =='$ '){
-      return '$ 0';
-    } else {
-      return v;
-    }
-  }
-
   resetResaltadoInputError(){
     let e = this.elements.nativeElement.querySelectorAll('.form-control');
     for (let c=0; c < e.length; c++){
@@ -107,15 +100,24 @@ export class OneEnviosPage implements OnInit {
       this.mainS.goToCreate();
     }
 
+    let routerE = this.router.events.subscribe( ( event ) => {
+      if ( event.hasOwnProperty( 'url' ) ) {
+        if ( ( event as any ).url == '/envios/nuevo' ){
+          this.mainS.setCreateParams();
+        }
+      }
+    });
+
     this.form = new FormGroup({
         origin_full_name:          new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
         sender_identification_t:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         sender_identification_v:   new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[0-9]*$') ] ),
+        origin_branch_office:      new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         origin_contact:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
         origin_address:            new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
-        payment_at_origin:         new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
+        payment_at_origin:         new FormControl({ value: true, disabled: !this.mainS.elementEnableEdition }, Validators.required),
         destination_full_name:     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
                                         [ Validators.required, Validators.pattern('^[a-zA-ZáÁéÉíÍóÓúÚñÑüÜ \s]+$') ] ),
         receiver_identification_t: new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition }, Validators.required),
@@ -130,13 +132,13 @@ export class OneEnviosPage implements OnInit {
         vehicle_id:                new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         status:                    new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition } ),
         price:                     new FormControl({ value: '', disabled: !this.mainS.elementEnableEdition },
-                                        [ Validators.required, Validators.pattern(/^\s*-?(\u0024)?(\u0020)?((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s*$/) ]),
+                                        [ Validators.required, Validators.pattern(/^\s*((\d{1,3}(\.(\d){3})*)|\d*)(,\d{1,2})?\s*$/) ]),
     });
 
     //////////////////////////
     /// GET - INFO ENVIO
     this.ShippingGetOK = this.mainS.ShippingGetOK.subscribe({  next: ( response:ShippingResponse ) => {
-      this.shipping.setValuesFromResponse( response, this.format );
+      this.mainS.oneElement.setValuesFromResponse( response, this.format );
 
       this.viewData.originBranchOffice = response.originBranchOffice;
 
@@ -145,7 +147,7 @@ export class OneEnviosPage implements OnInit {
       this.deliveryNotes.tripled    = response.remitos.tripled    + '&token=' + this.auth.getToken();
       this.deliveryNotes.cuadrupled = response.remitos.cuadrupled + '&token=' + this.auth.getToken();
 
-      this.payInDestination = !this.shipping.payment_at_origin;
+      this.payInDestination = !this.mainS.oneElement.payment_at_origin;
       this.gral.dismissLoading();
     } });
 
@@ -246,8 +248,9 @@ export class OneEnviosPage implements OnInit {
     //////////////////
     /// PUT - EDITAR ENVÍO
     this.ShippingPutOK = this.mainS.ShippingPutOK.subscribe({  next: ( response : any[]) => {
-      this.mainS.get();
-      this.mainS.goToAll();
+      let toResulParams       = new ResultPageConfigModel();
+      toResulParams.afterNext = () => { this.mainS.goToRemitoV(); };
+      this.resPageS.goToResultPage( toResulParams );
     } });
 
     this.ShippingPutKO = this.mainS.ShippingPutKO.subscribe({  next: ( response : any[]) => {
@@ -320,12 +323,12 @@ export class OneEnviosPage implements OnInit {
   }
 
   addItem(){
-    this.shipping.items.push( { 'description': this.shippngItem.description } );
-    this.shippngItem = new ShippingItem();
+    this.mainS.oneElement.items.push( { 'description': this.mainS.oneElementshippngItem.description } );
+    this.mainS.oneElementshippngItem = new ShippingItem();
   }
 
   delItem(i){
-    this.shipping.items.splice(i, 1);
+    this.mainS.oneElement.items.splice(i, 1);
   }
 
   payNDestination(){
@@ -334,6 +337,11 @@ export class OneEnviosPage implements OnInit {
 
   payNOrigin(){
     this.payInDestination = !this.payInOrigin;
+  }
+
+  // Navegacion
+  goToAll(){
+    this.mainS.goToAll();
   }
 
   next(){
@@ -356,11 +364,11 @@ export class OneEnviosPage implements OnInit {
       return false;
     }
 
-    if ( this.mainS.validateModel( this.shipping ) ){
+    if ( this.mainS.validateModel( this.mainS.oneElement ) ){
       if ( this.mainS.action == 'edit' ){
-          this.mainS.put( this.shipping );
+          this.mainS.put( this.mainS.oneElement );
       } else if ( this.mainS.action == 'create' ) {
-          this.mainS.post( this.shipping );
+          this.mainS.post( this.mainS.oneElement );
       }
     } else {
       this.gral.newMensaje( this.mainS.validationErrors );

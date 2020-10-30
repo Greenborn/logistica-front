@@ -5,6 +5,7 @@ export class Shipping {
     public destination_full_name;
     public destination_contact;
     public origin_address;
+    public origin_branch_office;
     public destination_address;
     public sender_identification:any   = { type: 1, value: "", id:0 };
     public receiver_identification:any = { type: 1, value: "", id:0 };
@@ -29,10 +30,12 @@ export class Shipping {
       this.receiver_identification.id    = response.receiver_identification.id;
       this.receiver_identification.type  = response.receiver_identification.identification_type.id;
       this.destination_branch_office     = response.destinationBranchOffice.id;
+      this.origin_branch_office          = response.originBranchOffice.id;
       this.service_type_id               = response.serviceType.id;
       this.distance_id                   = response.distance.id;
       this.shipping_type_id              = response.shippingType.id;
       this.status                        = response.status.id;
+      this.payment_at_origin             = response.payment_at_origin;
 
       this.origin_full_name      = response.origin_full_name;
       this.origin_contact        = response.origin_contact;
@@ -41,7 +44,7 @@ export class Shipping {
       this.destination_contact   = response.destination_contact;
       this.origin_address        = response.origin_address;
       this.destination_address   = response.destination_address;
-      this.price                 = format.getLocaleMoneyF( String( response.price ) );
+      this.price                 = format.getFloatLA( String( response.price ) );
       this.date                  = response.date;
 
       this.sender_identification.value   = response.sender_identification.value;
@@ -51,9 +54,11 @@ export class Shipping {
         this.vehicle_id = response.vehicle.id;
       }
 
+      let itemsaux:any = [];
       for( let c=0; c < response.shippingItems.length; c++ ){
-        this.items.push( { description: response.shippingItems[ c ].item, id: response.shippingItems[ c ].id } );
+        itemsaux.push( { description: response.shippingItems[ c ].item, id: response.shippingItems[ c ].id } );
       }
+      this.items = itemsaux;
 
     }
 }

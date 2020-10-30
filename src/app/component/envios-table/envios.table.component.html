@@ -1,14 +1,15 @@
-<div class="row  align-items-center mb-2">
+<div class="row  align-items-center mb-2" *ngIf="componentEnabled">
   <div class="col-auto">
     <button type="" class="btn btn-primary" (click)="create()" *ngIf="config.actionOptions.new">Nuevo Envío</button>
-    <button type="" class="btn btn-primary" (click)="showFilters()">Filtros</button>
+    <button type="" class="btn btn-primary" (click)="showFiltersFields()">Campos</button>
+    <button type="" class="btn btn-primary" (click)="showFiltersFieldC()" *ngIf="config.filterContentOptions.length > 0">Filtros</button>
     <button type="" class="btn btn-primary" (click)="showResaltado()" *ngIf="config.resaltadoEnabled">Resaltado</button>
   </div>
 
   <div class="col"></div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="componentEnabled">
   <div class="col" *ngIf="!filtersCollapsed">
 
       <div class="row pl-3">
@@ -20,11 +21,6 @@
         </div>
       </div>
 
-      <div class="row mt-3">
-        <div class="col">
-          <button type="submit" class="btn btn-primary mb-2" (click)="applyFilter()">Aplicar</button>
-        </div>
-      </div>
     </div>
 
     <div class="col" *ngIf="!resaltadoCollapsed">
@@ -37,9 +33,81 @@
       </div>
     </div>
 
+    <div class="col" *ngIf="!filterFieldContentCollapsed">
+      <div class="row pl-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="form-group" >
+              <label for="sucursal-origen"> Campo a Filtrar </label>
+              <select class="form-control" id=""
+                      (change) = "filterFieldSelecChange()"
+                      [(ngModel)]="filterFieldContent.fieldSelec" [ngModelOptions]="{standalone: true}">
+                  <option *ngFor="let cf of config.filterContentOptions" [value]="cf.field">{{ cf.controlConfig.label }}</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 1">
+          <div class="form-group" >
+              <label for="sucursal-origen"> Filtro a Aplicar </label>
+              <select class="form-control" id=""
+                      (change) = "filterFieldSelecCriteriaChange()"
+                      [(ngModel)]="filterFieldContent.criteriaSelected" [ngModelOptions]="{standalone: true}">
+                  <option *ngFor="let cf of filterFieldContent.criteriaOptions" [value]="cf.id">{{ cf.description }}</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 2">
+          <div class="form-group" >
+              <label *ngIf="filterFieldContent.criteriaSelected != 'between'"> {{ filterFieldContent.controlConfig.label }} </label>
+              <select class="form-control" id="" *ngIf="filterFieldContent.controlConfig.type == 'select'"
+                      [(ngModel)]="filterFieldContent.params[0]" [ngModelOptions]="{standalone: true}">
+                  <option *ngFor="let cf of filterFieldDataForFilter[ filterFieldContent.fieldSelec ].data" [value]="cf.id">{{ cf.description }}</option>
+              </select>
+
+              <label *ngIf="filterFieldContent.criteriaSelected == 'between'"> {{ filterFieldContent.controlConfig.label }} desde </label>
+              <div class="input-group" *ngIf="filterFieldContent.controlConfig.type == 'date'">
+                <input class="form-control"  name="dp1"
+                       ngbDatepicker #d="ngbDatepicker" [readonly]="true"
+                       [(ngModel)]     = "filterFieldContent.params[0]" [ngModelOptions]="{standalone: true}" />
+                <div class="input-group-append">
+                  <button class="btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+                    <ion-icon name="calendar"></ion-icon>
+                  </button>
+                </div>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngIf="filterFieldContentStep >= 2 && filterFieldContent.criteriaSelected == 'between'">
+            <div class="form-group">
+              <label *ngIf="filterFieldContent.criteriaSelected == 'between'"> {{ filterFieldContent.controlConfig.label }} hasta </label>
+              <div class="input-group" *ngIf="filterFieldContent.controlConfig.type == 'date'">
+                <input class="form-control"  name="dp2"
+                       ngbDatepicker #e="ngbDatepicker" [readonly]="true"
+                       [(ngModel)]     = "filterFieldContent.params[1]" [ngModelOptions]="{standalone: true}"/>
+                <div class="input-group-append">
+                  <button class="btn-outline-secondary calendar" (click)="e.toggle()" type="button">
+                    <ion-icon name="calendar"></ion-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="row mt-3">
+        <div class="col">
+          <button type="submit" class="btn btn-primary mb-2" (click)="applyFilter()">Aplicar</button>
+        </div>
+      </div>
+    </div>
+
 </div>
 
-<div class="row">
+<div class="row" *ngIf="componentEnabled">
   <div class="col">
     <div class="table-responsive">
 
@@ -47,10 +115,9 @@
         <thead class="thead-light">
           <tr>
             <th scope="col-auto" class="text-center align-middle" *ngIf="config.regSelect">
-              <input class="" type="checkbox"
-                      [(ngModel)]="checkAllReg" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
+              <input class="" type="checkbox" *ngIf="shippings.length > 0"
+                      [(ngModel)]="checkBoxGralInfo[ actualPage ].checked" (change)="checkAllClick()" [ngModelOptions]="{standalone: true}" >
             </th>
-            <th scope="col" class="text-center align-middle">#</th>
             <th *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ config.filterFieldOptions[ field ].text }}</th>
             <th scope="col" class="text-center align-middle" *ngIf="config.actionsEnabled">Acciones</th>
           </tr>
@@ -61,12 +128,16 @@
               <input class="" type="checkbox" (change)="checkBoxRegChange()"
                       [(ngModel)]="checkBoxArray[ cf.id ]" [ngModelOptions]="{standalone: true}" >
             </th>
-            <th scope="row" class="text-center align-middle">{{cf.id}}</th>
+
             <td *ngFor="let field of config.EnabledFilterFieldOptions;" scope="col" class="text-center align-middle">{{ cf[ config.filterFieldOptions[ field ].code ] }}</td>
 
             <td class="text-center align-middle" *ngIf="config.actionsEnabled">
               <button type="button" class="btn btn-info" (click)="edit( cf.id )" *ngIf="config.actionOptions.edit">    <ion-icon name="pencil-outline"></ion-icon> </button>
             </td>
+          </tr>
+
+          <tr class="text-center align-middle" *ngIf="shippings.length == 0">
+            <td class="text-center align-middle" colspan="20"> No se obtuvieron resultados.</td>
           </tr>
         </tbody>
       </table>
@@ -75,7 +146,7 @@
   </div>
 </div>
 
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example" *ngIf="componentEnabled">
   <ul class="pagination justify-content-center">
     <li class="page-item" [ngClass]="{disabled: actualPage == 1 }">
       <a class="page-link" (click)="loadPage( actualPage-1 )" tabindex="-1">Anterior</a>

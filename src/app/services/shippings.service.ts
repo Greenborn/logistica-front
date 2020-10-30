@@ -6,7 +6,6 @@ import { Subject }    from 'rxjs';
 import { Router }     from '@angular/router';
 
 import { ConfigProvider }       from './config/config';
-import { AuthService }          from './auth/auth.service';
 import { FormateoService }      from './formateo.service';
 
 import { Shipping }     from '../models/shipping';
@@ -16,10 +15,11 @@ import { ShippingItem } from '../models/shipping.item';
 @Injectable({ providedIn: 'root' })
 export class ShippingsService {
 
+  public authS;
+
   constructor(
   	public http:          HttpClient,
     public config:        ConfigProvider,
-    public authS:         AuthService,
     public router:        Router,
     private format:       FormateoService
   ) {}
@@ -32,7 +32,12 @@ export class ShippingsService {
       { 'id': 4, 'description':'Entregado' }
     ];
   }
+  public ShippingStatusGetATFOK = new Subject();
+  getStatusWithSubject(){
+    this.ShippingStatusGetATFOK.next( this.getStatusTypes() );
+  }
 
+  //////////////////////////////////////////
   getStatusColors(){
     return {
       '1':'rgb(255, 212, 212)',
@@ -72,17 +77,40 @@ export class ShippingsService {
     this.get();
   }
 
-  public createAction:boolean = true;
+  public createAction:boolean  = true;
+  public oneElement            = new Shipping();
+  public oneElementshippngItem = new ShippingItem();
   goToCreate(){
-    this.elementEnableEdition = true;
-    this.action               = 'create';
-    this.textSubmitAction     = 'Guardar';
+    this.setCreateParams();
     this.router.navigate(['/envios/nuevo']);
   }
+  setCreateParams(){
+    this.elementEnableEdition  = true;
+    this.action                = 'create';
+    this.textSubmitAction      = 'Guardar';
+    this.oneElement            = new Shipping();
+    this.oneElementshippngItem = new ShippingItem();
+  }
 
+  public reloadAllV = new Subject();
   goToAll(){
-    this.getAll('?expand=originBranchOffice,serviceType,destinationBranchOffice,vehicle');
-    this.router.navigate(['/exito']);
+    this.router.navigate([ '/envios' ]);
+    this.reloadAllV.next( true );
+  }
+
+  public reloadAllByUserV = new Subject();
+  goToAllByUser(){
+    this.router.navigate([ '/envios/porusuario' ]);
+    this.reloadAllByUserV.next( true );
+  }
+
+  goToRemitoV( id:number = -1){
+    if ( id != -1 ){
+      this.elementId = id;
+    }
+
+    this.get();
+    this.router.navigate([ '/envios/remito' ]);
   }
 
   ///////////////////////////////////////////

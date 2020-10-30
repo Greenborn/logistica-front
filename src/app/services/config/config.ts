@@ -9,15 +9,17 @@ export class ConfigProvider {
 
   public getConfigData(){
     return {
-      "apiBaseUrl":"http://logistica-api.coodesoft.com.ar/", //api.logisticatandil.com.ar
+      "apiBaseUrl":"http://logistica-api.coodesoft.com.ar/", //  https://api.logisticatandil.com.ar/
       "distancesAction":"distances",
       "shippingsAction":"shippings",
+      "usersAction":"users",
       "branchOfficesAction":"branch-offices",
       "shippingTypesAction":"shipping-types",
       "servicesAction":"service-types",
       "servicesIdentificationType":"identification-types",
       "loginAction":"login",
-      "vehiclesAction":"vehicles"
+      "vehiclesAction":"vehicles",
+      "roadMapAction": "roadmaps"
     };
   }
 

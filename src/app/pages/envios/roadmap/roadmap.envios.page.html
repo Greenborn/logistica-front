@@ -31,7 +31,8 @@
                  <label for="vehicle">Vincular envíos a vehículo:&nbsp;</label>
                  <select class="form-control" id="vehicle_id"
                          [(ngModel)]="vehicle_id" [ngModelOptions]="{standalone: true}">
-                     <option *ngFor="let cf of mainS.VehicleList.items" [value]="cf.id">{{cf.description}}</option>
+                     <option value="-1"> - sin especificar - </option>
+                     <option *ngFor="let cf of vehicleList" [value]="cf.id">{{cf.description}}</option>
                  </select>
                 </form>
             </div>

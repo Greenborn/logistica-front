@@ -28,22 +28,24 @@
 
                     <form>
 
-                      <div class="form-group" *ngIf="mainS.action == 'edit'">
+                      <div class="form-group" [formGroup]="form">
                           <label for="sucursal-origen">Sucursal</label>
-                          <input type="text" class="form-control" id="sucursal-origen" [disabled] = "true"
-                                 value="{{ viewData.originBranchOffice.name }}"  />
+                          <select class="form-control" id="origin_branch_office"
+                                  [(ngModel)]="mainS.oneElement.origin_branch_office" formControlName="origin_branch_office">
+                              <option *ngFor="let cf of mainS.branchOfficeList.items" [value]="cf.id">{{cf.name}}</option>
+                          </select>
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                         <label for="name">Nombre y Apellido</label>
                         <input type="text" class="form-control" id="origin_full_name"
-                                [(ngModel)]="shipping.origin_full_name"  formControlName="origin_full_name"/>
+                                [(ngModel)]="mainS.oneElement.origin_full_name"  formControlName="origin_full_name"/>
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Documento</label>
                           <select class="form-control" id="sender_identification_t"
-                                  [(ngModel)]="shipping.sender_identification.type" formControlName="sender_identification_t">
+                                  [(ngModel)]="mainS.oneElement.sender_identification.type" formControlName="sender_identification_t">
                               <option *ngFor="let cf of mainS.identifyTList.items" [value]="cf.id">{{cf.name}}</option>
                           </select>
                       </div>
@@ -51,24 +53,24 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="doc-number-o">Número de Documento</label>
                         <input type="text" class="form-control" id="sender_identification_v"
-                                [(ngModel)]="shipping.sender_identification.value" formControlName="sender_identification_v" />
+                                [(ngModel)]="mainS.oneElement.sender_identification.value" formControlName="sender_identification_v" />
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                         <label for="contact">Teléfono / Email</label>
                         <input type="text" class="form-control" id="origin_contact"
-                                [(ngModel)]="shipping.origin_contact" formControlName="origin_contact"/>
+                                [(ngModel)]="mainS.oneElement.origin_contact" formControlName="origin_contact"/>
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                         <label for="origin-addr">Dirección</label>
                         <input type="text" class="form-control" id="origin_address"
-                                [(ngModel)]="shipping.origin_address" formControlName="origin_address"/>
+                                [(ngModel)]="mainS.oneElement.origin_address" formControlName="origin_address"/>
                       </div>
 
                       <div class="form-check" [formGroup]="form">
                         <input type="checkbox" class="form-check-input" id="payment_at_origin"  formControlName="payment_at_origin"
-                                [(ngModel)]="shipping.payment_at_origin" (change)="payInDestination = !shipping.payment_at_origin">
+                                [(ngModel)]="mainS.oneElement.payment_at_origin" (change)="payInDestination = !mainS.oneElement.payment_at_origin">
                         <label class="form-check-label" for="exampleCheck1">Pagar en Origen</label>
                       </div>
 
@@ -95,7 +97,7 @@
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Destino</label>
                           <select class="form-control" id="destination_branch_office"
-                                  [(ngModel)]="shipping.destination_branch_office" formControlName="destination_branch_office">
+                                  [(ngModel)]="mainS.oneElement.destination_branch_office" formControlName="destination_branch_office">
                               <option *ngFor="let cf of mainS.branchOfficeList.items" [value]="cf.id">{{cf.name}}</option>
                           </select>
                       </div>
@@ -103,13 +105,13 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="name-dest">Nombre y Apellido</label>
                         <input type="text" class="form-control" id="destination_full_name"
-                                [(ngModel)]="shipping.destination_full_name" formControlName="destination_full_name"/>
+                                [(ngModel)]="mainS.oneElement.destination_full_name" formControlName="destination_full_name"/>
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Documento</label>
                           <select class="form-control" id="receiver_identification_t"
-                                  [(ngModel)]="shipping.receiver_identification.type" formControlName="receiver_identification_t">
+                                  [(ngModel)]="mainS.oneElement.receiver_identification.type" formControlName="receiver_identification_t">
                               <option *ngFor="let cf of mainS.identifyTList.items" [value]="cf.id">{{cf.name}}</option>
                           </select>
                       </div>
@@ -117,24 +119,24 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="doc-number-d">Número de Documento</label>
                         <input type="text" class="form-control" id="receiver_identification_v"
-                                [(ngModel)]="shipping.receiver_identification.value" formControlName="receiver_identification_v"/>
+                                [(ngModel)]="mainS.oneElement.receiver_identification.value" formControlName="receiver_identification_v"/>
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                         <label for="tel-dest">Teléfono / Email</label>
                         <input type="text" class="form-control" id="destination_contact" formControlName="destination_contact"
-                                [(ngModel)]="shipping.destination_contact" />
+                                [(ngModel)]="mainS.oneElement.destination_contact" />
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                         <label for="dest-addr">Dirección</label>
                         <input type="text" class="form-control" id="destination_address"
-                                [(ngModel)]="shipping.destination_address" formControlName="destination_address"/>
+                                [(ngModel)]="mainS.oneElement.destination_address" formControlName="destination_address"/>
                       </div>
 
                       <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1" [disabled] = "!mainS.elementEnableEdition"
-                                [(ngModel)]="payInDestination" [ngModelOptions]="{standalone: true}" (change)="shipping.payment_at_origin = !payInDestination">
+                                [(ngModel)]="payInDestination" [ngModelOptions]="{standalone: true}" (change)="mainS.oneElement.payment_at_origin = !payInDestination">
                         <label class="form-check-label" for="exampleCheck1">Pagar en Destino</label>
                       </div>
 
@@ -161,13 +163,13 @@
                       <div class="form-group" *ngIf="mainS.action == 'edit'">
                           <label for="fecha-envio">Fecha de Envío</label>
                           <input type="text" class="form-control" id="fecha-envio" [disabled] = "true"
-                                  value="{{format.getSDateFromTimeStamp( shipping.date )}}" />
+                                  value="{{format.getSDateFromTimeStamp( mainS.oneElement.date )}}" />
                       </div>
 
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Bulto</label>
                           <select class="form-control" id="distance_id"
-                                  [(ngModel)]="shipping.distance_id" formControlName="distance_id">
+                                  [(ngModel)]="mainS.oneElement.distance_id" formControlName="distance_id">
                               <option *ngFor="let cf of mainS.distancesList.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
@@ -175,7 +177,7 @@
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Envio</label>
                           <select class="form-control" id="shipping_type_id"
-                                  [(ngModel)]="shipping.shipping_type_id" formControlName="shipping_type_id">
+                                  [(ngModel)]="mainS.oneElement.shipping_type_id" formControlName="shipping_type_id">
                               <option *ngFor="let cf of mainS.shippingsTypes.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
@@ -183,7 +185,7 @@
                       <div class="form-group" [formGroup]="form">
                           <label for="tipo-envio">Tipo de Servicio</label>
                           <select class="form-control" id="service_type_id"
-                                  [(ngModel)]="shipping.service_type_id" formControlName="service_type_id">
+                                  [(ngModel)]="mainS.oneElement.service_type_id" formControlName="service_type_id">
                               <option *ngFor="let cf of mainS.servicesTypes.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
@@ -191,7 +193,7 @@
                       <div class="form-group" *ngIf="mainS.action == 'edit'" [formGroup]="form">
                           <label for="tipo-envio">Vehículo</label>
                           <select class="form-control" id="vehicle_id"
-                                  [(ngModel)]="shipping.vehicle_id" formControlName="vehicle_id">
+                                  [(ngModel)]="mainS.oneElement.vehicle_id" formControlName="vehicle_id">
                               <option *ngFor="let cf of mainS.VehicleList.items" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
@@ -199,7 +201,7 @@
                       <div class="form-group" *ngIf="mainS.action == 'edit'" [formGroup]="form">
                           <label for="tipo-envio">Estado</label>
                           <select class="form-control" id="status"
-                                  [(ngModel)]="shipping.status" formControlName="status">
+                                  [(ngModel)]="mainS.oneElement.status" formControlName="status">
                               <option *ngFor="let cf of mainS.getStatusTypes()" [value]="cf.id">{{cf.description}}</option>
                           </select>
                       </div>
@@ -207,9 +209,7 @@
                       <div class="form-group" [formGroup]="form">
                         <label for="name">Precio</label>
                         <input type="text" class="form-control" id="price"
-                        (keyup)="shipping.price = format.getMoney(shipping.price);"
-                        (click)="shipping.price = ''" (ionBlur)="shipping.price = moneyReset(shipping.price)"
-                                [(ngModel)]="shipping.price" formControlName="price"/>
+                                [(ngModel)]="mainS.oneElement.price" formControlName="price"/>
                       </div>
 
                     </form>
@@ -234,7 +234,7 @@
                       <div class="form-row align-items-center">
                         <div class="col-12 col-sm-6 col-md-10">
                             <input type="text" placeholder="Descripción" class="form-control" id="i-name-dest" [disabled] = "!mainS.elementEnableEdition"
-                                   [(ngModel)]="shippngItem.description" [ngModelOptions]="{standalone: true}" />
+                                   [(ngModel)]="mainS.oneElementshippngItem.description" [ngModelOptions]="{standalone: true}" />
                         </div>
 
                         <div class="col">
@@ -252,7 +252,7 @@
                   </div>
                 </div>
 
-                <div class="row" *ngFor="let cf of shipping.items; let i = index">
+                <div class="row" *ngFor="let cf of mainS.oneElement.items; let i = index">
                   <div class="col">
                     <p>{{cf.description}}</p>
                   </div>
@@ -317,6 +317,7 @@
               <div class="row">
                 <div class="col"></div>
                 <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3" (click)="goToAll()">Cancelar</button>
                   <button type="submit" class="btn btn-primary mb-3" (click)="next()"
                           [disabled] = "!( mainS.elementEnableEdition || mainS.action == 'create' )">{{ mainS.textSubmitAction }}</button>
                 </div>

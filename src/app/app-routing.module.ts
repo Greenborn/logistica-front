@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { Router }    from '@angular/router';
 
 import { HomePage  }            from './pages/home/home';
 import { LoginPage  }           from './pages/auth/login/login.page';
@@ -10,20 +11,27 @@ import { VehiculosPage  }       from './pages/vehiculos/all/vehiculos.page';
 import { UsuariosPage  }        from './pages/usuarios/all/usuarios.page';
 import { EnvioDeliveryNote  }   from './pages/envios/delivery.note/envio.delivery.note';
 import { RoadmapEnviosPage  }   from './pages/envios/roadmap/roadmap.envios.page';
-import { SuccessPage  }         from './pages/gral/success/success';
+import { AllEnviosByUserPage }  from './pages/envios/all.by.user/all.by.user.page';
+import { ResultPage  }         from './pages/gral/result/result';
+
+import { AuthenticationGuard  } from './services/auth/auth.guard';
 
 const routes: Routes = [
   { path: '',              component: LoginPage },
-  { path: 'home',          component: HomePage },
-  { path: 'envios',        component: AllEnviosPage },
-  { path: 'envios/nuevo',  component: OneEnviosPage },
-  { path: 'envios/hojaruta',  component: RoadmapEnviosPage },
-  { path: 'envios/remito', component: EnvioDeliveryNote },
-  { path: 'envios/detalle',component: OneEnviosPage },
-  { path: 'sucursales',    component: SucursalesPage },
-  { path: 'vehiculos',     component: VehiculosPage },
-  { path: 'usuarios',      component: UsuariosPage },
-  { path: 'exito',         component: SuccessPage },
+  { path: 'login',         component: LoginPage },
+  { path: 'home',          component: HomePage            , canActivate: [AuthenticationGuard]},
+  { path: 'envios',        component: AllEnviosPage       , canActivate: [AuthenticationGuard]},
+  { path: 'envios/nuevo',  component: OneEnviosPage       , canActivate: [AuthenticationGuard]},
+  { path: 'envios/hojaruta',  component: RoadmapEnviosPage, canActivate: [AuthenticationGuard]},
+  { path: 'envios/remito', component: EnvioDeliveryNote   , canActivate: [AuthenticationGuard]},
+  { path: 'envios/detalle',component: OneEnviosPage       , canActivate: [AuthenticationGuard]},
+  { path: 'envios/porusuario',component: AllEnviosByUserPage, canActivate: [AuthenticationGuard]},
+  { path: 'sucursales',    component: SucursalesPage      , canActivate: [AuthenticationGuard]},
+  { path: 'vehiculos',     component: VehiculosPage       , canActivate: [AuthenticationGuard]},
+  { path: 'usuarios',      component: UsuariosPage        , canActivate: [AuthenticationGuard]},
+  { path: 'exito',         component: ResultPage         , canActivate: [AuthenticationGuard]},
+  { path: 'error',         component: ResultPage         , canActivate: [AuthenticationGuard]},
+  { path: 'atencion',      component: ResultPage         , canActivate: [AuthenticationGuard]},
 ];
 
 @NgModule({

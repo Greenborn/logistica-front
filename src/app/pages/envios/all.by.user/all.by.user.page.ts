@@ -7,20 +7,26 @@ import { AuthService }          from '../../../services/auth/auth.service';
 import { ShippingsService }     from '../../../services/shippings.service';
 import { BranchOfficesService } from '../../../services/branch.offices.service';
 import { FormateoService }      from '../../../services/formateo.service';
+import { UsersService }         from '../../../services/users.service';
 
 import { Shipping } from '../../../models/shipping';
 
 @Component({
-  selector: 'app-envios-all',
-  templateUrl: './all.envios.page.html',
-  styleUrls: ['./all.envios.page.scss'],
+  selector: 'app-envios-by-user',
+  templateUrl: './all.by.user.page.html',
+  styleUrls: ['./all.by.user.page.scss'],
 })
-export class AllEnviosPage implements OnInit {
+export class AllEnviosByUserPage implements OnInit {
 
   public tableConfig:any = {};
 
   private reloadAllV;
   private updateTable = new Subject();
+
+  public UsersGetAOK;
+  public UsersGetAKO;
+  public userSelected;
+  public usersList;
 
   constructor(
     public  gral:      GeneralService,
@@ -28,7 +34,8 @@ export class AllEnviosPage implements OnInit {
     public  mainS:     ShippingsService,
     private BranchOfS: BranchOfficesService,
     public  format:    FormateoService,
-    private router:    Router
+    private router:    Router,
+    public  usersS:    UsersService
   ) {
     this.auth.toLoginIfNL();
     this.setConfig();
@@ -38,11 +45,42 @@ export class AllEnviosPage implements OnInit {
       this.updateTable.next( true );
     } });
 
+    //////////////////////////
+    // GET USUARIOS
+    this.UsersGetAOK = this.usersS.UsersGetAOK.subscribe({  next: ( response : any[]) => {
+      this.usersList = response[ 'items' ];
+
+      let user = this.auth.getUserName();
+      if ( user == null || user == undefined ){
+        this.auth.toLogOut();
+      }
+      for ( let c=0; c < this.usersList.length; c++ ){
+        if ( user == this.usersList[ c ].username ){
+          this.userSelected = this.usersList[ c ].id;
+          this.aplicar();
+        }
+      }
+
+    } });
+
+    this.UsersGetAKO = this.usersS.UsersGetAKO.subscribe({  next: ( response : any[]) => {
+      //se debería reintentar y/o mostrar mensaje de error
+      this.gral.newMensaje( 'Ocurrió un error al recibir el listado de usuarios, recargando.' );
+      this.usersS.getAll();
+    } });
+    this.usersS.getAll();
+
+  }
+
+  aplicar(){
+    this.tableConfig.ExtraFilterTerms = '&filter[user]=' + this.userSelected;
+    this.reloadAllV.next( true );
   }
 
   setConfig(){
+
     this.tableConfig = {
-      id: 'roadmap',
+      id: 'allshippingsbyuser',
       resaltado: [
         { 'field':'status', 'enabled':true, 'colors':this.mainS.getStatusColors() }
       ],
@@ -94,10 +132,10 @@ export class AllEnviosPage implements OnInit {
             }
         }
       ],
-      updateTableSubject: this.updateTable,
+      updateTableSubject: this.updateTable, waitForUpdateSubject: true,
       ExtraFilterTerms: '',
       provider: this.mainS,
-      actionOptions: { edit: true, new: true },
+      actionOptions: { edit: true, new: false },
       actionsEnabled: true,
       resaltadoEnabled: true,
       regSelect: false
@@ -109,6 +147,8 @@ export class AllEnviosPage implements OnInit {
 
   ngOnDestroy(){
     this.reloadAllV.unsubscribe();
+    this.UsersGetAOK.unsubscribe();
+    this.UsersGetAKO.unsubscribe();
   }
 
 }
