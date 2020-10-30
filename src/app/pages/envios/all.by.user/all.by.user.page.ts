@@ -20,7 +20,7 @@ export class AllEnviosByUserPage implements OnInit {
 
   public tableConfig:any = {};
 
-  private reloadAllV;
+  private reloadAllByUserV;
   private updateTable = new Subject();
 
   public UsersGetAOK;
@@ -40,9 +40,9 @@ export class AllEnviosByUserPage implements OnInit {
     this.auth.toLoginIfNL();
     this.setConfig();
 
-    this.reloadAllV = this.mainS.reloadAllV.subscribe({  next: ( params: any ) => {
+    this.reloadAllByUserV = this.mainS.reloadAllByUserV.subscribe({  next: ( params: any ) => {
       this.setConfig();
-      this.updateTable.next( true );
+      this.usersS.getAll();
     } });
 
     //////////////////////////
@@ -73,8 +73,11 @@ export class AllEnviosByUserPage implements OnInit {
   }
 
   aplicar(){
-    this.tableConfig.ExtraFilterTerms = '&filter[user]=' + this.userSelected;
-    this.reloadAllV.next( true );
+    this.updateTable.next( {
+      updateConfig:[
+        { key:'ExtraFilterTerms', value: '&filter[user]=' + this.userSelected }
+      ]
+    } );
   }
 
   setConfig(){
@@ -146,7 +149,7 @@ export class AllEnviosByUserPage implements OnInit {
   }
 
   ngOnDestroy(){
-    this.reloadAllV.unsubscribe();
+    this.reloadAllByUserV.unsubscribe();
     this.UsersGetAOK.unsubscribe();
     this.UsersGetAKO.unsubscribe();
   }

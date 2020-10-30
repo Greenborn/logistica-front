@@ -73,8 +73,24 @@ export class EnviosTableComponent implements OnInit {
           this.actualPage       = 1;
 
           this.checkBoxGralInfo[ this.actualPage ] = { checked:true, pristine:true };
-          this.loadPage( this.actualPage );
-          this.filtersInic();
+
+          //si se especifica actualizacion de configuracion
+          if ( params.hasOwnProperty( 'updateConfig' ) ){
+            for ( let c=0; c<params.updateConfig.length; c++ ){
+              this.config[ params.updateConfig[ c ].key ] = params.updateConfig[ c ].value;
+            }
+          }
+
+          //si se especificaron filtros, se reinician (por si hubo combio en la config)
+          // y se aplica el filtro seleccionado
+          if ( this.config.filterContentOptions.length == 0 ){
+            this.loadPage( this.actualPage );
+          } else {
+            this.filtersInic();
+            this.filterFieldSelecChange();
+            this.applyFilter();
+          }
+
         }
       } });
     }
@@ -120,6 +136,7 @@ export class EnviosTableComponent implements OnInit {
         }
 
         if ( this.actualPage == 0 ){
+          this.actualPage = 1;
           console.warn('pagina actual = 0?!');
         }
       }
@@ -174,8 +191,11 @@ export class EnviosTableComponent implements OnInit {
       this.filterFieldContent.fieldSelec = 'unfiltered';
     }
 
-    this.filterFieldContentStep        = 0;
-    this.filterFieldContent.params     = [];
+    //se agrego para los casos en los que se recargue la vista y ya se tengan filtros seleccionados
+    if ( this.filterFieldContent.criteriaSelected == null ){
+      this.filterFieldContent.params = [];
+      this.filterFieldContentStep    = 0;
+    }
 
     /* Se genera el objeto filterFieldDataForFilter que almacenará la información necesaria para desplegar la información de
     los campos de filtrado de tipo select */
