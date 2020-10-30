@@ -5,7 +5,7 @@ stages:
 webapp-clone:   
   stage: clone   
   script:     
-    - cd /var/www/logistica.coodesoft.com.ar
+    - cd $DEPLOY_DIR
     - sudo git pull
   rules:     
     - if: $CI_COMMIT_BRANCH == 'dev'
@@ -13,7 +13,7 @@ webapp-clone:
 webapp-build:
   stage: build
   script:
-    - cd /var/www/logistica.coodesoft.com.ar
+    - cd $DEPLOY_DIR
     - sudo ionic build --prod --verbose
   rules:
     - if: $CI_COMMIT_BRANCH == 'dev'
