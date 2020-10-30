@@ -137,7 +137,6 @@ export class EnviosTableComponent implements OnInit {
 
         if ( this.actualPage == 0 ){
           this.actualPage = 1;
-          console.warn('pagina actual = 0?!');
         }
       }
 
