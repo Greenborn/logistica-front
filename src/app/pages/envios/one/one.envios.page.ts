@@ -204,7 +204,7 @@ export class OneEnviosPage implements OnInit {
     ///////////////////////
     /// GET - SUCURSALES
     this.BranchOfficeGetAOK = this.BranchOfficeS.BranchOfficeGetAOK.subscribe({  next: ( response : any[]) => {
-      this.mainS.branchOfficeList   = this.BranchOfficeS.filterEActualOffice( response );
+      this.mainS.branchOfficeList   = response;
       this.mainS.branch_of_l_loaded = true;
 
       this.proveNotifyAParamsLoaded();
