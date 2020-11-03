@@ -103,10 +103,10 @@ export class EnviosTableComponent implements OnInit {
       this.shippings = [];
 
       for ( let c=0; c < response.items.length; c ++ ){
-        this.shippings.push( {
+         let reg:any = {
           receiver_identification_type: response.items[ c ].receiver_identification.identification_type.name,
           sender_identification_type:   response.items[ c ].sender_identification.identification_type.name,
-          originBranchOffice:           response.items[ c ].originBranchOffice.name,
+          originBranchOffice:           '-',
           destinationBranchOffice:      response.items[ c ].destinationBranchOffice.name,
           status_id:                    response.items[ c ].status.id,
           status:                       response.items[ c ].status.label,
@@ -124,7 +124,13 @@ export class EnviosTableComponent implements OnInit {
           origin_address:               response.items[ c ].origin_address,
           destination_address:          response.items[ c ].destination_address,
           id:                           response.items[ c ].id
-        } );
+        };
+
+        if ( response.items[ c ].originBranchOffice != null ) {
+          reg.originBranchOffice = response.items[ c ].originBranchOffice.name;
+        }
+
+        this.shippings.push( reg );
 
         if ( response.items[ c ].vehicle != null ){
           this.shippings[ c ].vehicle = response.items[ c ].vehicle.description;
