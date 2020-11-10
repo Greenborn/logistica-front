@@ -30,7 +30,7 @@ export class Shipping {
       this.receiver_identification.id    = response.receiver_identification.id;
       this.receiver_identification.type  = response.receiver_identification.identification_type.id;
       this.destination_branch_office     = response.destinationBranchOffice.id;
-      this.origin_branch_office          = response.originBranchOffice.id;
+      this.origin_branch_office          = '';
       this.service_type_id               = response.serviceType.id;
       this.distance_id                   = response.distance.id;
       this.shipping_type_id              = response.shippingType.id;
@@ -50,6 +50,10 @@ export class Shipping {
       this.sender_identification.value   = response.sender_identification.value;
       this.receiver_identification.value = response.receiver_identification.value;
 
+      if ( response.originBranchOffice != null ){
+        this.origin_branch_office = response.originBranchOffice.id;
+      }
+      
       if ( response.vehicle != null ){
         this.vehicle_id = response.vehicle.id;
       }

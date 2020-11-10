@@ -195,9 +195,9 @@ export class EnviosTableComponent implements OnInit {
     if ( !found ){
       this.filterFieldContent.fieldSelec = 'unfiltered';
     }
-
+    
     //se agrego para los casos en los que se recargue la vista y ya se tengan filtros seleccionados
-    if ( this.filterFieldContent.criteriaSelected == null ){
+    if ( this.filterFieldContent.criteriaSelected == null || this.filterFieldContent.fieldSelec == 'unfiltered' ){
       this.filterFieldContent.params = [];
       this.filterFieldContentStep    = 0;
     }
