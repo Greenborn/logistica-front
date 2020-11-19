@@ -141,6 +141,10 @@ export class RoadmapEnviosPage implements OnInit {
       filterContentOptions: [
         { field: 'unfiltered', comp: [], controlConfig: { label: 'Sin filtrar' } },
 
+        { field: 'id', comp: [ '>', '<', '=', 'between' ],
+            controlConfig: { label: 'Id', type:'number' }
+        },
+
         { field: 'date', comp: [ '>', '<', '[=]', 'between' ],
             controlConfig: { label: 'Fecha', type:'date', formatFunction: ( value ) => { return this.format.getTimeStampFNgbDatePickerA( value ); } }
         },
