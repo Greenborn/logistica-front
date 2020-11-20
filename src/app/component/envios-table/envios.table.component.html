@@ -77,6 +77,9 @@
                 </div>
               </div>
 
+              <input type="number" class="form-control" id="" *ngIf="filterFieldContent.controlConfig.type == 'number'"
+                      [(ngModel)]="filterFieldContent.params[0]" [ngModelOptions]="{standalone: true}" />
+
           </div>
         </div>
 
@@ -93,6 +96,9 @@
                   </button>
                 </div>
               </div>
+
+              <input type="number" class="form-control" id="" *ngIf="filterFieldContent.controlConfig.type == 'number'"
+                      [(ngModel)]="filterFieldContent.params[1]" [ngModelOptions]="{standalone: true}" />
             </div>
         </div>
 
