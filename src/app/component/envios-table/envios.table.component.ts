@@ -195,7 +195,7 @@ export class EnviosTableComponent implements OnInit {
     if ( !found ){
       this.filterFieldContent.fieldSelec = 'unfiltered';
     }
-    
+
     //se agrego para los casos en los que se recargue la vista y ya se tengan filtros seleccionados
     if ( this.filterFieldContent.criteriaSelected == null || this.filterFieldContent.fieldSelec == 'unfiltered' ){
       this.filterFieldContent.params = [];
@@ -323,11 +323,20 @@ export class EnviosTableComponent implements OnInit {
       if ( this.filterFieldContent.controlConfig.type == 'date' && ( !this.filterFieldContent.params[ 0 ].hasOwnProperty('year') || !this.filterFieldContent.params[ 1 ].hasOwnProperty('year') ) ) {
         return false;
       }
-    } else {
-      if ( this.filterFieldContent.params[ 0 ] == '' ){
+
+      if ( this.filterFieldContent.controlConfig.type == 'number' && ( isNaN(this.filterFieldContent.params[ 0 ]) || isNaN(this.filterFieldContent.params[ 1 ]) ) ){
         return false;
       }
     }
+
+    if ( this.filterFieldContent.params[ 0 ] == '' || this.filterFieldContent.params[ 0 ] == null ){
+      return false;
+    }
+
+    if ( this.filterFieldContent.controlConfig.type == 'number' && isNaN(this.filterFieldContent.params[ 0 ]) ){
+      return false;
+    }
+
     return true;
   }
 
@@ -348,11 +357,21 @@ export class EnviosTableComponent implements OnInit {
         break;
 
       case '>':
-        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + ( Number( values[ 0 ] ) + 1000*60*60*24 );  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected;  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
+        if ( this.filterFieldContent.controlConfig.type == 'date' ) {
+          out += ( Number( values[ 0 ] ) + 1000*60*60*24 );
+        } else {
+          out += Number( values[ 0 ] );
+        }
         break;
 
       case '<':
-        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected + ( Number( values[ 0 ] ) - 1000*60*60*24 );  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
+        out = '&filter[' + this.filterFieldContent.fieldSelec + ']' + '=' + this.filterFieldContent.criteriaSelected;  //[MODIFICAR] Esto solo va para la fecha, en otro issue se deberia mejorar
+        if ( this.filterFieldContent.controlConfig.type == 'date' ) {
+          out += ( Number( values[ 0 ] ) + 1000*60*60*24 );
+        } else {
+          out += Number( values[ 0 ] );
+        }
         break;
 
       case 'between':
